@@ -14,7 +14,7 @@ void SDAUIBlend::Run(const char* title) {
 	const char* blendModes[] = { "mix", "multiply", "colorBurn", "linearBurn", "darkerColor", "lighten", "screen", "colorDodge", "linearDodge", "lighterColor", "overlay", "softLight", "hardLight", "vividLight", "linearLight", "pinLight", "hardMix", "difference", "exclusion", "subtract", "divide", "hue", "color", "saturation", "luminosity", "darken", "left", "right" };
 
 	xPos = mSDASettings->uiMargin;
-	yPos = mSDASettings->uiYPosRow3;
+	yPos = mSDASettings->uiYPosRow5;
 	for (int s = 0; s < mSDASession->getFboBlendCount(); s++) {
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiPreviewH + 10.0f), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);

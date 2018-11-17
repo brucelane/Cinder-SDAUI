@@ -55,7 +55,8 @@ float SDAUIAnimation::getMaxUniformValueByIndex(unsigned int aIndex) {
 void SDAUIAnimation::Run(const char* title) {
 
 	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH + 100), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+	//ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 	ImGui::Begin("Animation", NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 	{
 		ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth);

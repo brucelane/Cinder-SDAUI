@@ -37,8 +37,11 @@ void SDAUIShaders::Run(const char* title) {
 	static int shaderToEdit = -1;
 
 	xPos = mSDASettings->uiMargin;
-	yPos = mSDASettings->uiYPosRow3;
+	yPos = mSDASettings->uiYPosRow4;
 	for (int s = 0; s < mSDASession->getShadersCount(); s++) {
+		//ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
+		//ImGui::SetNextWindowPos(ImVec2((t * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + mSDASettings->uiMargin + mSDASettings->uiXPosCol1, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		//int hue = 0;

@@ -59,7 +59,7 @@ void SDAUI::resize() {
 }
 void SDAUI::Run(const char* title, unsigned int fps) {
 	static int currentWindowRow1 = 2;
-	static int currentWindowRow2 = 2;
+	static int currentWindowRow2 = 0;
 
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -129,10 +129,10 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 	}
 
 #pragma endregion menu
-	mSDASettings->uiXPos = mSDASettings->uiMargin;
-	//ImGui::SetNextWindowSize(ImVec2(mSDASettings->mRenderWidth - 20, mSDASettings->uiYPosRow2 - mSDASettings->uiYPosRow1 - mSDASettings->uiMargin), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(800, mSDASettings->uiYPosRow2 - mSDASettings->uiYPosRow1 - mSDASettings->uiMargin), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPos, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
+	
+	//ImGui::SetNextWindowSize(ImVec2(mSDASettings->mRenderWidth - 20, uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(800, mSDASettings->uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol1, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 	sprintf(buf, "Videodromm Fps %c %d###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps);
 	ImGui::Begin(buf);
 	{
@@ -153,15 +153,12 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		ImGui::SameLine();
 		ImGui::Text("(Target FPS %.2f) ", mSDASession->getTargetFps());
 
-		ImGui::RadioButton("Audio", &currentWindowRow1, 0); ImGui::SameLine();
-		ImGui::RadioButton("Midi", &currentWindowRow1, 1); ImGui::SameLine();
+		ImGui::RadioButton("Tempo-Audio", &currentWindowRow1, 0); ImGui::SameLine();
+		ImGui::RadioButton("Color-Midi", &currentWindowRow1, 1); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 2); ImGui::SameLine();
-		ImGui::RadioButton("Color", &currentWindowRow1, 3); ImGui::SameLine();
-		ImGui::RadioButton("Tempo", &currentWindowRow1, 4); ImGui::SameLine();
-		ImGui::RadioButton("Mouse", &currentWindowRow1, 5); ImGui::SameLine();
-		ImGui::RadioButton("Osc", &currentWindowRow1, 6);  ImGui::SameLine();
-		ImGui::RadioButton("WS", &currentWindowRow1, 7);  ImGui::SameLine();
-		ImGui::RadioButton("Render", &currentWindowRow1, 8);  ImGui::SameLine();
+		ImGui::RadioButton("Osc-WS", &currentWindowRow1, 3);  ImGui::SameLine();
+		ImGui::RadioButton("Mouse Render", &currentWindowRow1, 4); ImGui::SameLine();
+		ImGui::RadioButton("Blend", &currentWindowRow1, 5);  ImGui::SameLine();
 		// flip vertically
 		int hue = 0;
 		mSDASession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -181,12 +178,12 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			mSDASession->flipH();
 		}
 		ImGui::PopStyleColor(3);
-		hue++;
+		/*hue++;
 
 		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
 		ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();
 		ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
-		ImGui::RadioButton("Blend", &currentWindowRow2, 3); 
+		ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
 
 #pragma region Info
 		ImGui::TextWrapped("Msg: %s", mSDASettings->mMsg.c_str());
@@ -201,10 +198,14 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 
 	switch (currentWindowRow1) {
 	case 0:
+		// Tempo
+		mUITempo->Run("Tempo");
 		// Audio
 		mUIAudio->Run("Audio");
 		break;
 	case 1:
+		// Color
+		mUIColor->Run("Color");
 		// Midi
 		mUIMidi->Run("Midi");
 		break;
@@ -213,30 +214,23 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		mUIAnimation->Run("Animation");
 		break;
 	case 3:
-		// Color
-		mUIColor->Run("Color");
-		break;
-	case 4:
-		// Tempo
-		mUITempo->Run("Tempo");
-		break;
-	case 5:
-		// Mouse
-		mUIMouse->Run("Mouse");
-		break;
-	case 6:
 		// Osc
 		mUIOsc->Run("Osc");
-		break;
-	case 7:
 		// Websockets
 		mUIWebsockets->Run("Websockets");
-		break;
-	case 8:
+	break;
+	case 4:
+		// Mouse
+		mUIMouse->Run("Mouse");
 		// Render
 		mUIRender->Run("Render");
 		break;
+	case 5:
+		// Blend
+		mUIBlend->Run("Blend");
+		break;
 	}
+	mSDASession->blendRenderEnable(currentWindowRow1 == 5);
 	//switch (currentWindowRow2) {
 	//case 0:
 		// textures
@@ -250,13 +244,8 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		// Shaders
 		mUIShaders->Run("Shaders");
 		//break;
-	//case 3:
-		// Blend
-		mUIBlend->Run("Blend");
-		//break;
 	
 	//}
 	
-	mSDASession->blendRenderEnable(currentWindowRow2 == 3);
 
 }

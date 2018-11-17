@@ -18,7 +18,7 @@ void SDAUIFbos::Run(const char* title) {
 	static int YBottom[64];
 	static bool rnd[64];
 	static bool anim[64];
-
+	/*
 	for (int t = 0; t < mSDASession->getInputTexturesCount(); t++) {
 		xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1 + ((mSDASettings->uiLargePreviewW + mSDASettings->uiMargin) * t);
 		yPos = mSDASettings->uiYPosRow2;
@@ -55,32 +55,32 @@ void SDAUIFbos::Run(const char* title) {
 			ImGui::PopStyleColor(3);
 			hue++;
 
-			/*for (unsigned int f = 0; f < mSDAMix->getWarpCount(); f++) {
-			if (f > 0) ImGui::SameLine();
-			//int ti = mSDAMix->getFboInputTextureIndex(f);
-			//CI_LOG_V("fbo" + toString(f) + " t" + toString(t) + " ti" + toString(ti));
-			if (mSDAMix->getWarpATextureIndex(f) == t) {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
-			}
-			else {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
-			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(t / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(t / 7.0f, 0.8f, 0.8f));
-			sprintf(buf, "%d##fboinputtex%d%d", f, t, f);
-			if (ImGui::Button(buf)) mSDAMix->setFboInputTexture(f, t);
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set input texture for warp");
-			ImGui::PopStyleColor(3);
-			}
+			//for (unsigned int f = 0; f < mSDAMix->getWarpCount(); f++) {
+			//if (f > 0) ImGui::SameLine();
+			////int ti = mSDAMix->getFboInputTextureIndex(f);
+			////CI_LOG_V("fbo" + toString(f) + " t" + toString(t) + " ti" + toString(ti));
+			//if (mSDAMix->getWarpATextureIndex(f) == t) {
+			//ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
+			//}
+			//else {
+			//ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
+			//}
+			//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(t / 7.0f, 0.7f, 0.7f));
+			//ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(t / 7.0f, 0.8f, 0.8f));
+			//sprintf(buf, "%d##fboinputtex%d%d", f, t, f);
+			//if (ImGui::Button(buf)) mSDAMix->setFboInputTexture(f, t);
+			//if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set input texture for warp");
+			//ImGui::PopStyleColor(3);
+			//}
 
-			sprintf(buf, "WS##s%d", i);
-			if (ImGui::Button(buf))
-			{
-			sprintf(buf, "IMG=%d.jpg", i);
-			//mSDARouter->wsWrite(buf);
-			}
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via WebSockets");
-			*/
+			//sprintf(buf, "WS##s%d", i);
+			//if (ImGui::Button(buf))
+			//{
+			//sprintf(buf, "IMG=%d.jpg", i);
+			////mSDARouter->wsWrite(buf);
+			//}
+			//if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via WebSockets");
+			//
 
 			if (mSDASession->isSequence(t) || mSDASession->isMovie(t)) {
 				sprintf(buf, "p##s%d", t);
@@ -223,13 +223,13 @@ void SDAUIFbos::Run(const char* title) {
 		}
 		ImGui::End();
 	}
-
+	*/
 	/*
 	** fbos
 	*/
 	for (unsigned int f = 0; f < mSDASession->getFboListSize(); f++) {
 		xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1 + ((mSDASettings->uiLargePreviewW + mSDASettings->uiMargin) * f);
-		yPos = mSDASettings->uiYPosRow2 + mSDASettings->uiLargePreviewH;
+		yPos = mSDASettings->uiYPosRow3;
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		sprintf(buf, "%s##fbolbl%d", mSDASession->getFboName(f).c_str(), f);

@@ -21,7 +21,7 @@ void SDAUITextures::Run(const char* title) {
 
 	for (int t = 0; t < mSDASession->getInputTexturesCount(); t++) {
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
-		ImGui::SetNextWindowPos(ImVec2((t * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + mSDASettings->uiMargin, mSDASettings->uiYPosRow3), ImGuiSetCond_Once);
+		ImGui::SetNextWindowPos(ImVec2((t * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + mSDASettings->uiXPosCol1 + mSDASettings->uiMargin, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
 		int hue = 0;
 		sprintf(buf, "%s##s%d", mSDASession->getInputTextureName(t).c_str(), t);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
@@ -52,7 +52,8 @@ void SDAUITextures::Run(const char* title) {
 			ImGui::PopStyleColor(3);
 			hue++;
 
-			/*for (unsigned int f = 0; f < mSDAMix->getWarpCount(); f++) {
+			/* obsolete? 
+			for (unsigned int f = 0; f < mSDAMix->getWarpCount(); f++) {
 				if (f > 0) ImGui::SameLine();
 				//int ti = mSDAMix->getFboInputTextureIndex(f);
 				//CI_LOG_V("fbo" + toString(f) + " t" + toString(t) + " ti" + toString(ti));
@@ -78,7 +79,7 @@ void SDAUITextures::Run(const char* title) {
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via WebSockets");
 			*/
-
+			
 			if (mSDASession->isSequence(t) || mSDASession->isMovie(t)) {
 				sprintf(buf, "p##s%d", t);
 				if (ImGui::Button(buf))

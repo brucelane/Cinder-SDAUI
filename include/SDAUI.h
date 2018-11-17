@@ -99,9 +99,6 @@ namespace SophiaDigitalArt
 		// UIShaders
 		SDAUIShadersRef				mUIShaders;
 		bool						showUIShaders;
-		// UIWarps
-		//SDAUIWarpsRef				mUIWarps;
-		//bool						showUIWarps;
 		// UIRender
 		SDAUIRenderRef				mUIRender;
 		bool						showUIRender;

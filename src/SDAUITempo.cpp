@@ -1,6 +1,6 @@
 #include "SDAUITempo.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUITempo::SDAUITempo(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

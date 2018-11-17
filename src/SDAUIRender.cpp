@@ -1,6 +1,6 @@
 #include "SDAUIRender.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIRender::SDAUIRender(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

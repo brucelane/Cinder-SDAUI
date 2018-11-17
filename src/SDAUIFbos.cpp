@@ -1,6 +1,6 @@
 #include "SDAUIFbos.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIFbos::SDAUIFbos(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

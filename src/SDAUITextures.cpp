@@ -1,6 +1,6 @@
 #include "SDAUITextures.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUITextures::SDAUITextures(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

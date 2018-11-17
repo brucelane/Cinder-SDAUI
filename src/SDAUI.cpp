@@ -1,6 +1,6 @@
 #include "SDAUI.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUI::SDAUI(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

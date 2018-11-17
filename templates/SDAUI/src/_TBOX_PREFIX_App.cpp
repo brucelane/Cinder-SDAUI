@@ -10,6 +10,10 @@
 #include "SDALog.h"
 // Spout
 #include "CiSpoutOut.h"
+// UI
+#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
+#include "SDAUI.h"
+#define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 using namespace ci;
 using namespace ci::app;
@@ -38,6 +42,10 @@ private:
 	SDASessionRef					mSDASession;
 	// Log
 	SDALogRef						mSDALog;
+	// UI
+	SDAUIRef						mSDAUI;
+	// handle resizing for imgui
+	void							resizeWindow();
 	// imgui
 	float							color[4];
 	float							backcolor[4];
@@ -61,7 +69,7 @@ private:
 
 
 _TBOX_PREFIX_App::_TBOX_PREFIX_App()
-	: mSpoutOut("SDA", app::getWindowSize())
+	: mSpoutOut("SDAUI", app::getWindowSize())
 {
 	// Settings
 	mSDASettings = SDASettings::create();
@@ -73,11 +81,17 @@ _TBOX_PREFIX_App::_TBOX_PREFIX_App()
 
 	mouseGlobal = false;
 	mFadeInDelay = true;
+	// UI
+	mSDAUI = SDAUI::create(mSDASettings, mSDASession);
 	// windows
 	mIsShutDown = false;
 	mRenderWindowTimer = 0.0f;
-	timeline().apply(&mRenderWindowTimer, 1.0f, 2.0f).finishFn([&] { positionRenderWindow(); });
+	//timeline().apply(&mRenderWindowTimer, 1.0f, 2.0f).finishFn([&] { positionRenderWindow(); });
 
+}
+void _TBOX_PREFIX_App::resizeWindow()
+{
+	mSDAUI->resize();
 }
 void _TBOX_PREFIX_App::positionRenderWindow() {
 	mSDASettings->mRenderPosXY = ivec2(mSDASettings->mRenderX, mSDASettings->mRenderY);//20141214 was 0
@@ -182,6 +196,9 @@ void _TBOX_PREFIX_App::draw()
 
 	// Spout Send
 	mSpoutOut.sendViewport();
+	mSDAUI->Run("UI", (int)getAverageFps());
+	if (mSDAUI->isReady()) {
+	}
 	getWindow()->setTitle(mSDASettings->sFps + " fps SDA");
 }
 

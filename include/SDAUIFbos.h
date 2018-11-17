@@ -13,7 +13,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-namespace VideoDromm
+namespace SophiaDigitalArt
 {
 	// stores the pointer to the SDAUIFbos instance
 	typedef std::shared_ptr<class SDAUIFbos> SDAUIFbosRef;

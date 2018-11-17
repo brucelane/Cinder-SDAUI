@@ -1,6 +1,6 @@
 #include "SDAUIColor.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIColor::SDAUIColor(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

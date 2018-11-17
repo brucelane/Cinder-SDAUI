@@ -1,6 +1,6 @@
 #include "SDAUIShaders.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIShaders::SDAUIShaders(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

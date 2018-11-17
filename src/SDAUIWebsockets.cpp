@@ -1,6 +1,6 @@
 #include "SDAUIWebsockets.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIWebsockets::SDAUIWebsockets(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

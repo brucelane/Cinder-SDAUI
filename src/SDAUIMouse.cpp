@@ -1,6 +1,6 @@
 #include "SDAUIMouse.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIMouse::SDAUIMouse(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

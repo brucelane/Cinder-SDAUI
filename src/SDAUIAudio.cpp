@@ -1,6 +1,6 @@
 #include "SDAUIAudio.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIAudio::SDAUIAudio(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

@@ -15,7 +15,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-namespace VideoDromm
+namespace SophiaDigitalArt
 {
 	// stores the pointer to the SDAUIAnimation instance
 	typedef std::shared_ptr<class SDAUIAnimation> SDAUIAnimationRef;

@@ -1,6 +1,6 @@
 #include "SDAUIOsc.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIOsc::SDAUIOsc(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

@@ -1,6 +1,6 @@
 #include "SDAUIMidi.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIMidi::SDAUIMidi(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

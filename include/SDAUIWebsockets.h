@@ -15,7 +15,7 @@ using namespace std;
 
 #define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-namespace VideoDromm
+namespace SophiaDigitalArt
 {
 	// stores the pointer to the SDAUIWebsockets instance
 	typedef std::shared_ptr<class SDAUIWebsockets> SDAUIWebsocketsRef;

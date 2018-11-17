@@ -1,6 +1,6 @@
 #include "SDAUIBlend.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIBlend::SDAUIBlend(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

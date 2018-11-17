@@ -1,6 +1,6 @@
 #include "SDAUIAnimation.h"
 
-using namespace VideoDromm;
+using namespace SophiaDigitalArt;
 
 SDAUIAnimation::SDAUIAnimation(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	mSDASettings = aSDASettings;

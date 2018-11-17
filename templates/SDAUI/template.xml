@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+<template name="SDAUI: Basic" parent="org.libcinder.apptemplates.basicopengl">
+	<requires>com.sophiadigitalart.sda</requires>
+	<requires>com.wk.websocketpp</requires>
+	<requires>ocornut.imgui</requires>
+	<requires>fr.batchass.spout</requires>
+	<requires>mb.cinder.midi2</requires>
+	<source replaceContents="true" replaceName="true">src/_TBOX_PREFIX_App.cpp</source>
+	<asset>assets/1.jpg</asset>
+</template>
+</cinder>

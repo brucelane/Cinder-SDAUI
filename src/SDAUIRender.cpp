@@ -29,7 +29,7 @@ void SDAUIRender::toggleTempo(unsigned int aCtrl) {
 	mSDASession->toggleTempo(aCtrl);
 }
 void SDAUIRender::toggleSpoutSender() {
-	mSDASettings->mSpoutSender = !mSDASettings->mSpoutSender;
+	//mSDASettings->mSpoutSender = !mSDASettings->mSpoutSender;
 }
 bool SDAUIRender::getBoolValue(unsigned int aCtrl) {
 	return mSDASession->getBoolUniformValueByIndex(aCtrl);
@@ -150,7 +150,7 @@ void SDAUIRender::Run(const char* title) {
 		}
 
 		if (ImGui::Button("Create Warp")) {
-			mSDASession->createWarpMix();
+			//mSDASession->createWarpMix();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Spout Send")) { toggleSpoutSender(); }
@@ -186,7 +186,7 @@ void SDAUIRender::Run(const char* title) {
 		ImGui::PopStyleColor(3);
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Render Texture or Mix");*/
 		// Activate animation
-		if (mSDASession->isWarpAnimationActive()) {
+		/*if (mSDASession->isWarpAnimationActive()) {
 			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
 		}
 		else {
@@ -199,12 +199,12 @@ void SDAUIRender::Run(const char* title) {
 			mSDASession->toggleWarpAnimationActive();
 		}
 		ImGui::PopStyleColor(3);
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Activate Warp Animation");
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Activate Warp Animation");*/
 
 		ImGui::Text("fp %dx%d f %dx%d", mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight, mSDASettings->mFboWidth, mSDASettings->mFboHeight);
 		ImGui::Text("main %dx%d", mSDASettings->mMainWindowWidth, mSDASettings->mMainWindowHeight);
-		ImGui::SameLine();
-		ImGui::Text("solo %d", mSDASession->getSolo());
+		//ImGui::SameLine();
+		//ImGui::Text("solo %d", mSDASession->getSolo());
 		ctrl = mSDASettings->IWEIGHT0;
 		iWeight0 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight0", &iWeight0, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))

@@ -33,8 +33,6 @@
 #include "SDAUIMouse.h"
 // Shaders
 #include "SDAUIShaders.h"
-// Warps
-#include "SDAUIWarps.h"
 // Render
 #include "SDAUIRender.h"
 
@@ -102,8 +100,8 @@ namespace VideoDromm
 		SDAUIShadersRef				mUIShaders;
 		bool						showUIShaders;
 		// UIWarps
-		SDAUIWarpsRef				mUIWarps;
-		bool						showUIWarps;
+		//SDAUIWarpsRef				mUIWarps;
+		//bool						showUIWarps;
 		// UIRender
 		SDAUIRenderRef				mUIRender;
 		bool						showUIRender;

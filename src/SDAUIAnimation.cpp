@@ -35,13 +35,13 @@ void SDAUIAnimation::toggleTempo(unsigned int aCtrl) {
 	mSDASession->toggleTempo(aCtrl);
 }
 void SDAUIAnimation::toggleBass(unsigned int aCtrl) {
-	mSDASession->toggleBass(aCtrl);
+	//mSDASession->toggleBass(aCtrl);
 }
 void SDAUIAnimation::toggleMid(unsigned int aCtrl) {
-	mSDASession->toggleMid(aCtrl);
+	//mSDASession->toggleMid(aCtrl);
 }
 void SDAUIAnimation::toggleTreble(unsigned int aCtrl) {
-	mSDASession->toggleTreble(aCtrl);
+	//mSDASession->toggleTreble(aCtrl);
 }
 void SDAUIAnimation::resetAutoAnimation(unsigned int aCtrl) {
 	mSDASession->resetAutoAnimation(aCtrl);

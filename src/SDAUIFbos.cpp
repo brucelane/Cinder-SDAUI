@@ -274,7 +274,7 @@ void SDAUIFbos::Run(const char* title) {
 		ImGui::End();
 	}
 	// mix fbos
-	for (unsigned int m = 0; m < mSDASession->getMixFbosCount(); m++) {
+	/* for (unsigned int m = 0; m < mSDASession->getMixFbosCount(); m++) {
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2((m * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + mSDASettings->uiMargin, mSDASettings->uiYPosRow3), ImGuiSetCond_Once);
 		// TODO ImGui::Begin(mSDAMix->getFboLabel(m).c_str(), NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings);
@@ -335,5 +335,5 @@ void SDAUIFbos::Run(const char* title) {
 			ImGui::PopID();
 		}
 		ImGui::End();
-	}
+	} */
 }

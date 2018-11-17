@@ -59,7 +59,7 @@ void SDAUI::resize() {
 }
 void SDAUI::Run(const char* title, unsigned int fps) {
 	static int currentWindowRow1 = 2;
-	static int currentWindowRow2 = 4;
+	static int currentWindowRow2 = 2;
 
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -237,25 +237,25 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		mUIRender->Run("Render");
 		break;
 	}
-	switch (currentWindowRow2) {
-	case 0:
+	//switch (currentWindowRow2) {
+	//case 0:
 		// textures
 		mUITextures->Run("Textures");
-		break;
-	case 1:
+		//break;
+	//case 1:
 		// Fbos
 		mUIFbos->Run("Fbos");
-		break;
-	case 2:
+		//break;
+	//case 2:
 		// Shaders
 		mUIShaders->Run("Shaders");
-		break;
-	case 3:
+		//break;
+	//case 3:
 		// Blend
 		mUIBlend->Run("Blend");
-		break;
+		//break;
 	
-	}
+	//}
 	
 	mSDASession->blendRenderEnable(currentWindowRow2 == 3);
 

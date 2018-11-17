@@ -199,7 +199,7 @@ void _TBOX_PREFIX_App::draw()
 	mSDAUI->Run("UI", (int)getAverageFps());
 	if (mSDAUI->isReady()) {
 	}
-	getWindow()->setTitle(mSDASettings->sFps + " fps SDA");
+	getWindow()->setTitle(mSDASettings->sFps + " fps SDAUI");
 }
 
 void prepareSettings(App::Settings *settings)

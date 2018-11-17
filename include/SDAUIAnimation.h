@@ -6,8 +6,6 @@
 #include "CinderImGui.h"
 // Settings
 #include "SDASettings.h"
-// Mix
-#include "SDAMix.h"
 // Session
 #include "SDASession.h"
 

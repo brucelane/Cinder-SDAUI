@@ -32,24 +32,24 @@ void SDAUIMouse::Run(const char* title) {
 			mSDASettings->mRenderPosXY.y = ImGui::GetIO().MousePos.y;
 		} */
 		// mouse
-		mouseX = getValue(35);
+		mouseX = getValue(mSDASettings->IMOUSEX);
 		if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mSDASettings->mFboWidth, "%.4f", 3.0f))
 		{
-			setValue(35, mouseX);
+			setValue(mSDASettings->IMOUSEX, mouseX);
 		}
-		mouseY = getValue(36);
+		mouseY = getValue(mSDASettings->IMOUSEY);
 		if (ImGui::SliderFloat("MouseY", &mouseY, 0.0f, mSDASettings->mFboHeight, "%.4f", 0.3f))
 		{
-			setValue(36, mouseY);
+			setValue(mSDASettings->IMOUSEY, mouseY);
 		}
 		mouseZ ^= ImGui::Button("mouse click");
 		if (mouseZ)
 		{
-			setValue(37, 1.0f);
+			setValue(mSDASettings->IMOUSEZ, 1.0f);
 		}
 		else
 		{
-			setValue(37, 0.0f);
+			setValue(mSDASettings->IMOUSEZ, 0.0f);
 		}
 	}
 	ImGui::End();

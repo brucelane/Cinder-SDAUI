@@ -153,6 +153,14 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		ImGui::SameLine();
 		ImGui::Text("(Target FPS %.2f) ", mSDASession->getTargetFps());
 
+		// crossfade
+		float xFade = mSDASession->getCrossfade();
+		sprintf(buf, "xfade##xf%d", w);
+		if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
+		{
+			mSDASession->setCrossfade(xFade);
+		}
+
 		ImGui::RadioButton("Tempo-Audio", &currentWindowRow1, 0); ImGui::SameLine();
 		ImGui::RadioButton("Color-Midi", &currentWindowRow1, 1); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 2); ImGui::SameLine();

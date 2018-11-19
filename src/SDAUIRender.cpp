@@ -49,6 +49,7 @@ float SDAUIRender::getMaxUniformValueByIndex(unsigned int aIndex) {
 void SDAUIRender::Run(const char* title) {
 	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH + 100), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+#pragma region render
 
 	ImGui::Begin("Render");
 	{
@@ -69,7 +70,7 @@ void SDAUIRender::Run(const char* title) {
 		}
 
 		// iVignette
-		ctrl = 84;
+		ctrl = mSDASettings->IVIGN;
 		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
@@ -78,13 +79,13 @@ void SDAUIRender::Run(const char* title) {
 		}
 		ImGui::PopStyleColor(3);
 		hue++;
-		ctrl = 38;
+		ctrl = mSDASettings->IVAMOUNT;
 		iVAmount = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Amount", &iVAmount, 0.001f, 0.0f, 1.0f))
 		{
 			setValue(ctrl, iVAmount);
 		}
-		ctrl = 39;
+		ctrl = mSDASettings->IVFALLOFF;
 		iVFallOff = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("FallOff", &iVFallOff, 0.001f, 0.0f, 0.99f))
 		{
@@ -92,7 +93,7 @@ void SDAUIRender::Run(const char* title) {
 		}
 
 		// iContour
-		ctrl = 26;
+		ctrl = mSDASettings->ICONTOUR;
 		if (ImGui::Button("a##contour")) { toggleAuto(ctrl); }
 		ImGui::SameLine();
 		if (ImGui::Button("t##contour")) { toggleTempo(ctrl); }
@@ -141,65 +142,13 @@ void SDAUIRender::Run(const char* title) {
 		}
 		ImGui::PopStyleColor(3);
 
-		if (ImGui::Button("Create Window")) {
+		/*if (ImGui::Button("Create Window")) {
 			mSDASession->createWindow();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Delete Window")) {
 			mSDASession->deleteWindow();
-		}
-
-		if (ImGui::Button("Create Warp")) {
-			//mSDASession->createWarpMix();
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Spout Send")) { toggleSpoutSender(); }
-		// alpha blending
-		/*if (mSDASession->isEnabledAlphaBlending()) {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-		}
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.9f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
-
-		if (ImGui::Button("Alpha Blending")) {
-			mSDASession->toggleEnabledAlphaBlending();
-		}
-		ImGui::PopStyleColor(3);
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Enabled Alpha Blending");
-		ImGui::SameLine();
-		// Render Texture
-		if (mSDASession->isRenderTexture()) {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-		}
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.9f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
-
-		if (ImGui::Button("Render Texture")) {
-			mSDASession->toggleRenderTexture();
-		}
-		ImGui::PopStyleColor(3);
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Render Texture or Mix");*/
-		// Activate animation
-		/*if (mSDASession->isWarpAnimationActive()) {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-		}
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.9f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
-
-		if (ImGui::Button("Warp Animation")) {
-			mSDASession->toggleWarpAnimationActive();
-		}
-		ImGui::PopStyleColor(3);
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Activate Warp Animation");*/
+		}*/
 
 		ImGui::Text("fp %dx%d f %dx%d", mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight, mSDASettings->mFboWidth, mSDASettings->mFboHeight);
 		ImGui::Text("main %dx%d", mSDASettings->mMainWindowWidth, mSDASettings->mMainWindowHeight);
@@ -238,4 +187,7 @@ void SDAUIRender::Run(const char* title) {
 		ImGui::PopItemWidth();
 	}
 	ImGui::End();
+
+#pragma endregion render
+
 }

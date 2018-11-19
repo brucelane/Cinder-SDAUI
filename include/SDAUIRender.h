@@ -51,5 +51,8 @@ namespace SophiaDigitalArt
 		// contour
 		float							minContour;
 		float							maxContour;
+		// imgui
+		char						buf[64];
+		int							xPos, yPos;
 	};
 }

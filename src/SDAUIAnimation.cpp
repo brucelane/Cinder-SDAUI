@@ -197,7 +197,7 @@ void SDAUIAnimation::Run(const char* title) {
 				setValue(ctrl, localValues[ctrl]);
 			}
 			// zoom
-			ctrl = 12;
+			ctrl = mSDASettings->IZOOM;
 			if (ImGui::Button("a##zoom"))
 			{
 				toggleAuto(ctrl);
@@ -223,7 +223,7 @@ void SDAUIAnimation::Run(const char* title) {
 			ImGui::DragFloat("maxzm", &maxZoom, 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl));
 
 			// rotation speed 
-			ctrl = 9;
+			ctrl = mSDASettings->IROTATIONSPEED;
 			if (ImGui::Button("a##rotationspeed")) { toggleAuto(ctrl); }
 			ImGui::SameLine();
 			if (ImGui::Button("f##rotationspeed")) { toggleTempo(ctrl); }
@@ -236,7 +236,7 @@ void SDAUIAnimation::Run(const char* title) {
 				setValue(ctrl, localValues[ctrl]);
 			}
 			// badTv
-			ctrl = 8;
+			ctrl = mSDASettings->IBADTV;
 			if (ImGui::Button("a##badtv")) { toggleAuto(ctrl); }
 			ImGui::SameLine();
 			if (ImGui::Button("f##badtv")) { toggleTempo(ctrl); }
@@ -279,7 +279,7 @@ void SDAUIAnimation::Run(const char* title) {
 				setValue(ctrl, localValues[ctrl]);
 			}
 			// pixelate
-			ctrl = 15;
+			ctrl = mSDASettings->IPIXELATE;
 			if (ImGui::Button("x##pixelate")) { localValues[ctrl] = 1.0f; setValue(ctrl, localValues[ctrl]);}
 			ImGui::SameLine();
 			localValues[ctrl] = mSDASession->getFloatUniformValueByIndex(ctrl);
@@ -288,7 +288,7 @@ void SDAUIAnimation::Run(const char* title) {
 				setValue(ctrl, localValues[ctrl]);
 			}
 			// trixels
-			ctrl = 16;
+			ctrl = mSDASettings->ITRIXELS;
 			if (ImGui::Button("x##trixels")) { localValues[ctrl] = 0.0f; setValue(ctrl, localValues[ctrl]);}
 			ImGui::SameLine();
 			localValues[ctrl] = mSDASession->getFloatUniformValueByIndex(ctrl);

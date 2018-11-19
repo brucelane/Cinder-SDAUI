@@ -224,11 +224,38 @@ void SDAUIFbos::Run(const char* title) {
 		ImGui::End();
 	}
 	*/
+
+#pragma region mix
+int w = 0;
+xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1;
+yPos = mSDASettings->uiYPosRow3;// - mSDASettings->uiLargePreviewH
+
+ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
+ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
+
+sprintf(buf, "%s##sh%d", "mix", 0);
+ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
+{
+	ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth);
+	ImGui::Image((void*)mSDASession->getMixTexture(w)->getId(), ivec2(mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight));
+	// crossfade
+	float xFade = mSDASession->getCrossfade();// getWarpCrossfade(w);
+	sprintf(buf, "xfade##xf%d", w);
+	if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
+	{
+		mSDASession->setCrossfade(xFade);
+	}
+	ImGui::PopItemWidth();
+}
+ImGui::End();
+#pragma endregion mix
+#pragma region fbos
+
 	/*
 	** fbos
 	*/
-	for (unsigned int f = 0; f < mSDASession->getFboListSize(); f++) {
-		xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1 + ((mSDASettings->uiLargePreviewW + mSDASettings->uiMargin) * f);
+	for (unsigned int f = 0; f < 2; f++) {//mSDASession->getFboListSize()
+		xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1 + ((mSDASettings->uiLargePreviewW + mSDASettings->uiMargin) * (f+1));
 		yPos = mSDASettings->uiYPosRow3;
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
@@ -273,67 +300,7 @@ void SDAUIFbos::Run(const char* title) {
 		}
 		ImGui::End();
 	}
-	// mix fbos
-	/* for (unsigned int m = 0; m < mSDASession->getMixFbosCount(); m++) {
-		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
-		ImGui::SetNextWindowPos(ImVec2((m * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + mSDASettings->uiMargin, mSDASettings->uiYPosRow3), ImGuiSetCond_Once);
-		// TODO ImGui::Begin(mSDAMix->getFboLabel(m).c_str(), NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings);
-		// heap problem: sprintf(buf, "%s##ml%d", mSDASession->getMixFboName(m).c_str(), m);
-		sprintf(buf, "%d##ml%d", m, m);
-		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
-		{
-			ImGui::PushID(m+100);// unique id
-			
-			ImGui::Image((void*)mSDASession->getMixTexture(m)->getId(), ivec2(mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight));
-			
-			// loop on the fbos
-			for (unsigned int a = 0; a < mSDASession->getFboListSize(); a++) {
-				if (a > 0 && (a % 6 != 0)) ImGui::SameLine();
-				if (mSDASession->getWarpAFboIndex(m) == a) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(a / 7.0f, 1.0f, 1.0f));
-				}
-				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(a / 7.0f, 0.1f, 0.1f));
-				}
-				//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(a / 7.0f, 0.7f, 0.7f));
-				//ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(a / 7.0f, 0.8f, 0.8f));
+	
+#pragma endregion fbos
 
-				sprintf(buf, "%d##wia%d%d", a, m, a);
-				if (ImGui::Button(buf)) mSDASession->setWarpAFboIndex(m, a);
-				sprintf(buf, "Set input fbo A to %s", mSDASession->getShaderName(a).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-				ImGui::PopStyleColor(1);
-				//::PopStyleColor(3);
-			}
-			// loop on the fbos
-			for (unsigned int b = 0; b < mSDASession->getFboListSize(); b++) {
-				if (b > 0 && (b % 6 != 0)) ImGui::SameLine();
-				if (mSDASession->getWarpBFboIndex(m) == b) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(b / 7.0f, 1.0f, 1.0f));
-				}
-				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(b / 7.0f, 0.1f, 0.1f));
-				}
-				//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(b / 7.0f, 0.7f, 0.7f));
-				//ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(b / 7.0f, 0.8f, 0.8f));
-
-				sprintf(buf, "%d##wib%d%d", b, m, b);
-				if (ImGui::Button(buf)) mSDASession->setWarpBFboIndex(m, b);
-				sprintf(buf, "Set input fbo B to %s", mSDASession->getShaderName(b).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-				ImGui::PopStyleColor(1);
-				//ImGui::PopStyleColor(3);
-			}
-			ImGui::Text("mixwh %dx%d", mSDASession->getMixTexture(m)->getWidth(), mSDASession->getMixTexture(m)->getHeight());
-			// crossfade
-			float xFade = mSDASession->getWarpCrossfade(m);
-			sprintf(buf, "xfade##xf%d", m);
-			if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
-			{
-				mSDASession->setWarpCrossfade(m, xFade);
-			}
-			ImGui::PopID();
-		}
-		ImGui::End();
-	} */
 }

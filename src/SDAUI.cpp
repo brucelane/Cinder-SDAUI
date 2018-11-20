@@ -161,12 +161,11 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			mSDASession->setCrossfade(xFade);
 		}
 
-		ImGui::RadioButton("Tempo-Audio", &currentWindowRow1, 0); ImGui::SameLine();
-		ImGui::RadioButton("Color-Midi", &currentWindowRow1, 1); ImGui::SameLine();
-		ImGui::RadioButton("Anim", &currentWindowRow1, 2); ImGui::SameLine();
-		ImGui::RadioButton("Osc-WS", &currentWindowRow1, 3);  ImGui::SameLine();
-		ImGui::RadioButton("Mouse Render", &currentWindowRow1, 4); ImGui::SameLine();
-		ImGui::RadioButton("Blend", &currentWindowRow1, 5);  ImGui::SameLine();
+		ImGui::RadioButton("Audio", &currentWindowRow1, 0); ImGui::SameLine();
+		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
+		ImGui::RadioButton("Net", &currentWindowRow1, 2);  ImGui::SameLine();
+		ImGui::RadioButton("Render", &currentWindowRow1, 3); ImGui::SameLine();
+
 		// flip vertically
 		int hue = 0;
 		mSDASession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -214,31 +213,27 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 	case 1:
 		// Color
 		mUIColor->Run("Color");
-		// Midi
-		mUIMidi->Run("Midi");
-		break;
-	case 2:
 		// Animation
 		mUIAnimation->Run("Animation");
 		break;
-	case 3:
+	case 2:
 		// Osc
 		mUIOsc->Run("Osc");
 		// Websockets
 		mUIWebsockets->Run("Websockets");
+		// Midi
+		mUIMidi->Run("Midi");
 	break;
-	case 4:
+	case 3:
 		// Mouse
 		mUIMouse->Run("Mouse");
 		// Render
 		mUIRender->Run("Render");
-		break;
-	case 5:
 		// Blend
 		mUIBlend->Run("Blend");
 		break;
 	}
-	mSDASession->blendRenderEnable(currentWindowRow1 == 5);
+	mSDASession->blendRenderEnable(currentWindowRow1 == 3);
 	//switch (currentWindowRow2) {
 	//case 0:
 		// textures

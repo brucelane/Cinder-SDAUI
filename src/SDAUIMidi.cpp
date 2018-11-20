@@ -12,8 +12,8 @@ SDAUIMidi::~SDAUIMidi() {
 
 void SDAUIMidi::Run(const char* title) {
 #if defined( CINDER_MSW )
-	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH/2), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow2 + mSDASettings->uiMargin + mSDASettings->uiLargeH / 2 ), ImGuiSetCond_Once);
 
 	ImGui::Begin("MIDI");
 	{

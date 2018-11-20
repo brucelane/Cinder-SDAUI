@@ -95,7 +95,7 @@ void SDAUIShaders::Run(const char* title) {
 			sprintf(buf, "WS##ws%d", s);
 			if (ImGui::Button(buf)) mSDASession->sendFragmentShader(s);
 
-			for (unsigned int f = 0; f < mSDASession->getFboListSize(); f++) {
+			for (unsigned int f = 0; f < 4; f++) {//mSDASession->getFboListSize()
 				if (f > 0 && (f % 6 != 0)) ImGui::SameLine();
 				if (mSDASession->getFboFragmentShaderIndex(f) == s) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));

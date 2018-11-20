@@ -2,6 +2,7 @@
 <cinder>
 <template name="SDAUI: Basic" parent="org.libcinder.apptemplates.basicopengl">
 	<requires>com.sophiadigitalart.sda</requires>
+	<requires>com.sophiadigitalart.sdaui</requires>
 	<requires>com.wk.websocketpp</requires>
 	<requires>ocornut.imgui</requires>
 	<requires>fr.batchass.spout</requires>
@@ -9,5 +10,6 @@
 	<source replaceContents="true" replaceName="true">src/_TBOX_PREFIX_App.cpp</source>
 	<asset>assets/1.jpg</asset>
 	<asset>assets/shadertoy.min</asset>
+	<asset>assets/shadertoy.inc</asset>
 </template>
 </cinder>

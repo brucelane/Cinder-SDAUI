@@ -46,7 +46,7 @@ namespace SophiaDigitalArt
 
 		// imgui
 		int								ctrl;
-		float							contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4;
+		float							contour, iVAmount, iVFallOff;
 		int								iResolutionX, iResolutionY;
 		// contour
 		float							minContour;

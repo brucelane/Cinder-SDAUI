@@ -228,7 +228,7 @@ void SDAUIFbos::Run(const char* title) {
 #pragma region mix
 int w = 0;
 xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1;
-yPos = mSDASettings->uiYPosRow3;// - mSDASettings->uiLargePreviewH
+yPos = mSDASettings->uiYPosRow2;// - mSDASettings->uiLargePreviewH
 
 ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
 ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
@@ -256,7 +256,7 @@ ImGui::End();
 	*/
 	for (unsigned int f = 0; f < 2; f++) {//mSDASession->getFboListSize()
 		xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1 + ((mSDASettings->uiLargePreviewW + mSDASettings->uiMargin) * (f+1));
-		yPos = mSDASettings->uiYPosRow3;
+		yPos = mSDASettings->uiYPosRow2;
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		sprintf(buf, "%s##fbolbl%d", mSDASession->getFboName(f).c_str(), f);

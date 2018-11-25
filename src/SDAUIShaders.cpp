@@ -124,7 +124,7 @@ void SDAUIShaders::Run(const char* title) {
 #pragma region Editor
 		if (shaderToEdit == s) {
 			mSDASettings->mMsg = "Editing shader " + toString(shaderToEdit) + " name " + mSDASession->getShaderName(shaderToEdit);
-			ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol1, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+			ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol2, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
 			ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW * 3, mSDASettings->uiLargeH), ImGuiSetCond_FirstUseEver);
 			sprintf(buf, "Editor - %s - %d##edit%d", mSDASession->getShaderName(shaderToEdit).c_str(), shaderToEdit, shaderToEdit);
 			ImGui::Begin(buf);

@@ -64,16 +64,16 @@ namespace SophiaDigitalArt
 		SDASessionRef				mSDASession;
 
 		// UITextures
-		SDAUITexturesRef				mUITextures;
+		SDAUITexturesRef			mUITextures;
 		bool						showUITextures;
 		// UIFbos
-		SDAUIFbosRef					mUIFbos;
+		SDAUIFbosRef				mUIFbos;
 		bool						showUIFbos;
 		// UIAnimation
 		SDAUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
 		// UIMidi
-		SDAUIMidiRef					mUIMidi;
+		SDAUIMidiRef				mUIMidi;
 		bool						showUIMidi;
 		// UIAudio
 		SDAUIAudioRef				mUIAudio;
@@ -103,28 +103,17 @@ namespace SophiaDigitalArt
 		SDAUIRenderRef				mUIRender;
 		bool						showUIRender;
 		
+		float						getMinUniformValueByIndex(unsigned int aIndex);
+		float						getMaxUniformValueByIndex(unsigned int aIndex);
+		// imgui
 		char						buf[64];
 		bool						mIsResizing;
-		// imgui
 		float						color[4];
 		float						backcolor[4];
-
-		// mPreviewFboWidth 80 mPreviewFboHeight 60 margin 10 inBetween 15
-		int							w;
-		int							h;
-		int							displayHeight;
-		int							xPos;
-		int							yPos;
-		int							yPosRow1;
-		int							yPosRow2;
-		int							yPosRow3;
-		int							largeW;
-		int							largeH;
-		int							largePreviewW;
-		int							largePreviewH;
-		int							margin;
-		int							inBetween;
-
+		float						multx;
 		bool						mouseGlobal;
+		int							ctrl;
+		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4;
+		void						setValue(unsigned int aCtrl, float aValue);
 	};
 }

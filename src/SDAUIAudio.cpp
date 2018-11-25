@@ -11,50 +11,12 @@ SDAUIAudio::~SDAUIAudio() {
 }
 
 void SDAUIAudio::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 	sprintf(buf, "%s##inpt", mSDASession->getInputTextureName(0).c_str());
 	ImGui::Begin(buf);
 	{
 		ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth*2);
-		static ImVector<float> timeValues; if (timeValues.empty()) { timeValues.resize(40); memset(&timeValues.front(), 0, timeValues.size() * sizeof(float)); }
-		static int timeValues_offset = 0;
-		// audio maxVolume
-		static float tRefresh_time = -1.0f;
-		if (ImGui::GetTime() > tRefresh_time + 1.0f / 20.0f)
-		{
-			tRefresh_time = ImGui::GetTime();
-			timeValues[timeValues_offset] = mSDASession->getMaxVolume();
-			timeValues_offset = (timeValues_offset + 1) % timeValues.size();
-		}
-		multx = mSDASession->getFloatUniformValueByIndex(13);
-		if (ImGui::SliderFloat("mult x", &multx, 0.01f, 12.0f)) {
-			mSDASession->setFloatUniformValueByIndex(13, multx);
-		}
-
-		ImGui::PlotHistogram("Histogram", mSDASession->getFreqs(), mSDASession->getWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
-
-		if (mSDASession->getMaxVolume() > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
-		ImGui::PlotLines("Volume", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mSDASession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
-		if (mSDASession->getMaxVolume() > 240.0) ImGui::PopStyleColor();
-
-		(mSDASession->isAudioBuffered()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(3.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(3.0f, 0.8f, 0.8f));
-		if (ImGui::Button("Audio Buffered")) {
-			mSDASession->toggleAudioBuffered();
-		}
-		ImGui::PopStyleColor(3);
-
-		ImGui::SameLine();
-		(mSDASession->getUseLineIn()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(4.0f, 0.8f, 0.8f));
-		if (ImGui::Button("Use Line In")) {
-			mSDASession->toggleUseLineIn();
-		}
-		ImGui::PopStyleColor(3);
-
 		ImGui::Text("Position %d", mSDASession->getPosition(0));
 
 		static int iFreq0 = mSDASession->getFreqIndex(0);

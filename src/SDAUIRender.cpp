@@ -47,8 +47,9 @@ float SDAUIRender::getMaxUniformValueByIndex(unsigned int aIndex) {
 	return mSDASession->getMaxUniformValueByIndex(aIndex);
 }
 void SDAUIRender::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
+
 #pragma region render
 
 	ImGui::Begin("Render");
@@ -154,36 +155,7 @@ void SDAUIRender::Run(const char* title) {
 		ImGui::Text("main %dx%d", mSDASettings->mMainWindowWidth, mSDASettings->mMainWindowHeight);
 		//ImGui::SameLine();
 		//ImGui::Text("solo %d", mSDASession->getSolo());
-		ctrl = mSDASettings->IWEIGHT0;
-		iWeight0 = mSDASession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("Weight0", &iWeight0, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight0);
-		}
-		ctrl = mSDASettings->IWEIGHT1;
-		iWeight1 = mSDASession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("Weight1", &iWeight1, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight1);
-		}
-		ctrl = mSDASettings->IWEIGHT2;
-		iWeight2 = mSDASession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("Weight2", &iWeight2, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight2);
-		}
-		ctrl = mSDASettings->IWEIGHT3;
-		iWeight3 = mSDASession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("Weight3", &iWeight3, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight3);
-		}
-		ctrl = mSDASettings->IWEIGHT4;
-		iWeight4 = mSDASession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("Weight4", &iWeight4, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight4);
-		}
+		
 		ImGui::PopItemWidth();
 	}
 	ImGui::End();

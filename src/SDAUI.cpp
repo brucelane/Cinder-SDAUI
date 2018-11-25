@@ -32,33 +32,25 @@ SDAUI::SDAUI(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	// UIRender
 	mUIRender = SDAUIRender::create(mSDASettings, mSDASession);
 	// imgui
-	margin = 3;
-	inBetween = 3;
-	// mPreviewFboWidth 80 mPreviewFboHeight 60 margin 10 inBetween 15 mPreviewWidth = 160;mPreviewHeight = 120;
-	w = mSDASettings->mPreviewFboWidth + margin;
-	h = mSDASettings->mPreviewFboHeight * 2.3;
-	largeW = (mSDASettings->mPreviewFboWidth + margin) * 4;
-	largeH = (mSDASettings->mPreviewFboHeight + margin) * 5;
-	largePreviewW = mSDASettings->mPreviewWidth + margin;
-	largePreviewH = (mSDASettings->mPreviewHeight + margin) * 2.4;
-	displayHeight = mSDASettings->mMainWindowHeight - 50;
-	yPosRow1 = 100 + margin;
-	yPosRow2 = yPosRow1 + largePreviewH + margin;
-	yPosRow3 = yPosRow2 + h * 1.4 + margin;
-
 	mouseGlobal = false;
-
 	mIsResizing = true;
-
 }
-
+void SDAUI::setValue(unsigned int aCtrl, float aValue) {
+	mSDASession->setFloatUniformValueByIndex(aCtrl, aValue);
+}
+float SDAUI::getMinUniformValueByIndex(unsigned int aIndex) {
+	return mSDASession->getMinUniformValueByIndex(aIndex);
+}
+float SDAUI::getMaxUniformValueByIndex(unsigned int aIndex) {
+	return mSDASession->getMaxUniformValueByIndex(aIndex);
+}
 void SDAUI::resize() {
 	mIsResizing = true;
 	// disconnect ui window and io events callbacks
 	ImGui::disconnectWindow(getWindow());
 }
 void SDAUI::Run(const char* title, unsigned int fps) {
-	static int currentWindowRow1 = 2;
+	static int currentWindowRow1 = 1;
 	static int currentWindowRow2 = 0;
 
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -129,13 +121,13 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 	}
 
 #pragma endregion menu
-
 	//ImGui::SetNextWindowSize(ImVec2(mSDASettings->mRenderWidth - 20, uiSmallH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(800, mSDASettings->uiSmallH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol1, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
-	sprintf(buf, "Videodromm Fps %c %d###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps);
+	sprintf(buf, "Videodromm Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mSDASession->getTargetFps());
 	ImGui::Begin(buf);
 	{
+		// line 1
 		ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth);
 		// fps
 		static ImVector<float> values; if (values.empty()) { values.resize(100); memset(&values.front(), 0, values.size() * sizeof(float)); }
@@ -148,24 +140,37 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			values_offset = (values_offset + 1) % values.size();
 		}
 		if (mSDASession->getFloatUniformValueByIndex(mSDASettings->IFPS) < 12.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
-		ImGui::PlotLines("FPS ", &values.front(), (int)values.size(), values_offset, mSDASettings->sFps.c_str(), 0.0f, mSDASession->getTargetFps(), ImVec2(0, 30));
+		ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mSDASettings->sFps.c_str(), 0.0f, mSDASession->getTargetFps(), ImVec2(0, 30));
 		if (mSDASession->getFloatUniformValueByIndex(mSDASettings->IFPS) < 12.0) ImGui::PopStyleColor();
+		// audio
 		ImGui::SameLine();
-		ImGui::Text("(Target FPS %.2f) ", mSDASession->getTargetFps());
+		static ImVector<float> timeValues; if (timeValues.empty()) { timeValues.resize(40); memset(&timeValues.front(), 0, timeValues.size() * sizeof(float)); }
+		static int timeValues_offset = 0;
+		// audio maxVolume
+		static float tRefresh_time = -1.0f;
+		if (ImGui::GetTime() > tRefresh_time + 1.0f / 20.0f)
+		{
+			tRefresh_time = ImGui::GetTime();
+			timeValues[timeValues_offset] = mSDASession->getMaxVolume();
+			timeValues_offset = (timeValues_offset + 1) % timeValues.size();
+		}
+		
+		ImGui::PlotHistogram("H", mSDASession->getFreqs(), mSDASession->getWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
+		ImGui::SameLine();
+		if (mSDASession->getMaxVolume() > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mSDASession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
+		if (mSDASession->getMaxVolume() > 240.0) ImGui::PopStyleColor();
+		
 
 		// crossfade
+		ImGui::SameLine();
 		float xFade = mSDASession->getCrossfade();
-		sprintf(buf, "xfade##xf%d", w);
+		sprintf(buf, "xfade##xfd");
 		if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
 		{
 			mSDASession->setCrossfade(xFade);
 		}
-
-		ImGui::RadioButton("Audio", &currentWindowRow1, 0); ImGui::SameLine();
-		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
-		ImGui::RadioButton("Net", &currentWindowRow1, 2);  ImGui::SameLine();
-		ImGui::RadioButton("Render", &currentWindowRow1, 3); ImGui::SameLine();
-
+		ImGui::SameLine();
 		// flip vertically
 		int hue = 0;
 		mSDASession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -185,6 +190,82 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			mSDASession->flipH();
 		}
 		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::TextWrapped("Msg: %s", mSDASettings->mMsg.c_str());
+
+		// line 2
+		
+		multx = mSDASession->getFloatUniformValueByIndex(mSDASettings->IAUDIOX); // 13
+		if (ImGui::SliderFloat("mult x", &multx, 0.01f, 12.0f)) {
+			mSDASession->setFloatUniformValueByIndex(13, multx);
+		}
+		ImGui::SameLine();
+		(mSDASession->isAudioBuffered()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(3.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(3.0f, 0.8f, 0.8f));
+		if (ImGui::Button("Wave")) {
+			mSDASession->toggleAudioBuffered();
+		}
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		(mSDASession->getUseLineIn()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(4.0f, 0.8f, 0.8f));
+		if (ImGui::Button("LineIn")) {
+			mSDASession->toggleUseLineIn();
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::SameLine();
+		ImGui::TextWrapped("WS Msg: %s", mSDASettings->mWebSocketsMsg.c_str());
+
+
+		ImGui::RadioButton("Tempo", &currentWindowRow1, 0); ImGui::SameLine();
+		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
+		ImGui::RadioButton("Mouse", &currentWindowRow1, 2);  ImGui::SameLine();
+		ImGui::RadioButton("Blend", &currentWindowRow1, 3); ImGui::SameLine();
+		ImGui::RadioButton("Audio", &currentWindowRow1, 4); ImGui::SameLine();
+		ImGui::RadioButton("Color", &currentWindowRow1, 5); ImGui::SameLine();
+		ImGui::RadioButton("Osc", &currentWindowRow1, 6); ImGui::SameLine();
+		ImGui::RadioButton("Ws", &currentWindowRow1, 7); ImGui::SameLine();
+		ImGui::RadioButton("Midi", &currentWindowRow1, 8); ImGui::SameLine();
+		ImGui::RadioButton("Render", &currentWindowRow1, 9); ImGui::SameLine();
+		ImGui::SameLine();
+		ImGui::TextWrapped("OSC Msg: %s", mSDASettings->mOSCMsg.c_str());
+
+
+		ctrl = mSDASettings->IWEIGHT0;
+		iWeight0 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight0", &iWeight0, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight0);
+		}
+		ctrl = mSDASettings->IWEIGHT1;
+		iWeight1 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight1", &iWeight1, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight1);
+		}
+		ctrl = mSDASettings->IWEIGHT2;
+		iWeight2 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight2", &iWeight2, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight2);
+		}
+		ctrl = mSDASettings->IWEIGHT3;
+		iWeight3 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight3", &iWeight3, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight3);
+		}
+		ctrl = mSDASettings->IWEIGHT4;
+		iWeight4 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight4", &iWeight4, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight4);
+		}
+
 		/*hue++;
 
 		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
@@ -192,12 +273,9 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
 		ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
 
-#pragma region Info
-		ImGui::TextWrapped("Msg: %s", mSDASettings->mMsg.c_str());
-		ImGui::TextWrapped("WS Msg: %s", mSDASettings->mWebSocketsMsg.c_str());
-		ImGui::TextWrapped("OSC Msg: %s", mSDASettings->mOSCMsg.c_str());
 
-#pragma endregion Info	
+
+
 		ImGui::PopItemWidth();
 	}
 	ImGui::End();
@@ -207,30 +285,43 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 	case 0:
 		// Tempo
 		mUITempo->Run("Tempo");
-		// Audio
-		mUIAudio->Run("Audio");
 		break;
 	case 1:
-		// Color
-		mUIColor->Run("Color");
 		// Animation
 		mUIAnimation->Run("Animation");
 		break;
 	case 2:
+		// Mouse
+		mUIMouse->Run("Mouse");
+		break;
+	case 3:
+		// Blend
+		mUIBlend->Run("Blend");
+		break;
+	case 4:
+		// Audio
+		mUIAudio->Run("Audio");
+		break; 
+	case 5:
+		// Color
+		mUIColor->Run("Color");
+		break;
+	case 6:
 		// Osc
 		mUIOsc->Run("Osc");
+		break;
+	case 7:
 		// Websockets
 		mUIWebsockets->Run("Websockets");
+		break;
+	case 8:
 		// Midi
 		mUIMidi->Run("Midi");
 		break;
-	case 3:
-		// Mouse
-		mUIMouse->Run("Mouse");
+	case 9:
 		// Render
 		mUIRender->Run("Render");
-		// Blend
-		mUIBlend->Run("Blend");
+
 		break;
 	}
 	mSDASession->blendRenderEnable(currentWindowRow1 == 3);

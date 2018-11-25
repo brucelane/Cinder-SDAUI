@@ -44,10 +44,10 @@ SDAUI::SDAUI(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
 	displayHeight = mSDASettings->mMainWindowHeight - 50;
 	yPosRow1 = 100 + margin;
 	yPosRow2 = yPosRow1 + largePreviewH + margin;
-	yPosRow3 = yPosRow2 + h*1.4 + margin;
+	yPosRow3 = yPosRow2 + h * 1.4 + margin;
 
 	mouseGlobal = false;
-	
+
 	mIsResizing = true;
 
 }
@@ -129,7 +129,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 	}
 
 #pragma endregion menu
-	
+
 	//ImGui::SetNextWindowSize(ImVec2(mSDASettings->mRenderWidth - 20, uiSmallH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(800, mSDASettings->uiSmallH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol1, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
@@ -223,7 +223,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		mUIWebsockets->Run("Websockets");
 		// Midi
 		mUIMidi->Run("Midi");
-	break;
+		break;
 	case 3:
 		// Mouse
 		mUIMouse->Run("Mouse");
@@ -234,21 +234,13 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		break;
 	}
 	mSDASession->blendRenderEnable(currentWindowRow1 == 3);
-	//switch (currentWindowRow2) {
-	//case 0:
-		// textures
-		mUITextures->Run("Textures");
-		//break;
-	//case 1:
-		// Fbos
-		mUIFbos->Run("Fbos");
-		//break;
-	//case 2:
-		// Shaders
-		mUIShaders->Run("Shaders");
-		//break;
-	
-	//}
-	
+
+	// textures
+	mUITextures->Run("Textures");
+	// Fbos
+	mUIFbos->Run("Fbos");
+	// Shaders
+	mUIShaders->Run("Shaders");
+
 
 }

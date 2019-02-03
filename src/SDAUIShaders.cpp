@@ -53,27 +53,27 @@ void SDAUIShaders::Run(const char* title) {
 			ImGui::Image((void*)mSDASession->getShaderThumb(s)->getId(), ivec2(mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight));
 			if (ImGui::IsItemHovered()) mSDASession->getShaderThumb(s);
 			// edit
-			if (shaderToEdit == s) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.8f, 1.0f, 0.5f));
-			}
-			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.8f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.8f, 0.8f, 0.8f));
-			sprintf(buf, "E##se%d", s);
-			if (ImGui::Button(buf)){
-				if (s == shaderToEdit) {
-					// if the same button pressed we hide the editor
-					shaderToEdit = -1;
-				}
-				else{
-					shaderToEdit = s;
-				}
-			}
-			ImGui::PopStyleColor(3);
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Edit shader");
-			ImGui::SameLine();
+			//if (shaderToEdit == s) {
+			//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.8f, 1.0f, 0.5f));
+			//}
+			//else {
+			//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			//}
+			//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.8f, 0.7f, 0.7f));
+			//ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.8f, 0.8f, 0.8f));
+			//sprintf(buf, "E##se%d", s);
+			//if (ImGui::Button(buf)){
+			//	if (s == shaderToEdit) {
+			//		// if the same button pressed we hide the editor
+			//		shaderToEdit = -1;
+			//	}
+			//	else{
+			//		shaderToEdit = s;
+			//	}
+			//}
+			//ImGui::PopStyleColor(3);
+			//if (ImGui::IsItemHovered()) ImGui::SetTooltip("Edit shader");
+			//ImGui::SameLine();
 
 			if (s > 2)
 			{
@@ -95,7 +95,7 @@ void SDAUIShaders::Run(const char* title) {
 			sprintf(buf, "WS##ws%d", s);
 			if (ImGui::Button(buf)) mSDASession->sendFragmentShader(s);
 
-			for (unsigned int f = 0; f < 4; f++) {//mSDASession->getFboListSize()
+			for (unsigned int f = 0; f < mSDASession->getFboListSize(); f++) {//mSDASession->getFboListSize() 4
 				if (f > 0 && (f % 6 != 0)) ImGui::SameLine();
 				if (mSDASession->getFboFragmentShaderIndex(f) == s) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
@@ -122,6 +122,7 @@ void SDAUIShaders::Run(const char* title) {
 		}
 		// editor
 #pragma region Editor
+		/*
 		if (shaderToEdit == s) {
 			mSDASettings->mMsg = "Editing shader " + toString(shaderToEdit) + " name " + mSDASession->getShaderName(shaderToEdit);
 			ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol2, mSDASettings->uiYPosRow2), ImGuiSetCond_Once);
@@ -149,15 +150,15 @@ void SDAUIShaders::Run(const char* title) {
 					"}\n";
 				// check if shader text needs to be loaded in the editor
 				if (mSDASettings->shaderEditIndex != shaderToEdit) {
-					/* ptr error
+					// ptr error
 					
-					mFboTextureFragmentShaderString = mSDASession->getFragmentShaderString(shaderToEdit);
-					mSDASettings->shaderEditIndex = shaderToEdit;
+					//mFboTextureFragmentShaderString = mSDASession->getFragmentShaderString(shaderToEdit);
+					//mSDASettings->shaderEditIndex = shaderToEdit;
 					// delete content
-					memset(&mShaderText[0], 0, sizeof(mShaderText));
+					//memset(&mShaderText[0], 0, sizeof(mShaderText));
 					// copy content from string
-					std::copy(mFboTextureFragmentShaderString.begin(), (mFboTextureFragmentShaderString.size() >= MAX ? mFboTextureFragmentShaderString.begin() + MAX : mFboTextureFragmentShaderString.end()), mShaderText);
-				*/
+					//std::copy(mFboTextureFragmentShaderString.begin(), (mFboTextureFragmentShaderString.size() >= MAX ? mFboTextureFragmentShaderString.begin() + MAX : mFboTextureFragmentShaderString.end()), mShaderText);
+				
 				}
 
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
@@ -175,9 +176,9 @@ void SDAUIShaders::Run(const char* title) {
 						CI_LOG_V("live.frag loaded and compiled");
 						mFboTextureFragmentShaderString = mShaderText;
 						stringstream sParams;
-						sParams << "/*{ \"title\" : \"" << getElapsedSeconds() << "\" }*/ " << mFboTextureFragmentShaderString;
+						sParams << "//{ \"title\" : \"" << getElapsedSeconds() << "\" } " << mFboTextureFragmentShaderString;
 						mSDASession->wsWrite(sParams.str());
-						//OK mSDARouter->wsWrite("/*{ \"title\" : \"live\" }*/ " + mFboTextureFragmentShaderString);
+						//OK mSDARouter->wsWrite("//{ \"title\" : \"live\" }// " + mFboTextureFragmentShaderString);
 						mError = "";
 						// compiles, update the shader for display
 						mSDASession->setFragmentShaderString(shaderToEdit, mFboTextureFragmentShaderString);
@@ -198,8 +199,9 @@ void SDAUIShaders::Run(const char* title) {
 				}
 			}
 			ImGui::End();
-		}
+		}*/
 #pragma endregion Editor
+
 	}
 
 }

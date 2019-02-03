@@ -254,7 +254,7 @@ ImGui::End();
 	/*
 	** fbos
 	*/
-	for (unsigned int f = 0; f < 2; f++) {//mSDASession->getFboListSize()
+	for (unsigned int f = 0; f < mSDASession->getFboListSize(); f++) {//mSDASession->getFboListSize() or 2
 		xPos = mSDASettings->uiMargin + mSDASettings->uiXPosCol1 + ((mSDASettings->uiLargePreviewW + mSDASettings->uiMargin) * (f+1));
 		yPos = mSDASettings->uiYPosRow2;
 		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);

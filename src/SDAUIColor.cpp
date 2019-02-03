@@ -99,7 +99,7 @@ void SDAUIColor::Run(const char* title) {
 			setValue(ctrl, localValues[ctrl]);
 		}
 		// blue x
-		ctrl = mSDASettings->IFRX;
+		ctrl = mSDASettings->IFBX;
 		if (ImGui::Button("a##bluex")) { toggleAuto(ctrl); }
 		ImGui::SameLine();
 		if (ImGui::Button("t##bluex")) { toggleTempo(ctrl); }

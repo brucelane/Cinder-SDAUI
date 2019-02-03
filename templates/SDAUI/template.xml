@@ -10,6 +10,5 @@
 	<source replaceContents="true" replaceName="true">src/_TBOX_PREFIX_App.cpp</source>
 	<asset>assets/1.jpg</asset>
 	<asset>assets/shadertoy.min</asset>
-	<asset>assets/shadertoy.inc</asset>
 </template>
 </cinder>

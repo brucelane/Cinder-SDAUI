@@ -72,7 +72,7 @@ _TBOX_PREFIX_App::_TBOX_PREFIX_App()
 	: mSpoutOut("SDAUI", app::getWindowSize())
 {
 	// Settings
-	mSDASettings = SDASettings::create();
+	mSDASettings = SDASettings::create("_TBOX_PREFIX_App");
 	// Session
 	mSDASession = SDASession::create(mSDASettings);
 	//mSDASettings->mCursorVisible = true;

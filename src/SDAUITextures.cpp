@@ -116,7 +116,7 @@ void SDAUITextures::Run(const char* title) {
 				}
 				speeds[t] = mSDASession->getSpeed(t);
 				sprintf(buf, "speed##spd%d", t);
-				if (ImGui::DragFloat(buf, &speeds[t], 0.001f, 0.0f, 0.01f))
+				if (ImGui::DragFloat(buf, &speeds[t], 0.01f, 0.0f, 1.0f))
 				{
 					mSDASession->setSpeed(t, speeds[t]);
 				}

@@ -69,7 +69,31 @@ void SDAUIRender::Run(const char* title) {
 		{
 			setValue(ctrl, (float)iResolutionY);
 		}
-
+		// rect mxLeft
+		static int mxLeft = mSDASettings->mxLeft;
+		if (ImGui::SliderInt("mxLeft", &mxLeft, 0, 2280))
+		{
+			mSDASettings->mxLeft = mxLeft;
+		}
+		// rect myLeft
+		static int myLeft = mSDASettings->myLeft;
+		if (ImGui::SliderInt("myLeft", &myLeft, 0, 2280))
+		{
+			mSDASettings->myLeft = myLeft;
+		}
+		// rect mxRight
+		static int mxRight = mSDASettings->mxRight;
+		if (ImGui::SliderInt("mxRight", &mxRight, 0, 2280))
+		{
+			mSDASettings->mxRight = mxRight;
+		}
+		// rect myRight
+		static int myRight = mSDASettings->myRight;
+		if (ImGui::SliderInt("myRight", &myRight, 0, 2280))
+		{
+			mSDASettings->myRight = myRight;
+		}
+		
 		// iVignette
 		ctrl = mSDASettings->IVIGN;
 		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));

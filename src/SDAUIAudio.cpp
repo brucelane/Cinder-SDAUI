@@ -11,11 +11,13 @@ SDAUIAudio::~SDAUIAudio() {
 }
 
 void SDAUIAudio::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH * 1.3), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 	sprintf(buf, "%s##inpt", mSDASession->getInputTextureName(0).c_str());
 	ImGui::Begin(buf);
 	{
+		if (ImGui::CollapsingHeader("Color", NULL, true, true))
+		{
 		ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth*2);
 		ImGui::Text("Position %d", mSDASession->getPosition(0));
 
@@ -55,6 +57,46 @@ void SDAUIAudio::Run(const char* title) {
 		ImGui::PopStyleColor(3);
 		
 		ImGui::PopItemWidth();
+		}
+		if (ImGui::CollapsingHeader("Tempo", NULL, true, true))
+		{
+
+			ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth);
+			if (ImGui::Button("x##spdx")) { mSDASettings->iSpeedMultiplier = 1.0; }
+			ImGui::SameLine();
+			ImGui::SliderFloat("speed x", &mSDASettings->iSpeedMultiplier, 0.01f, 5.0f, "%.1f");
+			/* TODO
+			ImGui::Text("Beat %d ", mSDASettings->iBeat);
+			ImGui::SameLine();
+			ImGui::Text("Beat Idx %d ", mSDAAnimation->iBeatIndex);
+			//ImGui::SameLine();
+			//ImGui::Text("Bar %d ", mSDAAnimation->iBar);
+			if (ImGui::Button("x##bpbx")) { mSDASession->setControlValue("iBeat", 1); }
+			ImGui::SameLine();
+	 */
+			ImGui::Text("beat %d ", mSDASession->getIntUniformValueByName("iBeat"));
+			ImGui::SameLine();
+			ImGui::Text("beats/bar %d ", mSDASession->getIntUniformValueByName("iBeatsPerBar"));
+
+			ImGui::Text("Time %.2f", mSDASession->getFloatUniformValueByName("iTime"));
+			ImGui::SameLine();
+			ImGui::Text("Tempo Time %.2f", mSDASession->getFloatUniformValueByName("iTempoTime"));
+
+			ImGui::Text("Trk %s %.2f", mSDASettings->mTrackName.c_str(), mSDASettings->liveMeter);
+			ImGui::SameLine();
+			//			ImGui::Checkbox("Playing", &mSDASettings->mIsPlaying);
+			ImGui::Text("Tempo %.2f ", mSDASession->getBpm());
+
+			if (ImGui::Button("Tap tempo")) { mSDASession->tapTempo(); }
+			if (ImGui::Button("Time tempo")) { mSDASession->toggleUseTimeWithTempo(); }
+
+			// TODO ImGui::SliderFloat("time x", &mSDAAnimation->iTimeFactor, 0.0001f, 1.0f, "%.01f");
+			ImGui::SameLine();
+			ImGui::PopItemWidth();
+		}
+
+#pragma endregion Tempo	
+
 	}
 	ImGui::End();
 

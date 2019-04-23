@@ -20,8 +20,8 @@ void SDAUITextures::Run(const char* title) {
 	static bool anim[64];
 
 	for (int t = 0; t < mSDASession->getInputTexturesCount(); t++) {
-		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiLargePreviewH), ImGuiSetCond_Once);
-		ImGui::SetNextWindowPos(ImVec2((t * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + mSDASettings->uiMargin, mSDASettings->uiYPosRow3), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiSmallH), ImGuiSetCond_Once);
+		ImGui::SetNextWindowPos(ImVec2((t * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + 888, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 		int hue = 0;
 		sprintf(buf, "%s##s%d", mSDASession->getInputTextureName(t).c_str(), t);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);

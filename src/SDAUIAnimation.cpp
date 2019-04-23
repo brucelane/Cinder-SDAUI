@@ -53,7 +53,7 @@ float SDAUIAnimation::getMaxUniformValueByIndex(unsigned int aIndex) {
 	return mSDASession->getMaxUniformValueByIndex(aIndex);
 }
 void SDAUIAnimation::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH * 1.3), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 	ImGui::Begin("Animation", NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 	{
@@ -247,20 +247,20 @@ void SDAUIAnimation::Run(const char* title) {
 				setValue(ctrl, localValues[ctrl]);
 			}
 			// param1
-			ctrl = mSDASettings->IPARAM1;
-			if (ImGui::Button("x##param1")) { resetAutoAnimation(ctrl); }
+			ctrl = mSDASettings->IPIXELX;
+			if (ImGui::Button("x##pixelX")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
 			localValues[ctrl] = mSDASession->getFloatUniformValueByIndex(ctrl);
-			if (ImGui::SliderFloat("param1/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			if (ImGui::SliderFloat("pixelX/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
 			}
 			// param2
-			ctrl = mSDASettings->IPARAM2;
-			if (ImGui::Button("x##param2")) { resetAutoAnimation(ctrl); }
+			ctrl = mSDASettings->IPIXELY;
+			if (ImGui::Button("x##pixelY")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
 			localValues[ctrl] = mSDASession->getFloatUniformValueByIndex(ctrl);
-			if (ImGui::SliderFloat("param2/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			if (ImGui::SliderFloat("pixelY/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
 			}

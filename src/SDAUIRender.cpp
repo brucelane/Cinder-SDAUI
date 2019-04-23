@@ -47,7 +47,7 @@ float SDAUIRender::getMaxUniformValueByIndex(unsigned int aIndex) {
 	return mSDASession->getMaxUniformValueByIndex(aIndex);
 }
 void SDAUIRender::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargeW, mSDASettings->uiLargeH * 1.3), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiMargin, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 
 #pragma region render

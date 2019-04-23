@@ -122,7 +122,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 
 #pragma endregion menu
 	//ImGui::SetNextWindowSize(ImVec2(mSDASettings->mRenderWidth - 20, uiSmallH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(800, mSDASettings->uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(660, mSDASettings->uiSmallH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol1, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
 	sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mSDASession->getTargetFps());
 	ImGui::Begin(buf);
@@ -217,22 +217,19 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			mSDASession->toggleUseLineIn();
 		}
 		ImGui::PopStyleColor(3);
-		ImGui::SameLine();
-		ImGui::TextWrapped("WS Msg: %s", mSDASettings->mWebSocketsMsg.c_str());
 
 
-		ImGui::RadioButton("Tempo", &currentWindowRow1, 0); ImGui::SameLine();
+		ImGui::RadioButton("todo", &currentWindowRow1, 0); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
 		ImGui::RadioButton("Mouse", &currentWindowRow1, 2);  ImGui::SameLine();
 		ImGui::RadioButton("Blend", &currentWindowRow1, 3); ImGui::SameLine();
-		ImGui::RadioButton("Audio", &currentWindowRow1, 4); ImGui::SameLine();
-		ImGui::RadioButton("Color", &currentWindowRow1, 5); ImGui::SameLine();
+		ImGui::RadioButton("AudioTempo", &currentWindowRow1, 4); ImGui::SameLine();
+		ImGui::RadioButton("ColorWs", &currentWindowRow1, 5); ImGui::SameLine();
 		ImGui::RadioButton("Osc", &currentWindowRow1, 6); ImGui::SameLine();
-		ImGui::RadioButton("Ws", &currentWindowRow1, 7); ImGui::SameLine();
+		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
 		ImGui::RadioButton("Midi", &currentWindowRow1, 8); ImGui::SameLine();
-		ImGui::RadioButton("Render", &currentWindowRow1, 9); ImGui::SameLine();
-		ImGui::SameLine();
-		ImGui::TextWrapped("OSC Msg: %s", mSDASettings->mOSCMsg.c_str());
+		ImGui::RadioButton("Render", &currentWindowRow1, 9);
+		
 
 
 		ctrl = mSDASettings->IWEIGHT0;
@@ -241,31 +238,39 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		{
 			setValue(ctrl, iWeight0);
 		}
+
 		ctrl = mSDASettings->IWEIGHT1;
 		iWeight1 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight1", &iWeight1, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight1);
 		}
+
 		ctrl = mSDASettings->IWEIGHT2;
 		iWeight2 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight2", &iWeight2, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight2);
 		}
+		ImGui::SameLine();
+		ImGui::TextWrapped("Midi: %s", mSDASettings->mMidiMsg.c_str());
 		ctrl = mSDASettings->IWEIGHT3;
 		iWeight3 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight3", &iWeight3, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight3);
 		}
+		ImGui::SameLine();
+		ImGui::TextWrapped("WS Msg: %s", mSDASettings->mWebSocketsMsg.c_str());
+
 		ctrl = mSDASettings->IWEIGHT4;
 		iWeight4 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight4", &iWeight4, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight4);
 		}
-
+		ImGui::SameLine();
+		ImGui::TextWrapped("OSC Msg: %s", mSDASettings->mOSCMsg.c_str());
 		/*hue++;
 
 		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();

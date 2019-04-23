@@ -13,6 +13,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+#define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
+
 namespace SophiaDigitalArt
 {
 	// stores the pointer to the SDAUIColor instance

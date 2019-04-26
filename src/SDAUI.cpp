@@ -154,13 +154,13 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			timeValues[timeValues_offset] = mSDASession->getMaxVolume();
 			timeValues_offset = (timeValues_offset + 1) % timeValues.size();
 		}
-		
+
 		ImGui::PlotHistogram("H", mSDASession->getFreqs(), mSDASession->getWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
 		ImGui::SameLine();
 		if (mSDASession->getMaxVolume() > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
 		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mSDASession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
 		if (mSDASession->getMaxVolume() > 240.0) ImGui::PopStyleColor();
-		
+
 
 		// crossfade
 		ImGui::SameLine();
@@ -195,7 +195,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		ImGui::TextWrapped("Msg: %s", mSDASettings->mMsg.c_str());
 
 		// line 2
-		
+
 		multx = mSDASession->getFloatUniformValueByIndex(mSDASettings->IAUDIOX); // 13
 		if (ImGui::SliderFloat("mult x", &multx, 0.01f, 12.0f)) {
 			mSDASession->setFloatUniformValueByIndex(13, multx);
@@ -219,7 +219,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		ImGui::PopStyleColor(3);
 
 
-		ImGui::RadioButton("todo", &currentWindowRow1, 0); ImGui::SameLine();
+		ImGui::RadioButton("Warp", &currentWindowRow1, 0); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
 		ImGui::RadioButton("Mouse", &currentWindowRow1, 2);  ImGui::SameLine();
 		ImGui::RadioButton("Blend", &currentWindowRow1, 3); ImGui::SameLine();
@@ -229,7 +229,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
 		ImGui::RadioButton("Midi", &currentWindowRow1, 8); ImGui::SameLine();
 		ImGui::RadioButton("Render", &currentWindowRow1, 9);
-		
+
 
 
 		ctrl = mSDASettings->IWEIGHT0;
@@ -238,14 +238,14 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		{
 			setValue(ctrl, iWeight0);
 		}
-
+		ImGui::SameLine();
 		ctrl = mSDASettings->IWEIGHT1;
 		iWeight1 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight1", &iWeight1, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight1);
 		}
-
+		ImGui::SameLine();
 		ctrl = mSDASettings->IWEIGHT2;
 		iWeight2 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight2", &iWeight2, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
@@ -253,7 +253,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			setValue(ctrl, iWeight2);
 		}
 		ImGui::SameLine();
-		ImGui::TextWrapped("Midi: %s", mSDASettings->mMidiMsg.c_str());
+
 		ctrl = mSDASettings->IWEIGHT3;
 		iWeight3 = mSDASession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight3", &iWeight3, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
@@ -261,7 +261,6 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 			setValue(ctrl, iWeight3);
 		}
 		ImGui::SameLine();
-		ImGui::TextWrapped("WS Msg: %s", mSDASettings->mWebSocketsMsg.c_str());
 
 		ctrl = mSDASettings->IWEIGHT4;
 		iWeight4 = mSDASession->getFloatUniformValueByIndex(ctrl);
@@ -269,7 +268,31 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		{
 			setValue(ctrl, iWeight4);
 		}
+
+		ctrl = mSDASettings->IWEIGHT5;
+		iWeight5 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight5", &iWeight5, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight5);
+		}
 		ImGui::SameLine();
+
+		ctrl = mSDASettings->IWEIGHT6;
+		iWeight6 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight6", &iWeight6, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight6);
+		}
+		ImGui::SameLine();
+
+		ctrl = mSDASettings->IWEIGHT7;
+		iWeight7 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		if (ImGui::DragFloat("Weight7", &iWeight7, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+		{
+			setValue(ctrl, iWeight7);
+		}
+		ImGui::TextWrapped("Midi: %s", mSDASettings->mMidiMsg.c_str());
+		ImGui::TextWrapped("WS Msg: %s", mSDASettings->mWebSocketsMsg.c_str());
 		ImGui::TextWrapped("OSC Msg: %s", mSDASettings->mOSCMsg.c_str());
 		/*hue++;
 
@@ -306,7 +329,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 	case 4:
 		// Audio
 		mUIAudio->Run("Audio");
-		break; 
+		break;
 	case 5:
 		// Color
 		mUIColor->Run("Color");

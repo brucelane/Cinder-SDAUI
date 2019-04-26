@@ -113,7 +113,7 @@ namespace SophiaDigitalArt
 		float						multx;
 		bool						mouseGlobal;
 		int							ctrl;
-		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4;
+		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4, iWeight5, iWeight6, iWeight7;
 		void						setValue(unsigned int aCtrl, float aValue);
 	};
 }

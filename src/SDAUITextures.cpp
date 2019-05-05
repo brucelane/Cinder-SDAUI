@@ -130,8 +130,8 @@ void SDAUITextures::Run(const char* title) {
 
 
 			}
-			else {
-				if (!mSDASession->isMovie(t)) {
+			//else {
+				//if (!mSDASession->isMovie(t)) {
 					// not a sequence nor video, animate x y...
 					XLeft[t] = mSDASession->getInputTextureXLeft(t);
 					if (anim[t]) {
@@ -213,8 +213,8 @@ void SDAUITextures::Run(const char* title) {
 					rnd[t] ^= ImGui::Button(buf);
 					ImGui::PopStyleColor(3);
 					hue++;
-				}
-			}
+				//}
+			//}
 			ImGui::PopItemWidth();
 			ImGui::PopID();
 			ImGui::PopItemWidth();

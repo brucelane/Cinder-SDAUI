@@ -220,8 +220,22 @@ void SDAUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::DragFloat("maxzm", &maxZoom, 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl));
 
+			//  speed sequence
+			ctrl = mSDASettings->ISPEED;
+			if (ImGui::Button("a##speed")) { toggleAuto(ctrl); }
+			ImGui::SameLine();
+			if (ImGui::Button("f##speed")) { toggleTempo(ctrl); }
+			ImGui::SameLine();
+			if (ImGui::Button("x##speed")) { resetAutoAnimation(ctrl); }
+			ImGui::SameLine();
+			localValues[ctrl] = mSDASession->getFloatUniformValueByIndex(ctrl);
+			if (ImGui::DragFloat("speed", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			{
+				setValue(ctrl, localValues[ctrl]);
+			}
+
 			// rotation speed 
-			/*ctrl = mSDASettings->IROTATIONSPEED;
+			ctrl = mSDASettings->IROTATIONSPEED;
 			if (ImGui::Button("a##rotationspeed")) { toggleAuto(ctrl); }
 			ImGui::SameLine();
 			if (ImGui::Button("f##rotationspeed")) { toggleTempo(ctrl); }
@@ -232,7 +246,7 @@ void SDAUIAnimation::Run(const char* title) {
 			if (ImGui::DragFloat("rotationSpeed", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
-			}*/
+			}
 			// badTv
 			ctrl = mSDASettings->IBADTV;
 			if (ImGui::Button("a##badtv")) { toggleAuto(ctrl); }

@@ -16,7 +16,7 @@ void SDAUIAudio::Run(const char* title) {
 	sprintf(buf, "%s##inpt", mSDASession->getInputTextureName(0).c_str());
 	ImGui::Begin(buf);
 	{
-		if (ImGui::CollapsingHeader("Color", NULL, true, true))
+		if (ImGui::CollapsingHeader("Audio", NULL, true, true))
 		{
 		ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth*2);
 		ImGui::Text("Position %d", mSDASession->getPosition(0));

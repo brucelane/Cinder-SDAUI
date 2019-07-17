@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <cinder>
-<template name="SDAUI: Basic" parent="org.libcinder.apptemplates.basicopengl">
-	<requires>com.sophiadigitalart.sda</requires>
-	<requires>com.sophiadigitalart.sdaui</requires>
+<template name="VDUI: Basic" parent="org.libcinder.apptemplates.basicopengl">
+	<requires>com.sophiadigitalart.vd</requires>
+	<requires>com.sophiadigitalart.vdui</requires>
 	<requires>com.wk.websocketpp</requires>
 	<requires>ocornut.imgui</requires>
 	<requires>fr.batchass.spout</requires>

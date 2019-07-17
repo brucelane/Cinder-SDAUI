@@ -3,16 +3,16 @@
 #include "cinder/gl/gl.h"
 
 // Settings
-#include "SDASettings.h"
+#include "VDSettings.h"
 // Session
-#include "SDASession.h"
+#include "VDSession.h"
 // Log
-#include "SDALog.h"
+#include "VDLog.h"
 // Spout
 #include "CiSpoutOut.h"
 // UI
 #define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
-#include "SDAUI.h"
+#include "VDUI.h"
 #define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 using namespace ci;
@@ -37,13 +37,13 @@ public:
 	void setUIVisibility(bool visible);
 private:
 	// Settings
-	SDASettingsRef					mSDASettings;
+	VDSettingsRef					mVDSettings;
 	// Session
-	SDASessionRef					mSDASession;
+	VDSessionRef					mVDSession;
 	// Log
-	SDALogRef						mSDALog;
+	VDLogRef						mVDLog;
 	// UI
-	SDAUIRef						mSDAUI;
+	VDUIRef						mVDUI;
 	// handle resizing for imgui
 	void							resizeWindow();
 	// imgui
@@ -69,20 +69,20 @@ private:
 
 
 _TBOX_PREFIX_App::_TBOX_PREFIX_App()
-	: mSpoutOut("SDAUI", app::getWindowSize())
+	: mSpoutOut("VDUI", app::getWindowSize())
 {
 	// Settings
-	mSDASettings = SDASettings::create("_TBOX_PREFIX_App");
+	mVDSettings = VDSettings::create("_TBOX_PREFIX_App");
 	// Session
-	mSDASession = SDASession::create(mSDASettings);
-	//mSDASettings->mCursorVisible = true;
-	setUIVisibility(mSDASettings->mCursorVisible);
-	mSDASession->getWindowsResolution();
+	mVDSession = VDSession::create(mVDSettings);
+	//mVDSettings->mCursorVisible = true;
+	setUIVisibility(mVDSettings->mCursorVisible);
+	mVDSession->getWindowsResolution();
 
 	mouseGlobal = false;
 	mFadeInDelay = true;
 	// UI
-	mSDAUI = SDAUI::create(mSDASettings, mSDASession);
+	mVDUI = VDUI::create(mVDSettings, mVDSession);
 	// windows
 	mIsShutDown = false;
 	mRenderWindowTimer = 0.0f;
@@ -91,12 +91,12 @@ _TBOX_PREFIX_App::_TBOX_PREFIX_App()
 }
 void _TBOX_PREFIX_App::resizeWindow()
 {
-	mSDAUI->resize();
+	mVDUI->resize();
 }
 void _TBOX_PREFIX_App::positionRenderWindow() {
-	mSDASettings->mRenderPosXY = ivec2(mSDASettings->mRenderX, mSDASettings->mRenderY);//20141214 was 0
-	setWindowPos(mSDASettings->mRenderX, mSDASettings->mRenderY);
-	setWindowSize(mSDASettings->mRenderWidth, mSDASettings->mRenderHeight);
+	mVDSettings->mRenderPosXY = ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY);//20141214 was 0
+	setWindowPos(mVDSettings->mRenderX, mVDSettings->mRenderY);
+	setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
 }
 void _TBOX_PREFIX_App::setUIVisibility(bool visible)
 {
@@ -111,12 +111,12 @@ void _TBOX_PREFIX_App::setUIVisibility(bool visible)
 }
 void _TBOX_PREFIX_App::fileDrop(FileDropEvent event)
 {
-	mSDASession->fileDrop(event);
+	mVDSession->fileDrop(event);
 }
 void _TBOX_PREFIX_App::update()
 {
-	mSDASession->setFloatUniformValueByIndex(mSDASettings->IFPS, getAverageFps());
-	mSDASession->update();
+	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
+	mVDSession->update();
 }
 void _TBOX_PREFIX_App::cleanup()
 {
@@ -125,20 +125,20 @@ void _TBOX_PREFIX_App::cleanup()
 		mIsShutDown = true;
 		CI_LOG_V("shutdown");
 		// save settings
-		mSDASettings->save();
-		mSDASession->save();
+		mVDSettings->save();
+		mVDSession->save();
 		quit();
 	}
 }
 void _TBOX_PREFIX_App::mouseMove(MouseEvent event)
 {
-	if (!mSDASession->handleMouseMove(event)) {
+	if (!mVDSession->handleMouseMove(event)) {
 		// let your application perform its mouseMove handling here
 	}
 }
 void _TBOX_PREFIX_App::mouseDown(MouseEvent event)
 {
-	if (!mSDASession->handleMouseDown(event)) {
+	if (!mVDSession->handleMouseDown(event)) {
 		// let your application perform its mouseDown handling here
 		if (event.isRightDown()) { 
 		}
@@ -146,20 +146,20 @@ void _TBOX_PREFIX_App::mouseDown(MouseEvent event)
 }
 void _TBOX_PREFIX_App::mouseDrag(MouseEvent event)
 {
-	if (!mSDASession->handleMouseDrag(event)) {
+	if (!mVDSession->handleMouseDrag(event)) {
 		// let your application perform its mouseDrag handling here
 	}	
 }
 void _TBOX_PREFIX_App::mouseUp(MouseEvent event)
 {
-	if (!mSDASession->handleMouseUp(event)) {
+	if (!mVDSession->handleMouseUp(event)) {
 		// let your application perform its mouseUp handling here
 	}
 }
 
 void _TBOX_PREFIX_App::keyDown(KeyEvent event)
 {
-	if (!mSDASession->handleKeyDown(event)) {
+	if (!mVDSession->handleKeyDown(event)) {
 		switch (event.getCode()) {
 		case KeyEvent::KEY_ESCAPE:
 			// quit the application
@@ -167,15 +167,15 @@ void _TBOX_PREFIX_App::keyDown(KeyEvent event)
 			break;
 		case KeyEvent::KEY_h:
 			// mouse cursor and ui visibility
-			mSDASettings->mCursorVisible = !mSDASettings->mCursorVisible;
-			setUIVisibility(mSDASettings->mCursorVisible);
+			mVDSettings->mCursorVisible = !mVDSettings->mCursorVisible;
+			setUIVisibility(mVDSettings->mCursorVisible);
 			break;
 		}
 	}
 }
 void _TBOX_PREFIX_App::keyUp(KeyEvent event)
 {
-	if (!mSDASession->handleKeyUp(event)) {
+	if (!mVDSession->handleKeyUp(event)) {
 	}
 }
 
@@ -183,23 +183,23 @@ void _TBOX_PREFIX_App::draw()
 {
 	gl::clear(Color::black());
 	if (mFadeInDelay) {
-		mSDASettings->iAlpha = 0.0f;
-		if (getElapsedFrames() > mSDASession->getFadeInDelay()) {
+		mVDSettings->iAlpha = 0.0f;
+		if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
 			mFadeInDelay = false;
-			timeline().apply(&mSDASettings->iAlpha, 0.0f, 1.0f, 1.5f, EaseInCubic());
+			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 1.5f, EaseInCubic());
 		}
 	}
 
 	//gl::setMatricesWindow(toPixels(getWindowSize()),false);
-	gl::setMatricesWindow(mSDASettings->mRenderWidth, mSDASettings->mRenderHeight, false);
-	gl::draw(mSDASession->getMixTexture(), getWindowBounds());
+	gl::setMatricesWindow(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, false);
+	gl::draw(mVDSession->getMixTexture(), getWindowBounds());
 
 	// Spout Send
 	mSpoutOut.sendViewport();
-	mSDAUI->Run("UI", (int)getAverageFps());
-	if (mSDAUI->isReady()) {
+	mVDUI->Run("UI", (int)getAverageFps());
+	if (mVDUI->isReady()) {
 	}
-	getWindow()->setTitle(mSDASettings->sFps + " fps SDAUI");
+	getWindow()->setTitle(mVDSettings->sFps + " fps VDUI");
 }
 
 void prepareSettings(App::Settings *settings)

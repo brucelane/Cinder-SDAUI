@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <cinder>
 <block
-	name="Cinder-SDAUI"
-	id="com.sophiadigitalart.sdaui"
+	name="Cinder-VDUI"
+	id="com.sophiadigitalart.vdui"
 	author="Bruce Lane"
 	license="MIT"
-	summary="SDA UI block for Cinder 0.9: imgui wrapper"
-	url="https://github.com/sophiadigitalart/Cinder-SDAUI"
-	git="git://github.com/sophiadigitalart/Cinder-SDAUI.git"
+	summary="VD UI block for Cinder 0.9: imgui wrapper"
+	url="https://github.com/sophiadigitalart/Cinder-VDUI"
+	git="git://github.com/sophiadigitalart/Cinder-VDUI.git"
 	>
 	<supports os="msw" />
 	<requires>com.wk.websocketpp</requires>
@@ -18,12 +18,12 @@
 	<sourcePattern>src/*.c</sourcePattern>
 	<platform os="msw">
 		<libraryPath>lib</libraryPath>
-		<requires>com.sophiadigitalart.sda</requires>
+		<requires>com.sophiadigitalart.vd</requires>
 		<requires>ocornut.imgui</requires>
 		<requires>fr.batchass.spout</requires>
 		<requires>mb.cinder.midi2</requires>
 		<requires>org.libcinder.OSC</requires>
 	</platform>
 </block>
-<template>templates/SDAUI/template.xml</template>
+<template>templates/VDUI/template.xml</template>
 </cinder>

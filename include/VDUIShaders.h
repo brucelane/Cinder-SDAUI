@@ -5,35 +5,35 @@
 // UserInterface
 #include "CinderImGui.h"
 // Settings
-#include "SDASettings.h"
+#include "VDSettings.h"
 // Session
-#include "SDASession.h"
+#include "VDSession.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 #define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-namespace SophiaDigitalArt
+namespace VideoDromm
 {
-	// stores the pointer to the SDAUIShaders instance
-	typedef std::shared_ptr<class SDAUIShaders> SDAUIShadersRef;
+	// stores the pointer to the VDUIShaders instance
+	typedef std::shared_ptr<class VDUIShaders> VDUIShadersRef;
 
-	class SDAUIShaders
+	class VDUIShaders
 	{
 	public:
-		SDAUIShaders(SDASettingsRef aSDASettings, SDASessionRef aSDASession);
-		static SDAUIShadersRef	create(SDASettingsRef aSDASettings, SDASessionRef aSDASession)
+		VDUIShaders(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
+		static VDUIShadersRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 		{
-			return shared_ptr<SDAUIShaders>(new SDAUIShaders(aSDASettings, aSDASession));
+			return shared_ptr<VDUIShaders>(new VDUIShaders(aVDSettings, aVDSession));
 		}
-		~SDAUIShaders();
+		~VDUIShaders();
 		void    Run(const char* title);
 	private:
 		// Settings
-		SDASettingsRef				mSDASettings;
+		VDSettingsRef				mVDSettings;
 		// Session
-		SDASessionRef				mSDASession;
+		VDSessionRef				mVDSession;
 		// imgui
 		char						buf[64];
 		//! default fragment shader

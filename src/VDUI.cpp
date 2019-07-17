@@ -1,55 +1,55 @@
-#include "SDAUI.h"
+#include "VDUI.h"
 
-using namespace SophiaDigitalArt;
+using namespace VideoDromm;
 
-SDAUI::SDAUI(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
-	mSDASettings = aSDASettings;
-	mSDASession = aSDASession;
+VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
+	mVDSettings = aVDSettings;
+	mVDSession = aVDSession;
 	// UITextures
-	mUITextures = SDAUITextures::create(mSDASettings, mSDASession);
+	mUITextures = VDUITextures::create(mVDSettings, mVDSession);
 	// UIFbos
-	mUIFbos = SDAUIFbos::create(mSDASettings, mSDASession);
+	mUIFbos = VDUIFbos::create(mVDSettings, mVDSession);
 	// UIAnimation
-	mUIAnimation = SDAUIAnimation::create(mSDASettings, mSDASession);
+	mUIAnimation = VDUIAnimation::create(mVDSettings, mVDSession);
 	// UIMidi
-	mUIMidi = SDAUIMidi::create(mSDASettings, mSDASession);
+	mUIMidi = VDUIMidi::create(mVDSettings, mVDSession);
 	// UIAudio
-	mUIAudio = SDAUIAudio::create(mSDASettings, mSDASession);
+	mUIAudio = VDUIAudio::create(mVDSettings, mVDSession);
 	// UIColor
-	mUIColor = SDAUIColor::create(mSDASettings, mSDASession);
+	mUIColor = VDUIColor::create(mVDSettings, mVDSession);
 	// UITempo
-	mUITempo = SDAUITempo::create(mSDASettings, mSDASession);
+	mUITempo = VDUITempo::create(mVDSettings, mVDSession);
 	// UIBlend
-	mUIBlend = SDAUIBlend::create(mSDASettings, mSDASession);
+	mUIBlend = VDUIBlend::create(mVDSettings, mVDSession);
 	// UIOsc
-	mUIOsc = SDAUIOsc::create(mSDASettings, mSDASession);
+	mUIOsc = VDUIOsc::create(mVDSettings, mVDSession);
 	// UIWebsockets
-	mUIWebsockets = SDAUIWebsockets::create(mSDASettings, mSDASession);
+	mUIWebsockets = VDUIWebsockets::create(mVDSettings, mVDSession);
 	// UIMouse
-	mUIMouse = SDAUIMouse::create(mSDASettings, mSDASession);
+	mUIMouse = VDUIMouse::create(mVDSettings, mVDSession);
 	// UIShaders
-	mUIShaders = SDAUIShaders::create(mSDASettings, mSDASession);
+	mUIShaders = VDUIShaders::create(mVDSettings, mVDSession);
 	// UIRender
-	mUIRender = SDAUIRender::create(mSDASettings, mSDASession);
+	mUIRender = VDUIRender::create(mVDSettings, mVDSession);
 	// imgui
 	mouseGlobal = false;
 	mIsResizing = true;
 }
-void SDAUI::setValue(unsigned int aCtrl, float aValue) {
-	mSDASession->setFloatUniformValueByIndex(aCtrl, aValue);
+void VDUI::setValue(unsigned int aCtrl, float aValue) {
+	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
 }
-float SDAUI::getMinUniformValueByIndex(unsigned int aIndex) {
-	return mSDASession->getMinUniformValueByIndex(aIndex);
+float VDUI::getMinUniformValueByIndex(unsigned int aIndex) {
+	return mVDSession->getMinUniformValueByIndex(aIndex);
 }
-float SDAUI::getMaxUniformValueByIndex(unsigned int aIndex) {
-	return mSDASession->getMaxUniformValueByIndex(aIndex);
+float VDUI::getMaxUniformValueByIndex(unsigned int aIndex) {
+	return mVDSession->getMaxUniformValueByIndex(aIndex);
 }
-void SDAUI::resize() {
+void VDUI::resize() {
 	mIsResizing = true;
 	// disconnect ui window and io events callbacks
 	ImGui::disconnectWindow(getWindow());
 }
-void SDAUI::Run(const char* title, unsigned int fps) {
+void VDUI::Run(const char* title, unsigned int fps) {
 	static int currentWindowRow1 = 1;
 	static int currentWindowRow2 = 0;
 
@@ -69,7 +69,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		style.FramePadding = ImVec2(2, 2);
 		style.ItemSpacing = ImVec2(3, 3);
 		style.ItemInnerSpacing = ImVec2(3, 3);
-		style.WindowMinSize = ImVec2(mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight);
+		style.WindowMinSize = ImVec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight);
 		style.Alpha = 0.85f;
 		style.Colors[ImGuiCol_Text] = ImVec4(0.89f, 0.92f, 0.94f, 1.00f);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.05f, 0.05f, 0.05f, 1.00f);
@@ -121,14 +121,14 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 	}
 
 #pragma endregion menu
-	//ImGui::SetNextWindowSize(ImVec2(mSDASettings->mRenderWidth - 20, uiSmallH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(660, mSDASettings->uiSmallH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mSDASettings->uiXPosCol1, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
-	sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mSDASession->getTargetFps());
+	//ImGui::SetNextWindowSize(ImVec2(mVDSettings->mRenderWidth - 20, uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(660, mVDSettings->uiSmallH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
+	sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mVDSession->getTargetFps());
 	ImGui::Begin(buf);
 	{
 		// line 1
-		ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth);
+		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 		// fps
 		static ImVector<float> values; if (values.empty()) { values.resize(100); memset(&values.front(), 0, values.size() * sizeof(float)); }
 		static int values_offset = 0;
@@ -136,12 +136,12 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		if (ImGui::GetTime() > refresh_time + 1.0f / 6.0f)
 		{
 			refresh_time = ImGui::GetTime();
-			values[values_offset] = mSDASession->getFloatUniformValueByIndex(mSDASettings->IFPS);
+			values[values_offset] = mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS);
 			values_offset = (values_offset + 1) % values.size();
 		}
-		if (mSDASession->getFloatUniformValueByIndex(mSDASettings->IFPS) < 12.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
-		ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mSDASettings->sFps.c_str(), 0.0f, mSDASession->getTargetFps(), ImVec2(0, 30));
-		if (mSDASession->getFloatUniformValueByIndex(mSDASettings->IFPS) < 12.0) ImGui::PopStyleColor();
+		if (mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS) < 12.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+		ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mVDSettings->sFps.c_str(), 0.0f, mVDSession->getTargetFps(), ImVec2(0, 30));
+		if (mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS) < 12.0) ImGui::PopStyleColor();
 		// audio
 		ImGui::SameLine();
 		static ImVector<float> timeValues; if (timeValues.empty()) { timeValues.resize(40); memset(&timeValues.front(), 0, timeValues.size() * sizeof(float)); }
@@ -151,70 +151,70 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 		if (ImGui::GetTime() > tRefresh_time + 1.0f / 20.0f)
 		{
 			tRefresh_time = ImGui::GetTime();
-			timeValues[timeValues_offset] = mSDASession->getMaxVolume();
+			timeValues[timeValues_offset] = mVDSession->getMaxVolume();
 			timeValues_offset = (timeValues_offset + 1) % timeValues.size();
 		}
 
-		ImGui::PlotHistogram("H", mSDASession->getFreqs(), mSDASession->getWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
+		ImGui::PlotHistogram("H", mVDSession->getFreqs(), mVDSession->getWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
 		ImGui::SameLine();
-		if (mSDASession->getMaxVolume() > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
-		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mSDASession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
-		if (mSDASession->getMaxVolume() > 240.0) ImGui::PopStyleColor();
+		if (mVDSession->getMaxVolume() > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mVDSession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
+		if (mVDSession->getMaxVolume() > 240.0) ImGui::PopStyleColor();
 
 
 		// crossfade
 		ImGui::SameLine();
-		float xFade = mSDASession->getCrossfade();
+		float xFade = mVDSession->getCrossfade();
 		sprintf(buf, "xfade##xfd");
 		if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
 		{
-			mSDASession->setCrossfade(xFade);
+			mVDSession->setCrossfade(xFade);
 		}
 		ImGui::SameLine();
 		// flip vertically
 		int hue = 0;
-		mSDASession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		mVDSession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 		if (ImGui::Button("FlipV")) {
-			mSDASession->flipV();
+			mVDSession->flipV();
 		}
 		ImGui::PopStyleColor(3);
 		hue++;
 		ImGui::SameLine();
 		// flip horizontally
-		mSDASession->isFlipH() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		mVDSession->isFlipH() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 		if (ImGui::Button("FlipH")) {
-			mSDASession->flipH();
+			mVDSession->flipH();
 		}
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::TextWrapped("Msg: %s", mSDASettings->mMsg.c_str());
+		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
 
 		// line 2
 
-		multx = mSDASession->getFloatUniformValueByIndex(mSDASettings->IAUDIOX); // 13
+		multx = mVDSession->getFloatUniformValueByIndex(mVDSettings->IAUDIOX); // 13
 		if (ImGui::SliderFloat("mult x", &multx, 0.01f, 12.0f)) {
-			mSDASession->setFloatUniformValueByIndex(13, multx);
+			mVDSession->setFloatUniformValueByIndex(13, multx);
 		}
 		ImGui::SameLine();
-		(mSDASession->isAudioBuffered()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		(mVDSession->isAudioBuffered()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(3.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(3.0f, 0.8f, 0.8f));
 		if (ImGui::Button("Wave")) {
-			mSDASession->toggleAudioBuffered();
+			mVDSession->toggleAudioBuffered();
 		}
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		(mSDASession->getUseLineIn()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		(mVDSession->getUseLineIn()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(4.0f, 0.8f, 0.8f));
 		if (ImGui::Button("LineIn")) {
-			mSDASession->toggleUseLineIn();
+			mVDSession->toggleUseLineIn();
 		}
 		ImGui::PopStyleColor(3);
 
@@ -232,68 +232,68 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 
 
 
-		ctrl = mSDASettings->IWEIGHT0;
-		iWeight0 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT0;
+		iWeight0 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight0", &iWeight0, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight0);
 		}
 		ImGui::SameLine();
-		ctrl = mSDASettings->IWEIGHT1;
-		iWeight1 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT1;
+		iWeight1 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight1", &iWeight1, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight1);
 		}
 		ImGui::SameLine();
-		ctrl = mSDASettings->IWEIGHT2;
-		iWeight2 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT2;
+		iWeight2 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight2", &iWeight2, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight2);
 		}
 		ImGui::SameLine();
 
-		ctrl = mSDASettings->IWEIGHT3;
-		iWeight3 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT3;
+		iWeight3 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight3", &iWeight3, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight3);
 		}
 		ImGui::SameLine();
 
-		ctrl = mSDASettings->IWEIGHT4;
-		iWeight4 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT4;
+		iWeight4 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight4", &iWeight4, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight4);
 		}
 
-		ctrl = mSDASettings->IWEIGHT5;
-		iWeight5 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT5;
+		iWeight5 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight5", &iWeight5, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight5);
 		}
 		ImGui::SameLine();
 
-		ctrl = mSDASettings->IWEIGHT6;
-		iWeight6 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT6;
+		iWeight6 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight6", &iWeight6, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight6);
 		}
 		ImGui::SameLine();
 
-		ctrl = mSDASettings->IWEIGHT7;
-		iWeight7 = mSDASession->getFloatUniformValueByIndex(ctrl);
+		ctrl = mVDSettings->IWEIGHT7;
+		iWeight7 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Weight7", &iWeight7, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight7);
 		}
-		ImGui::TextWrapped("Midi: %s", mSDASettings->mMidiMsg.c_str());
-		ImGui::TextWrapped("WS Msg: %s", mSDASettings->mWebSocketsMsg.c_str());
-		ImGui::TextWrapped("OSC Msg: %s", mSDASettings->mOSCMsg.c_str());
+		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
+		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
+		ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
 		/*hue++;
 
 		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
@@ -352,7 +352,7 @@ void SDAUI::Run(const char* title, unsigned int fps) {
 
 		break;
 	}
-	mSDASession->blendRenderEnable(currentWindowRow1 == 3);
+	mVDSession->blendRenderEnable(currentWindowRow1 == 3);
 
 	// textures
 	mUITextures->Run("Textures");

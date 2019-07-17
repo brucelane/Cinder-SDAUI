@@ -5,34 +5,34 @@
 // UserInterface
 #include "CinderImGui.h"
 // Settings
-#include "SDASettings.h"
+#include "VDSettings.h"
 // Session
-#include "SDASession.h"
+#include "VDSession.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-namespace SophiaDigitalArt
+namespace VideoDromm
 {
-	// stores the pointer to the SDAUIMouse instance
-	typedef std::shared_ptr<class SDAUIMouse> SDAUIMouseRef;
+	// stores the pointer to the VDUIMouse instance
+	typedef std::shared_ptr<class VDUIMouse> VDUIMouseRef;
 
-	class SDAUIMouse
+	class VDUIMouse
 	{
 	public:
-		SDAUIMouse(SDASettingsRef aSDASettings, SDASessionRef aSDASession);
-		static SDAUIMouseRef	create(SDASettingsRef aSDASettings, SDASessionRef aSDASession)
+		VDUIMouse(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
+		static VDUIMouseRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 		{
-			return shared_ptr<SDAUIMouse>(new SDAUIMouse(aSDASettings, aSDASession));
+			return shared_ptr<VDUIMouse>(new VDUIMouse(aVDSettings, aVDSession));
 		}
-		~SDAUIMouse();
+		~VDUIMouse();
 		void    Run(const char* title);
 	private:
 		// Settings
-		SDASettingsRef				mSDASettings;
+		VDSettingsRef				mVDSettings;
 		// Session
-		SDASessionRef				mSDASession;
+		VDSessionRef				mVDSession;
 		float						getValue(unsigned int aCtrl);
 		void						setValue(unsigned int aCtrl, float aValue);
 

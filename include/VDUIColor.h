@@ -5,9 +5,9 @@
 // UserInterface
 #include "CinderImGui.h"
 // Settings
-#include "SDASettings.h"
+#include "VDSettings.h"
 // Session
-#include "SDASession.h"
+#include "VDSession.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -15,26 +15,26 @@ using namespace std;
 
 #define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-namespace SophiaDigitalArt
+namespace VideoDromm
 {
-	// stores the pointer to the SDAUIColor instance
-	typedef std::shared_ptr<class SDAUIColor> SDAUIColorRef;
+	// stores the pointer to the VDUIColor instance
+	typedef std::shared_ptr<class VDUIColor> VDUIColorRef;
 
-	class SDAUIColor
+	class VDUIColor
 	{
 	public:
-		SDAUIColor(SDASettingsRef aSDASettings, SDASessionRef aSDASession);
-		static SDAUIColorRef	create(SDASettingsRef aSDASettings, SDASessionRef aSDASession)
+		VDUIColor(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
+		static VDUIColorRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 		{
-			return shared_ptr<SDAUIColor>(new SDAUIColor(aSDASettings, aSDASession));
+			return shared_ptr<VDUIColor>(new VDUIColor(aVDSettings, aVDSession));
 		}
-		~SDAUIColor();
+		~VDUIColor();
 		void    Run(const char* title);
 	private:
 		// Settings
-		SDASettingsRef					mSDASettings;
+		VDSettingsRef					mVDSettings;
 		// Session
-		SDASessionRef					mSDASession;
+		VDSessionRef					mVDSession;
 		float							getValue(unsigned int aCtrl);
 		void							setValue(unsigned int aCtrl, float aValue);
 		void							toggleAuto(unsigned int aCtrl);

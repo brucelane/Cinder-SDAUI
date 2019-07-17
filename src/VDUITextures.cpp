@@ -1,16 +1,16 @@
-#include "SDAUITextures.h"
+#include "VDUITextures.h"
 
-using namespace SophiaDigitalArt;
+using namespace VideoDromm;
 
-SDAUITextures::SDAUITextures(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
-	mSDASettings = aSDASettings;
-	mSDASession = aSDASession;
+VDUITextures::VDUITextures(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
+	mVDSettings = aVDSettings;
+	mVDSession = aVDSession;
 }
-SDAUITextures::~SDAUITextures() {
+VDUITextures::~VDUITextures() {
 
 }
 
-void SDAUITextures::Run(const char* title) {
+void VDUITextures::Run(const char* title) {
 
 	static int XLeft[64];
 	static int YTop[64];
@@ -19,45 +19,45 @@ void SDAUITextures::Run(const char* title) {
 	static bool rnd[64];
 	static bool anim[64];
 
-	for (int t = 0; t < mSDASession->getInputTexturesCount(); t++) {
-		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiSmallH), ImGuiSetCond_Once);
-		ImGui::SetNextWindowPos(ImVec2((t * (mSDASettings->uiLargePreviewW + mSDASettings->uiMargin)) + 888, mSDASettings->uiYPosRow1), ImGuiSetCond_Once);
+	for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
+		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiSmallH), ImGuiSetCond_Once);
+		ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + 888, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 		int hue = 0;
-		sprintf(buf, "%s##s%d", mSDASession->getInputTextureName(t).c_str(), t);
+		sprintf(buf, "%s##s%d", mVDSession->getInputTextureName(t).c_str(), t);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
-			ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth);
+			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			ImGui::PushID(t);
-			ImGui::Image((void*)mSDASession->getInputTexture(t)->getId(), ivec2(mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight));
-			ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth * 0.7);
+			ImGui::Image((void*)mVDSession->getInputTexture(t)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 0.7);
 			// flip vertically
-			mSDASession->isFlipVInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+			mVDSession->isFlipVInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 			sprintf(buf, "FlipV##vd%d", t);
 			if (ImGui::Button(buf)) {
-				mSDASession->inputTextureFlipV(t);
+				mVDSession->inputTextureFlipV(t);
 			}
 			ImGui::PopStyleColor(3);
 			hue++;
 			ImGui::SameLine();
 			// flip horizontally
-			mSDASession->isFlipHInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+			mVDSession->isFlipHInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 			sprintf(buf, "FlipH##hd%d", t);
 			if (ImGui::Button(buf)) {
-				mSDASession->inputTextureFlipH(t);
+				mVDSession->inputTextureFlipH(t);
 			}
 			ImGui::PopStyleColor(3);
 			hue++;
 
 			/* obsolete? 
-			for (unsigned int f = 0; f < mSDAMix->getWarpCount(); f++) {
+			for (unsigned int f = 0; f < mVDMix->getWarpCount(); f++) {
 				if (f > 0) ImGui::SameLine();
-				//int ti = mSDAMix->getFboInputTextureIndex(f);
+				//int ti = mVDMix->getFboInputTextureIndex(f);
 				//CI_LOG_V("fbo" + toString(f) + " t" + toString(t) + " ti" + toString(ti));
-				if (mSDAMix->getWarpATextureIndex(f) == t) {
+				if (mVDMix->getWarpATextureIndex(f) == t) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
 				}
 				else {
@@ -66,7 +66,7 @@ void SDAUITextures::Run(const char* title) {
 				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(t / 7.0f, 0.7f, 0.7f));
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(t / 7.0f, 0.8f, 0.8f));
 				sprintf(buf, "%d##fboinputtex%d%d", f, t, f);
-				if (ImGui::Button(buf)) mSDAMix->setFboInputTexture(f, t);
+				if (ImGui::Button(buf)) mVDMix->setFboInputTexture(f, t);
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set input texture for warp");
 				ImGui::PopStyleColor(3);
 			}
@@ -75,25 +75,25 @@ void SDAUITextures::Run(const char* title) {
 			if (ImGui::Button(buf))
 			{
 			sprintf(buf, "IMG=%d.jpg", i);
-			//mSDARouter->wsWrite(buf);
+			//mVDRouter->wsWrite(buf);
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via WebSockets");
 			*/
 			
-			if (mSDASession->isSequence(t) || mSDASession->isMovie(t)) {
+			if (mVDSession->isSequence(t) || mVDSession->isMovie(t)) {
 				sprintf(buf, "p##s%d", t);
 				if (ImGui::Button(buf))
 				{
-					mSDASession->togglePlayPause(t);
+					mVDSession->togglePlayPause(t);
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Play/Pause");
 			}
-			if (mSDASession->isSequence(t)) {
+			if (mVDSession->isSequence(t)) {
 				ImGui::SameLine();
 				sprintf(buf, "b##sqs%d", t);
 				if (ImGui::Button(buf))
 				{
-					mSDASession->syncToBeat(t);
+					mVDSession->syncToBeat(t);
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Sync to beat");
 
@@ -101,39 +101,39 @@ void SDAUITextures::Run(const char* title) {
 				sprintf(buf, "r##rs%d", t);
 				if (ImGui::Button(buf))
 				{
-					mSDASession->reverse(t);
+					mVDSession->reverse(t);
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Reverse");
 
-				if (mSDASession->isLoadingFromDisk(t)) {
+				if (mVDSession->isLoadingFromDisk(t)) {
 					ImGui::SameLine();
 					sprintf(buf, "l##ts%d", t);
 					if (ImGui::Button(buf))
 					{
-						mSDASession->toggleLoadingFromDisk(t);
+						mVDSession->toggleLoadingFromDisk(t);
 					}
 					if (ImGui::IsItemHovered()) ImGui::SetTooltip("Pause loading from disk");
 				}
-				speeds[t] = mSDASession->getSpeed(t);
+				speeds[t] = mVDSession->getSpeed(t);
 				sprintf(buf, "speed##spd%d", t);
 				if (ImGui::DragFloat(buf, &speeds[t], 0.01f, 0.0f, 1.0f))
 				{
-					mSDASession->setSpeed(t, speeds[t]);
+					mVDSession->setSpeed(t, speeds[t]);
 				}
 
-				playheadPositions[t] = mSDASession->getPosition(t);
+				playheadPositions[t] = mVDSession->getPosition(t);
 				sprintf(buf, "scrub##srb%d", t);
-				if (ImGui::SliderInt(buf, &playheadPositions[t], 0, mSDASession->getMaxFrame(t)))
+				if (ImGui::SliderInt(buf, &playheadPositions[t], 0, mVDSession->getMaxFrame(t)))
 				{
-					mSDASession->setPlayheadPosition(t, playheadPositions[t]);
+					mVDSession->setPlayheadPosition(t, playheadPositions[t]);
 				}
 
 
 			}
 			//else {
-				//if (!mSDASession->isMovie(t)) {
+				//if (!mVDSession->isMovie(t)) {
 					// not a sequence nor video, animate x y...
-					XLeft[t] = mSDASession->getInputTextureXLeft(t);
+					XLeft[t] = mVDSession->getInputTextureXLeft(t);
 					if (anim[t]) {
 						if (rnd[t]) {
 							XLeft[t] += xStep * Rand::randBool();
@@ -145,15 +145,15 @@ void SDAUITextures::Run(const char* title) {
 						if (XLeft[t] < 1) {
 							xStep = -xStep;
 						}
-						if (XLeft[t] > mSDASession->getInputTextureOriginalWidth(t) - mSDASettings->mFboWidth - 1) {
+						if (XLeft[t] > mVDSession->getInputTextureOriginalWidth(t) - mVDSettings->mFboWidth - 1) {
 							xStep = -xStep;
 						}
 					}
 					sprintf(buf, "XL##xl%d", t);
-					ImGui::SliderInt(buf, &XLeft[t], 0, mSDASession->getInputTextureOriginalWidth(t));// CHECK - mSDASettings->mFboWidth
-					mSDASession->setInputTextureXLeft(t, XLeft[t]);
+					ImGui::SliderInt(buf, &XLeft[t], 0, mVDSession->getInputTextureOriginalWidth(t));// CHECK - mVDSettings->mFboWidth
+					mVDSession->setInputTextureXLeft(t, XLeft[t]);
 
-					YTop[t] = mSDASession->getInputTextureYTop(t);
+					YTop[t] = mVDSession->getInputTextureYTop(t);
 					if (anim[t]) {
 						if (rnd[t]) {
 							YTop[t] += yStep * Rand::randBool();
@@ -165,30 +165,30 @@ void SDAUITextures::Run(const char* title) {
 						if (YTop[t] < 1) {
 							yStep = -yStep;
 						}
-						if (YTop[t] > mSDASession->getInputTextureOriginalHeight(t) - mSDASettings->mFboHeight - 1) {
+						if (YTop[t] > mVDSession->getInputTextureOriginalHeight(t) - mVDSettings->mFboHeight - 1) {
 							yStep = -yStep;
 						}
 					}
 					sprintf(buf, "YT##yt%d", t);
-					ImGui::SliderInt(buf, &YTop[t], 0, mSDASession->getInputTextureOriginalHeight(t));// - mSDASettings->mFboHeight
-					mSDASession->setInputTextureYTop(t, YTop[t]);
+					ImGui::SliderInt(buf, &YTop[t], 0, mVDSession->getInputTextureOriginalHeight(t));// - mVDSettings->mFboHeight
+					mVDSession->setInputTextureYTop(t, YTop[t]);
 
 
 					ImGui::SameLine();
-					(mSDASession->getInputTextureLockBounds(t)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+					(mVDSession->getInputTextureLockBounds(t)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 					sprintf(buf, "8##lk%d", t);
 					if (ImGui::Button(buf)) {
-						mSDASession->toggleInputTextureLockBounds(t);
+						mVDSession->toggleInputTextureLockBounds(t);
 					}
 					ImGui::PopStyleColor(3);
 					hue++;
 
-					XRight[t] = mSDASession->getInputTextureXRight(t);
+					XRight[t] = mVDSession->getInputTextureXRight(t);
 					sprintf(buf, "XR##xr%d", t);
-					if (ImGui::SliderInt(buf, &XRight[t], 0, mSDASession->getInputTextureOriginalWidth(t))) {
-						mSDASession->setInputTextureXRight(t, XRight[t]);
+					if (ImGui::SliderInt(buf, &XRight[t], 0, mVDSession->getInputTextureOriginalWidth(t))) {
+						mVDSession->setInputTextureXRight(t, XRight[t]);
 					}
 					ImGui::SameLine();
 					(anim[t]) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -199,10 +199,10 @@ void SDAUITextures::Run(const char* title) {
 					ImGui::PopStyleColor(3);
 					hue++;
 
-					YBottom[t] = mSDASession->getInputTextureYBottom(t);
+					YBottom[t] = mVDSession->getInputTextureYBottom(t);
 					sprintf(buf, "YB##yb%d", t);
-					if (ImGui::SliderInt(buf, &YBottom[t], 0, mSDASession->getInputTextureOriginalHeight(t))) {
-						mSDASession->setInputTextureYBottom(t, YBottom[t]);
+					if (ImGui::SliderInt(buf, &YBottom[t], 0, mVDSession->getInputTextureOriginalHeight(t))) {
+						mVDSession->setInputTextureYBottom(t, YBottom[t]);
 					}
 
 					ImGui::SameLine();

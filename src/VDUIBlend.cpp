@@ -1,32 +1,32 @@
-#include "SDAUIBlend.h"
+#include "VDUIBlend.h"
 
-using namespace SophiaDigitalArt;
+using namespace VideoDromm;
 
-SDAUIBlend::SDAUIBlend(SDASettingsRef aSDASettings, SDASessionRef aSDASession) {
-	mSDASettings = aSDASettings;
-	mSDASession = aSDASession;
+VDUIBlend::VDUIBlend(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
+	mVDSettings = aVDSettings;
+	mVDSession = aVDSession;
 }
-SDAUIBlend::~SDAUIBlend() {
+VDUIBlend::~VDUIBlend() {
 
 }
 
-void SDAUIBlend::Run(const char* title) {
+void VDUIBlend::Run(const char* title) {
 	const char* blendModes[] = { "mix", "multiply", "colorBurn", "linearBurn", "darkerColor", "lighten", "screen", "colorDodge", "linearDodge", "lighterColor", "overlay", "softLight", "hardLight", "vividLight", "linearLight", "pinLight", "hardMix", "difference", "exclusion", "subtract", "divide", "hue", "color", "saturation", "luminosity", "darken", "left", "right" };
 
-	xPos = mSDASettings->uiMargin;
-	yPos = mSDASettings->uiYPosRow4;// 5;
-	for (int s = 0; s < mSDASession->getFboBlendCount(); s++) {
-		ImGui::SetNextWindowSize(ImVec2(mSDASettings->uiLargePreviewW, mSDASettings->uiPreviewH + 10.0f), ImGuiSetCond_Once);
+	xPos = mVDSettings->uiMargin;
+	yPos = mVDSettings->uiYPosRow4;// 5;
+	for (int s = 0; s < mVDSession->getFboBlendCount(); s++) {
+		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiPreviewH + 10.0f), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		sprintf(buf, "%s", blendModes[s]);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
-			ImGui::PushItemWidth(mSDASettings->mPreviewFboWidth);
+			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			ImGui::PushID(s);
-			ImGui::Image((void*)mSDASession->getFboThumb(s)->getId(), ivec2(mSDASettings->mPreviewFboWidth, mSDASettings->mPreviewFboHeight));
+			ImGui::Image((void*)mVDSession->getFboThumb(s)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 
 			// select blend mode
-			if (mSDASettings->iBlendmode == s) {
+			if (mVDSettings->iBlendmode == s) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.3f, 1.0f, 0.5f));
 			}
 			else {
@@ -37,7 +37,7 @@ void SDAUIBlend::Run(const char* title) {
 
 			sprintf(buf, "B##s%d", s);
 			if (ImGui::Button(buf)){
-				mSDASession->useBlendmode(s);
+				mVDSession->useBlendmode(s);
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Use this blend");
 			ImGui::PopStyleColor(3);
@@ -46,12 +46,12 @@ void SDAUIBlend::Run(const char* title) {
 			ImGui::PopItemWidth();
 		}
 		ImGui::End();
-		xPos += mSDASettings->uiLargePreviewW + mSDASettings->uiMargin;
-		//if (xPos > (mSDASettings->mRenderWidth - mSDASettings->uiLargePreviewW))
+		xPos += mVDSettings->uiLargePreviewW + mVDSettings->uiMargin;
+		//if (xPos > (mVDSettings->mRenderWidth - mVDSettings->uiLargePreviewW))
 		if (s % 13 == 12)
 		{
-			xPos = mSDASettings->uiMargin;
-			yPos += mSDASettings->uiPreviewH + 10.0f + mSDASettings->uiMargin;
+			xPos = mVDSettings->uiMargin;
+			yPos += mVDSettings->uiPreviewH + 10.0f + mVDSettings->uiMargin;
 		}
 	}
 }

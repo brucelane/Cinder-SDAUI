@@ -5,53 +5,53 @@
 // UserInterface
 #include "CinderImGui.h"
 // Settings
-#include "SDASettings.h"
+#include "VDSettings.h"
 // Session
-#include "SDASession.h"
+#include "VDSession.h"
 
 // UITextures
-#include "SDAUITextures.h"
+#include "VDUITextures.h"
 // UIFbos
-#include "SDAUIFbos.h"
+#include "VDUIFbos.h"
 // Animation
-#include "SDAUIAnimation.h"
+#include "VDUIAnimation.h"
 // Midi
-#include "SDAUIMidi.h"
+#include "VDUIMidi.h"
 // Audio
-#include "SDAUIAudio.h"
+#include "VDUIAudio.h"
 // Color
-#include "SDAUIColor.h"
+#include "VDUIColor.h"
 // Tempo
-#include "SDAUITempo.h"
+#include "VDUITempo.h"
 // Blend
-#include "SDAUIBlend.h"
+#include "VDUIBlend.h"
 // Websockets
-#include "SDAUIWebsockets.h"
+#include "VDUIWebsockets.h"
 // Osc
-#include "SDAUIOsc.h"
+#include "VDUIOsc.h"
 // Mouse
-#include "SDAUIMouse.h"
+#include "VDUIMouse.h"
 // Shaders
-#include "SDAUIShaders.h"
+#include "VDUIShaders.h"
 // Render
-#include "SDAUIRender.h"
+#include "VDUIRender.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-namespace SophiaDigitalArt
+namespace VideoDromm
 {
-	// stores the pointer to the SDAConsole instance
-	typedef std::shared_ptr<class SDAUI> SDAUIRef;
+	// stores the pointer to the VDConsole instance
+	typedef std::shared_ptr<class VDUI> VDUIRef;
 
-	class SDAUI
+	class VDUI
 	{
 	public:
-		SDAUI(SDASettingsRef aSDASettings, SDASessionRef aSDASession);
-		static SDAUIRef	create(SDASettingsRef aSDASettings, SDASessionRef aSDASession)
+		VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
+		static VDUIRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 		{
-			return shared_ptr<SDAUI>(new SDAUI(aSDASettings, aSDASession));
+			return shared_ptr<VDUI>(new VDUI(aVDSettings, aVDSession));
 		}
 
 		void    Run(const char* title, unsigned int fps);
@@ -59,48 +59,48 @@ namespace SophiaDigitalArt
 		bool	isReady() { return !mIsResizing; };
 	private:
 		// Settings
-		SDASettingsRef				mSDASettings;
+		VDSettingsRef				mVDSettings;
 		// Session
-		SDASessionRef				mSDASession;
+		VDSessionRef				mVDSession;
 
 		// UITextures
-		SDAUITexturesRef			mUITextures;
+		VDUITexturesRef			mUITextures;
 		bool						showUITextures;
 		// UIFbos
-		SDAUIFbosRef				mUIFbos;
+		VDUIFbosRef				mUIFbos;
 		bool						showUIFbos;
 		// UIAnimation
-		SDAUIAnimationRef			mUIAnimation;
+		VDUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
 		// UIMidi
-		SDAUIMidiRef				mUIMidi;
+		VDUIMidiRef				mUIMidi;
 		bool						showUIMidi;
 		// UIAudio
-		SDAUIAudioRef				mUIAudio;
+		VDUIAudioRef				mUIAudio;
 		bool						showUIAudio;
 		// UIColor
-		SDAUIColorRef				mUIColor;
+		VDUIColorRef				mUIColor;
 		bool						showUIColor;
 		// UITempo
-		SDAUITempoRef				mUITempo;
+		VDUITempoRef				mUITempo;
 		bool						showUITempo;
 		// UIBlend
-		SDAUIBlendRef				mUIBlend;
+		VDUIBlendRef				mUIBlend;
 		bool						showUIBlend;
 		// UIMouse
-		SDAUIMouseRef				mUIMouse;
+		VDUIMouseRef				mUIMouse;
 		bool						showUIMouse;
 		// UIOsc
-		SDAUIOscRef					mUIOsc;
+		VDUIOscRef					mUIOsc;
 		bool						showUIOsc;
 		// UIWebsockets
-		SDAUIWebsocketsRef			mUIWebsockets;
+		VDUIWebsocketsRef			mUIWebsockets;
 		bool						showUIWebsockets;
 		// UIShaders
-		SDAUIShadersRef				mUIShaders;
+		VDUIShadersRef				mUIShaders;
 		bool						showUIShaders;
 		// UIRender
-		SDAUIRenderRef				mUIRender;
+		VDUIRenderRef				mUIRender;
 		bool						showUIRender;
 		
 		float						getMinUniformValueByIndex(unsigned int aIndex);

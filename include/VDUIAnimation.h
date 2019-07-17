@@ -5,34 +5,34 @@
 // UserInterface
 #include "CinderImGui.h"
 // Settings
-#include "SDASettings.h"
+#include "VDSettings.h"
 // Session
-#include "SDASession.h"
+#include "VDSession.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-namespace SophiaDigitalArt
+namespace VideoDromm
 {
-	// stores the pointer to the SDAUIAnimation instance
-	typedef std::shared_ptr<class SDAUIAnimation> SDAUIAnimationRef;
+	// stores the pointer to the VDUIAnimation instance
+	typedef std::shared_ptr<class VDUIAnimation> VDUIAnimationRef;
 
-	class SDAUIAnimation
+	class VDUIAnimation
 	{
 	public:
-		SDAUIAnimation(SDASettingsRef aSDASettings, SDASessionRef aSDASession);
-		static SDAUIAnimationRef	create(SDASettingsRef aSDASettings, SDASessionRef aSDASession)
+		VDUIAnimation(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
+		static VDUIAnimationRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 		{
-			return shared_ptr<SDAUIAnimation>(new SDAUIAnimation(aSDASettings, aSDASession));
+			return shared_ptr<VDUIAnimation>(new VDUIAnimation(aVDSettings, aVDSession));
 		}
-		~SDAUIAnimation();
+		~VDUIAnimation();
 		void    Run(const char* title);
 	private:
 		// Settings
-		SDASettingsRef					mSDASettings;
+		VDSettingsRef					mVDSettings;
 		// Session
-		SDASessionRef					mSDASession;
+		VDSessionRef					mVDSession;
 
 		// imgui
 		float							getValue(unsigned int aCtrl);

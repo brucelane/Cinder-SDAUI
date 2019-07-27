@@ -216,12 +216,14 @@ void VDUIAnimation::Run(const char* title) {
 			{
 				setValue(ctrl, localValues[ctrl]);
 			}
+			/* todo crash:
 			ImGui::DragFloat("minzm", &minZoom, 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl));
 			ImGui::SameLine();
 			ImGui::DragFloat("maxzm", &maxZoom, 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl));
-
+			*/
 			//  speed sequence
-			ctrl = mVDSettings->ISPEED;
+// 20190727 TODO CHECK IF NEEDED
+			/*ctrl = mVDSettings->ISPEED;
 			if (ImGui::Button("a##speed")) { toggleAuto(ctrl); }
 			ImGui::SameLine();
 			if (ImGui::Button("f##speed")) { toggleTempo(ctrl); }
@@ -232,10 +234,9 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::DragFloat("speed", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
-			}
-
+			} */
 			// rotation speed 
-			ctrl = mVDSettings->IROTATIONSPEED;
+			/*ctrl = mVDSettings->IROTATIONSPEED;
 			if (ImGui::Button("a##rotationspeed")) { toggleAuto(ctrl); }
 			ImGui::SameLine();
 			if (ImGui::Button("f##rotationspeed")) { toggleTempo(ctrl); }
@@ -246,7 +247,7 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::DragFloat("rotationSpeed", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
-			}
+			}*/
 			// badTv
 			ctrl = mVDSettings->IBADTV;
 			if (ImGui::Button("a##badtv")) { toggleAuto(ctrl); }

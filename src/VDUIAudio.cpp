@@ -65,8 +65,8 @@ void VDUIAudio::Run(const char* title) {
 			if (ImGui::Button("x##spdx")) { mVDSettings->iSpeedMultiplier = 1.0; }
 			ImGui::SameLine();
 			ImGui::SliderFloat("speed x", &mVDSettings->iSpeedMultiplier, 0.01f, 5.0f, "%.1f");
-			/* TODO
-			ImGui::Text("Beat %d ", mVDSettings->iBeat);
+			
+			/* TODOImGui::Text("Beat %d ", mVDSettings->iBeat);
 			ImGui::SameLine();
 			ImGui::Text("Beat Idx %d ", mVDAnimation->iBeatIndex);
 			//ImGui::SameLine();
@@ -75,6 +75,8 @@ void VDUIAudio::Run(const char* title) {
 			ImGui::SameLine();
 	 */
 			ImGui::Text("beat %d ", mVDSession->getIntUniformValueByName("iBeat"));
+			ImGui::SameLine();
+			ImGui::Text("phase %d ", mVDSession->getIntUniformValueByName("iPhase"));
 			ImGui::SameLine();
 			ImGui::Text("beats/bar %d ", mVDSession->getIntUniformValueByName("iBeatsPerBar"));
 
@@ -85,7 +87,13 @@ void VDUIAudio::Run(const char* title) {
 			ImGui::Text("Trk %s %.2f", mVDSettings->mTrackName.c_str(), mVDSettings->liveMeter);
 			ImGui::SameLine();
 			//			ImGui::Checkbox("Playing", &mVDSettings->mIsPlaying);
-			ImGui::Text("Tempo %.2f ", mVDSession->getBpm());
+			
+			static float tempo = mVDSession->getBpm();
+			ImGui::Text("Tempo %.2f ", tempo);
+			if (ImGui::SliderFloat("Tempo", &tempo, 0.01f, 200.0f, "%.1f"))
+			{
+				mVDSession->setBpm(tempo);
+			};
 
 			if (ImGui::Button("Tap tempo")) { mVDSession->tapTempo(); }
 			if (ImGui::Button("Time tempo")) { mVDSession->toggleUseTimeWithTempo(); }

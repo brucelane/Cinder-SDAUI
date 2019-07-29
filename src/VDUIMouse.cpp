@@ -31,6 +31,9 @@ void VDUIMouse::Run(const char* title) {
 			mVDSettings->mRenderPosXY.x = ImGui::GetIO().MousePos.x; ImGui::SameLine();
 			mVDSettings->mRenderPosXY.y = ImGui::GetIO().MousePos.y;
 		} */
+		// TODO CHECK TMP
+		//setValue(mVDSettings->IMOUSEX, ImGui::GetIO().MousePos.x);
+		//setValue(mVDSettings->IMOUSEY, ImGui::GetIO().MousePos.y);
 		// mouse
 		mouseX = getValue(mVDSettings->IMOUSEX);
 		if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mVDSettings->mFboWidth, "%.4f", 3.0f))

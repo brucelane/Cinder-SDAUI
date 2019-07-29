@@ -90,11 +90,11 @@ void VDUIAudio::Run(const char* title) {
 			
 			static float tempo = mVDSession->getBpm();
 			ImGui::Text("Tempo %.2f ", tempo);
-			if (ImGui::SliderFloat("Tempo", &tempo, 0.01f, 200.0f, "%.1f"))
+			if (ImGui::DragFloat("Tempo", &tempo, 0.01f, 0.01f, 200.0f, "%.2f"))
 			{
 				mVDSession->setBpm(tempo);
 			};
-
+			
 			if (ImGui::Button("Tap tempo")) { mVDSession->tapTempo(); }
 			if (ImGui::Button("Time tempo")) { mVDSession->toggleUseTimeWithTempo(); }
 

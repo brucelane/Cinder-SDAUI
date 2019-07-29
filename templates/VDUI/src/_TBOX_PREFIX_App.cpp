@@ -47,20 +47,8 @@ private:
 	VDUIRef						mVDUI;
 	// handle resizing for imgui
 	void							resizeWindow();
-	// imgui
-	float							color[4];
-	float							backcolor[4];
-	int								playheadPositions[12];
-	int								speeds[12];
-
-	float							f = 0.0f;
-	char							buf[64];
-	unsigned int					i, j;
-
-	bool							mouseGlobal;
 
 	string							mError;
-	// fbo
 	bool							mIsShutDown;
 	Anim<float>						mRenderWindowTimer;
 	void							positionRenderWindow();
@@ -77,10 +65,9 @@ _TBOX_PREFIX_App::_TBOX_PREFIX_App()
 	// Session
 	mVDSession = VDSession::create(mVDSettings);
 	//mVDSettings->mCursorVisible = true;
-	setUIVisibility(mVDSettings->mCursorVisible);
+	toggleCursorVisibility(mVDSettings->mCursorVisible);
 	mVDSession->getWindowsResolution();
 
-	mouseGlobal = false;
 	mFadeInDelay = true;
 	// UI
 	mVDUI = VDUI::create(mVDSettings, mVDSession);
@@ -95,7 +82,8 @@ void _TBOX_PREFIX_App::resizeWindow()
 	mVDUI->resize();
 }
 void _TBOX_PREFIX_App::positionRenderWindow() {
-	mVDSettings->mRenderPosXY = ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY);//20141214 was 0
+	mVDSession->getWindowsResolution();
+	mVDSettings->mRenderPosXY = ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY);
 	setWindowPos(mVDSettings->mRenderX, mVDSettings->mRenderY);
 	setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
 }
@@ -171,10 +159,10 @@ void _TBOX_PREFIX_App::keyDown(KeyEvent event)
 			mVDSettings->mCursorVisible = !mVDSettings->mCursorVisible;
 			toggleCursorVisibility(mVDSettings->mCursorVisible);
 			break;
-		/* IN vdsessioncase KeyEvent::KEY_h:
-			// ui visibility
-			toggleUIVisibility();
-			break; */
+		case KeyEvent::KEY_F11:
+			// windows position
+			positionRenderWindow();
+			break;
 		}
 	}
 }

@@ -232,7 +232,7 @@ yPos = mVDSettings->uiYPosRow2;// - mVDSettings->uiLargePreviewH
 
 ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
-
+/*
 sprintf(buf, "%s##sh%d", "mix", 0);
 ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 {
@@ -245,9 +245,46 @@ ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_
 	{
 		mVDSession->setCrossfade(xFade);
 	}
+
+	for (int s = 0; s < mVDSession->getShadersCount(); s++) {
+		int f = 0;
+		if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
+			
+		if (mVDSession->getFboFragmentShaderIndex(f) == s) {
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+		}
+		else {
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+		}
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+		sprintf(buf, "%d##sf%d", s, f);
+		if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set fbo to left");
+		ImGui::PopStyleColor(3);
+	}
+	for (int s = 0; s < mVDSession->getShadersCount(); s++) {
+		int f = 1;
+		if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
+
+		if (mVDSession->getFboFragmentShaderIndex(f) == s) {
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+		}
+		else {
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+		}
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+		sprintf(buf, "%d##sf%d", s, f);
+		if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to right");
+		ImGui::PopStyleColor(3);
+	}
+
 	ImGui::PopItemWidth();
 }
 ImGui::End();
+*/
 #pragma endregion mix
 #pragma region fbos
 

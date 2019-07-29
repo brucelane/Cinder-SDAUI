@@ -71,7 +71,7 @@ void VDUIRender::Run(const char* title) {
 			setIntValue(ctrl, iOutW);
 		}
 		ctrl = mVDSettings->IOUTH;
-		if (ImGui::SliderInt("iOutH", &iOutH, 480, 2000))
+		if (ImGui::SliderInt("iOutH", &iOutH, 240, 2000))
 		{
 			setIntValue(ctrl, iOutH);
 		}

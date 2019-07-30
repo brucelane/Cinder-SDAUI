@@ -161,9 +161,15 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mVDSession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
 		if (mVDSession->getMaxVolume() > 240.0) ImGui::PopStyleColor();
 
-		ImGui::SameLine();
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+		ImGui::SameLine();
+		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(0))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::SameLine();
 		ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::SameLine();
+		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(1))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+
+
 
 		multx = mVDSession->getFloatUniformValueByIndex(mVDSettings->IAUDIOX); // 13
 		if (ImGui::SliderFloat("mult x", &multx, 0.01f, 12.0f)) {
@@ -206,8 +212,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			mVDSession->flipH();
 		}
 		ImGui::PopStyleColor(3);
-		
-		
+
+
 
 
 		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
@@ -224,7 +230,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
 			sprintf(buf, "%d##sf%d", s, f);
 			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to left");
+			sprintf(buf, "Set fbo A to %s", mVDSession->getShaderName(s).c_str());
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 			ImGui::PopStyleColor(3);
 		}
 		// crossfade
@@ -249,7 +256,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
 			sprintf(buf, "%d##sf%d", s, f);
 			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to right");
+			sprintf(buf, "Set fbo B to %s", mVDSession->getShaderName(s).c_str());
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 			ImGui::PopStyleColor(3);
 		}
 

@@ -292,7 +292,7 @@ ImGui::End();
 	** fbos
 	*/
 	for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {//mVDSession->getFboListSize() or 2
-		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (f+1));
+		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (f));//+1
 		yPos = mVDSettings->uiYPosRow2;
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);

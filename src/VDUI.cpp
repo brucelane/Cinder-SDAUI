@@ -218,8 +218,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
 			int f = 0;
-			if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
-
+			//if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
+			if (s > 0) ImGui::SameLine();
 			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
 			}
@@ -244,8 +244,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
 			int f = 1;
-			if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
-
+			//if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
+			if (s > 0) ImGui::SameLine();
 			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
 			}

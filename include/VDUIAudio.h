@@ -36,6 +36,8 @@ namespace videodromm
 		// imgui
 		float						f = 0.0f;
 		char						buf[64];
-		float						multx;
+		//float						multx;
+		void						toggleSpinalTap() { spinalTap = !spinalTap; };
+		bool						spinalTap = false;
 	};
 }

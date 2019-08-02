@@ -66,37 +66,48 @@ void VDUIAudio::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::SliderFloat("speed x", &mVDSettings->iSpeedMultiplier, 0.01f, 5.0f, "%.1f");
 			
-			/* TODOImGui::Text("Beat %d ", mVDSettings->iBeat);
+			ImGui::Text("beat %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBEAT));
 			ImGui::SameLine();
-			ImGui::Text("Beat Idx %d ", mVDAnimation->iBeatIndex);
-			//ImGui::SameLine();
-			//ImGui::Text("Bar %d ", mVDAnimation->iBar);
-			if (ImGui::Button("x##bpbx")) { mVDSession->setControlValue("iBeat", 1); }
+			ImGui::Text("bar %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBAR));
 			ImGui::SameLine();
-	 */
-			ImGui::Text("beat %d ", mVDSession->getIntUniformValueByName("iBeat"));
-			ImGui::SameLine();
-			ImGui::Text("phase %d ", mVDSession->getIntUniformValueByName("iPhase"));
-			ImGui::SameLine();
-			ImGui::Text("beats/bar %d ", mVDSession->getIntUniformValueByName("iBeatsPerBar"));
+			ImGui::Text("phase %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IPHASE));
 
-			ImGui::Text("Time %.2f", mVDSession->getFloatUniformValueByName("iTime"));
+			ImGui::Text("Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME));
 			ImGui::SameLine();
-			ImGui::Text("Tempo Time %.2f", mVDSession->getFloatUniformValueByName("iTempoTime"));
+			ImGui::Text("Tempo Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITEMPOTIME));
 
 			ImGui::Text("Trk %s %.2f", mVDSettings->mTrackName.c_str(), mVDSettings->liveMeter);
 			ImGui::SameLine();
 			//			ImGui::Checkbox("Playing", &mVDSettings->mIsPlaying);
-			
-			static float tempo = mVDSession->getBpm();
-			ImGui::Text("Tempo %.2f ", tempo);
-			if (ImGui::DragFloat("Tempo", &tempo, 0.01f, 0.01f, 200.0f, "%.2f"))
-			{
-				mVDSession->setBpm(tempo);
-			};
-			
-			if (ImGui::Button("Tap tempo")) { mVDSession->tapTempo(); }
+			ImGui::Text("Tempo %.2f ", mVDSession->getBpm());
+
+			// BUG taptempo
+			if (ImGui::Button("Tap toggle")) { toggleSpinalTap(); }
+			if (spinalTap) {
+				static float tempo = mVDSession->getBpm();
+				//ImGui::Text("Tempo %.2f ", tempo);
+				if (ImGui::DragFloat("Tempo", &tempo, 0.01f, 0.01f, 200.0f, "%.2f"))
+				{
+					mVDSession->setBpm(tempo);
+				};
+				/*if (ImGui::SliderFloat("TempoS", &tempo, 0.01f, 200.0f, "%.01f")) {
+					mVDSession->setBpm(tempo);
+				}*/
+			}
+			else {
+				if (ImGui::Button("Tap tempo")) { mVDSession->tapTempo(); }
+			}
+
+			if (mVDSession->getUseTimeWithTempo()) {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+			}
+			else {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			}
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
 			if (ImGui::Button("Time tempo")) { mVDSession->toggleUseTimeWithTempo(); }
+			ImGui::PopStyleColor(3);
 
 			// TODO ImGui::SliderFloat("time x", &mVDAnimation->iTimeFactor, 0.0001f, 1.0f, "%.01f");
 			ImGui::SameLine();

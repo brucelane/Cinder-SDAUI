@@ -121,8 +121,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	}
 
 #pragma endregion menu
-	//ImGui::SetNextWindowSize(ImVec2(mVDSettings->mRenderWidth - 20, uiSmallH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(660, mVDSettings->uiSmallH), ImGuiSetCond_Once);
+
+	ImGui::SetNextWindowSize(ImVec2(1000, mVDSettings->uiLargeH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 	sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mVDSession->getTargetFps());
 	ImGui::Begin(buf);
@@ -213,21 +213,18 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::PopStyleColor(3);
 
-
-
-
 		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
 			int f = 0;
 			//if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
 			if (s > 0) ImGui::SameLine();
 			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 1.0f, 0.5f));
 			}
 			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 0.1f, 0.1f));
 			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
 			sprintf(buf, "%d##sf%d", s, f);
 			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
 			sprintf(buf, "Set fbo A to %s", mVDSession->getShaderName(s).c_str());
@@ -247,13 +244,13 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			//if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
 			if (s > 0) ImGui::SameLine();
 			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 1.0f, 0.5f));
 			}
 			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 0.1f, 0.1f));
 			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
 			sprintf(buf, "%d##sf%d", s, f);
 			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
 			sprintf(buf, "Set fbo B to %s", mVDSession->getShaderName(s).c_str());
@@ -272,8 +269,6 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
 		ImGui::RadioButton("Midi", &currentWindowRow1, 8); ImGui::SameLine();
 		ImGui::RadioButton("Render", &currentWindowRow1, 9);
-
-
 
 		ctrl = mVDSettings->IWEIGHT0;
 		iWeight0 = mVDSession->getFloatUniformValueByIndex(ctrl);
@@ -303,6 +298,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		{
 			setValue(ctrl, iWeight3);
 		}
+		ImGui::SameLine();
 
 		ctrl = mVDSettings->IWEIGHT4;
 		iWeight4 = mVDSession->getFloatUniformValueByIndex(ctrl);
@@ -401,7 +397,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	// textures
 	mUITextures->Run("Textures");
 	// Fbos
-	mUIFbos->Run("Fbos");
+	//mUIFbos->Run("Fbos");
 	// Shaders
 	mUIShaders->Run("Shaders");
 

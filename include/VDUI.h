@@ -64,16 +64,16 @@ namespace videodromm
 		VDSessionRef				mVDSession;
 
 		// UITextures
-		VDUITexturesRef			mUITextures;
+		VDUITexturesRef				mUITextures;
 		bool						showUITextures;
 		// UIFbos
-		VDUIFbosRef				mUIFbos;
+		VDUIFbosRef					mUIFbos;
 		bool						showUIFbos;
 		// UIAnimation
 		VDUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
 		// UIMidi
-		VDUIMidiRef				mUIMidi;
+		VDUIMidiRef					mUIMidi;
 		bool						showUIMidi;
 		// UIAudio
 		VDUIAudioRef				mUIAudio;

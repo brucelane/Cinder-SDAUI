@@ -261,7 +261,7 @@ void VDUIAnimation::Run(const char* title) {
 			{
 				setValue(ctrl, localValues[ctrl]);
 			}
-			// param1
+			// pixelX
 			ctrl = mVDSettings->IPIXELX;
 			if (ImGui::Button("x##pixelX")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
@@ -270,7 +270,7 @@ void VDUIAnimation::Run(const char* title) {
 			{
 				setValue(ctrl, localValues[ctrl]);
 			}
-			// param2
+			// pixelY
 			ctrl = mVDSettings->IPIXELY;
 			if (ImGui::Button("x##pixelY")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();

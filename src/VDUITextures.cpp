@@ -20,8 +20,8 @@ void VDUITextures::Run(const char* title) {
 	static bool anim[64];
 
 	for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
-		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiSmallH), ImGuiSetCond_Once);
-		ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + 888, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
+		ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * t), mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
 		int hue = 0;
 		sprintf(buf, "%s##s%d", mVDSession->getInputTextureName(t).c_str(), t);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);

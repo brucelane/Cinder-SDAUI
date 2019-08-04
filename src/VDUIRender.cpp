@@ -7,8 +7,8 @@ VDUIRender::VDUIRender(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mVDSession = aVDSession;
 	
 	// contour
-	minContour = getMinUniformValueByIndex(26);
-	maxContour = getMaxUniformValueByIndex(26);
+	minContour = getMinUniformValueByIndex(mVDSettings->ICONTOUR);
+	maxContour = getMaxUniformValueByIndex(mVDSettings->ICONTOUR);
 	iResolutionX = (int)getValueByName("iResolutionX");
 	iResolutionY = (int)getValueByName("iResolutionY");
 	iOutW = getIntValue(mVDSettings->IOUTW);

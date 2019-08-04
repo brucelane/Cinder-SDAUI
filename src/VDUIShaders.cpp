@@ -37,11 +37,8 @@ void VDUIShaders::Run(const char* title) {
 	static int shaderToEdit = -1;
 
 	xPos = mVDSettings->uiMargin;
-	yPos = mVDSettings->uiYPosRow3;// 4;
+	yPos = mVDSettings->uiYPosRow3;
 	for (int s = 0; s < mVDSession->getShadersCount(); s++) {
-		//ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
-		//ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + mVDSettings->uiMargin + mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
-		
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		//int hue = 0;
@@ -53,27 +50,27 @@ void VDUIShaders::Run(const char* title) {
 			ImGui::Image((void*)mVDSession->getShaderThumb(s)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			if (ImGui::IsItemHovered()) mVDSession->getShaderThumb(s);
 			// edit
-			//if (shaderToEdit == s) {
-			//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.8f, 1.0f, 0.5f));
-			//}
-			//else {
-			//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-			//}
-			//ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.8f, 0.7f, 0.7f));
-			//ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.8f, 0.8f, 0.8f));
-			//sprintf(buf, "E##se%d", s);
-			//if (ImGui::Button(buf)){
-			//	if (s == shaderToEdit) {
-			//		// if the same button pressed we hide the editor
-			//		shaderToEdit = -1;
-			//	}
-			//	else{
-			//		shaderToEdit = s;
-			//	}
-			//}
-			//ImGui::PopStyleColor(3);
-			//if (ImGui::IsItemHovered()) ImGui::SetTooltip("Edit shader");
-			//ImGui::SameLine();
+			if (shaderToEdit == s) {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.8f, 1.0f, 0.5f));
+			}
+			else {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			}
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.8f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.8f, 0.8f, 0.8f));
+			sprintf(buf, "E##se%d", s);
+			if (ImGui::Button(buf)) {
+				if (s == shaderToEdit) {
+					// if the same button pressed we hide the editor
+					shaderToEdit = -1;
+				}
+				else {
+					shaderToEdit = s;
+				}
+			}
+			ImGui::PopStyleColor(3);
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Edit shader");
+			ImGui::SameLine();
 
 			if (s > 2)
 			{
@@ -85,17 +82,49 @@ void VDUIShaders::Run(const char* title) {
 
 			// thumb
 			sprintf(buf, "T##st%d", s);
-			if (ImGui::Button(buf)){
+			if (ImGui::Button(buf)) {
 				mVDSession->updateShaderThumbFile(s);
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Create thumb");
 			ImGui::SameLine();
 
-            // send with websocket
+			// send with websocket
 			sprintf(buf, "WS##ws%d", s);
 			if (ImGui::Button(buf)) mVDSession->sendFragmentShader(s);
 
-			for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {//mVDSession->getFboListSize() 4
+			for (unsigned int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
+				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
+				if (mVDSession->getFboInputTextureIndex(s) == t) {
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
+				}
+				else {
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
+				}
+				sprintf(buf, "%d##fboit%d%d", t, s, t);
+				if (ImGui::Button(buf)) mVDSession->setFboInputTexture(s, t);
+
+				sprintf(buf, "Set input texture to %s", mVDSession->getInputTextureName(t).c_str());
+				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+				ImGui::PopStyleColor(1);
+			}
+			if (mVDSession->isFboFlipV(s)) {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 1.0f, 1.0f));
+			}
+			else {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 0.1f, 0.1f));
+			}
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
+			sprintf(buf, "FlipV##fboflipv%d", s);
+			if (ImGui::Button(buf)) mVDSession->fboFlipV(s);
+			ImGui::PopStyleColor(3);
+			ImGui::SameLine();
+			sprintf(buf, "T##fboupd%d", s);
+			if (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(s);
+			ImGui::Text("wh %dx%d", mVDSession->getFboRenderedTexture(s)->getWidth(), mVDSession->getFboRenderedTexture(s)->getHeight());
+
+			/*
+			for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
 				if (f > 0 && (f % 6 != 0)) ImGui::SameLine();
 				if (mVDSession->getFboFragmentShaderIndex(f) == s) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
@@ -109,7 +138,7 @@ void VDUIShaders::Run(const char* title) {
 				if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to fbo");
 				ImGui::PopStyleColor(3);
-			}
+			} */
 			ImGui::PopID();
 			ImGui::PopItemWidth();
 		}
@@ -122,10 +151,9 @@ void VDUIShaders::Run(const char* title) {
 		}
 		// editor
 #pragma region Editor
-		/*
 		if (shaderToEdit == s) {
 			mVDSettings->mMsg = "Editing shader " + toString(shaderToEdit) + " name " + mVDSession->getShaderName(shaderToEdit);
-			ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol2, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
+			ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
 			ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW * 3, mVDSettings->uiLargeH), ImGuiSetCond_FirstUseEver);
 			sprintf(buf, "Editor - %s - %d##edit%d", mVDSession->getShaderName(shaderToEdit).c_str(), shaderToEdit, shaderToEdit);
 			ImGui::Begin(buf);
@@ -150,15 +178,15 @@ void VDUIShaders::Run(const char* title) {
 					"}\n";
 				// check if shader text needs to be loaded in the editor
 				if (mVDSettings->shaderEditIndex != shaderToEdit) {
-					// ptr error
-					
-					//mFboTextureFragmentShaderString = mVDSession->getFragmentShaderString(shaderToEdit);
-					//mVDSettings->shaderEditIndex = shaderToEdit;
+					/* ptr error
+					*/
+					mFboTextureFragmentShaderString = mVDSession->getFragmentShaderString(shaderToEdit);
+					mVDSettings->shaderEditIndex = shaderToEdit;
 					// delete content
-					//memset(&mShaderText[0], 0, sizeof(mShaderText));
+					memset(&mShaderText[0], 0, sizeof(mShaderText));
 					// copy content from string
-					//std::copy(mFboTextureFragmentShaderString.begin(), (mFboTextureFragmentShaderString.size() >= MAX ? mFboTextureFragmentShaderString.begin() + MAX : mFboTextureFragmentShaderString.end()), mShaderText);
-				
+					std::copy(mFboTextureFragmentShaderString.begin(), (mFboTextureFragmentShaderString.size() >= MAX ? mFboTextureFragmentShaderString.begin() + MAX : mFboTextureFragmentShaderString.end()), mShaderText);
+
 				}
 
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
@@ -176,9 +204,9 @@ void VDUIShaders::Run(const char* title) {
 						CI_LOG_V("live.frag loaded and compiled");
 						mFboTextureFragmentShaderString = mShaderText;
 						stringstream sParams;
-						sParams << "//{ \"title\" : \"" << getElapsedSeconds() << "\" } " << mFboTextureFragmentShaderString;
+						sParams << "/*{ \"title\" : \"" << getElapsedSeconds() << "\" }*/ " << mFboTextureFragmentShaderString;
 						mVDSession->wsWrite(sParams.str());
-						//OK mVDRouter->wsWrite("//{ \"title\" : \"live\" }// " + mFboTextureFragmentShaderString);
+						//OK mVDRouter->wsWrite("/*{ \"title\" : \"live\" }*/ " + mFboTextureFragmentShaderString);
 						mError = "";
 						// compiles, update the shader for display
 						mVDSession->setFragmentShaderString(shaderToEdit, mFboTextureFragmentShaderString);
@@ -199,9 +227,8 @@ void VDUIShaders::Run(const char* title) {
 				}
 			}
 			ImGui::End();
-		}*/
+		}
 #pragma endregion Editor
-
 	}
 
 }

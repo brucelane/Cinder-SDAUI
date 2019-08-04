@@ -239,6 +239,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		{
 			mVDSession->setCrossfade(xFade);
 		}
+		ImGui::SameLine();
 		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
 			int f = 1;
 			//if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
@@ -262,13 +263,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Warp", &currentWindowRow1, 0); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
 		ImGui::RadioButton("Mouse", &currentWindowRow1, 2);  ImGui::SameLine();
-		ImGui::RadioButton("Blend", &currentWindowRow1, 3); ImGui::SameLine();
+		ImGui::RadioButton("Render", &currentWindowRow1, 3); ImGui::SameLine();
 		ImGui::RadioButton("AudioTempo", &currentWindowRow1, 4); ImGui::SameLine();
 		ImGui::RadioButton("ColorWs", &currentWindowRow1, 5); ImGui::SameLine();
 		ImGui::RadioButton("Osc", &currentWindowRow1, 6); ImGui::SameLine();
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
-		ImGui::RadioButton("Midi", &currentWindowRow1, 8); ImGui::SameLine();
-		ImGui::RadioButton("Render", &currentWindowRow1, 9);
+		ImGui::RadioButton("Midi", &currentWindowRow1, 8); 
 
 		ctrl = mVDSettings->IWEIGHT0;
 		iWeight0 = mVDSession->getFloatUniformValueByIndex(ctrl);
@@ -363,6 +363,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mUIMouse->Run("Mouse");
 		break;
 	case 3:
+		// Render
+		mUIRender->Run("Render");
 		// Blend
 		mUIBlend->Run("Blend");
 		break;
@@ -385,11 +387,6 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	case 8:
 		// Midi
 		mUIMidi->Run("Midi");
-		break;
-	case 9:
-		// Render
-		mUIRender->Run("Render");
-
 		break;
 	}
 	mVDSession->blendRenderEnable(currentWindowRow1 == 3);

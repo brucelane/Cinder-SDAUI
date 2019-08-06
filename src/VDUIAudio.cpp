@@ -56,15 +56,19 @@ void VDUIAudio::Run(const char* title) {
 		}
 		ImGui::PopStyleColor(3);
 		
-		ImGui::PopItemWidth();
+		//ImGui::PopItemWidth();
 		}
 		if (ImGui::CollapsingHeader("Tempo", NULL, true, true))
 		{
 
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-			if (ImGui::Button("x##spdx")) { mVDSettings->iSpeedMultiplier = 1.0; }
+			//ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+			if (ImGui::Button("x##startx")) { mVDSettings->iStart = 0.0f; }
 			ImGui::SameLine();
-			ImGui::SliderFloat("speed x", &mVDSettings->iSpeedMultiplier, 0.01f, 5.0f, "%.1f");
+			ImGui::SliderFloat("start", &mVDSettings->iStart, 0.01f, 0.05f, "%.4f");
+
+			if (ImGui::Button("x##spdx")) { mVDSettings->iSpeedMultiplier = 1.0f; }
+			ImGui::SameLine();
+			ImGui::SliderFloat("speed x", &mVDSettings->iSpeedMultiplier, 0.01f, 1.0f, "%.4f");//, 2.01f
 
 			static int tf = 5;
 			if (ImGui::Button("x##tfx")) { tf = 5;mVDSession->setTimeFactor(5); }

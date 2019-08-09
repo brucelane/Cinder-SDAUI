@@ -64,7 +64,7 @@ void VDUIAudio::Run(const char* title) {
 			//ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			if (ImGui::Button("x##startx")) { mVDSettings->iStart = 0.0f; }
 			ImGui::SameLine();
-			ImGui::SliderFloat("start", &mVDSettings->iStart, 0.01f, 0.05f, "%.4f");
+			ImGui::SliderFloat("start", &mVDSettings->iStart, 0.01f, 1.0f, "%.4f");
 
 			if (ImGui::Button("x##spdx")) { mVDSettings->iSpeedMultiplier = 1.0f; }
 			ImGui::SameLine();

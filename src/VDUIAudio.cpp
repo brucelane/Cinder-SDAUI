@@ -92,6 +92,9 @@ void VDUIAudio::Run(const char* title) {
 			ImGui::Text("Tempo %.2f ", mVDSession->getBpm());
 
 			ImGui::Text("Elapsed %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IELAPSED));
+			// duration			
+			ImGui::SameLine();
+			ImGui::Text("duration", &mVDSettings->iBarDuration);
 			// BUG taptempo
 			if (ImGui::Button("Tap toggle")) { toggleSpinalTap(); }
 			if (spinalTap) {

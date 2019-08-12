@@ -66,11 +66,15 @@ void VDUIRender::Run(const char* title) {
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 		// output resolution
 		ctrl = mVDSettings->IOUTW;
+		if (ImGui::Button("x##ioutw")) { iOutW = 1280; setIntValue(ctrl, 1280); }
+		ImGui::SameLine();
 		if (ImGui::SliderInt("iOutW", &iOutW, 320, 5000))
 		{
 			setIntValue(ctrl, iOutW);
 		}
 		ctrl = mVDSettings->IOUTH;
+		if (ImGui::Button("x##iouth")) { iOutH = 800; setIntValue(ctrl, 800); }
+		ImGui::SameLine();
 		if (ImGui::SliderInt("iOutH", &iOutH, 240, 2000))
 		{
 			setIntValue(ctrl, iOutH);
@@ -78,12 +82,16 @@ void VDUIRender::Run(const char* title) {
 		// iResolution
 		ctrl = mVDSettings->IRESX;
 		//iResolutionX = getValueByName("iResolutionX");
+		if (ImGui::Button("x##iresx")) { iResolutionX = 1280; setValue(ctrl, 1280); }
+		ImGui::SameLine();
 		if (ImGui::SliderInt("iResolutionX", &iResolutionX, (int)getMinUniformValueByIndex(ctrl), (int)getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, (float)iResolutionX);
 		}
 		ctrl = mVDSettings->IRESY;
 		//iResolutionY = getValueByName("iResolutionY");
+		if (ImGui::Button("x##iresy")) { iResolutionY = 720; setValue(ctrl, 720); }
+		ImGui::SameLine();
 		if (ImGui::SliderInt("iResolutionY", &iResolutionY, (int)getMinUniformValueByIndex(ctrl), (int)getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, (float)iResolutionY);

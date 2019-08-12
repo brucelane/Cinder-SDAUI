@@ -61,7 +61,9 @@ void VDUIAudio::Run(const char* title) {
 		if (ImGui::CollapsingHeader("Tempo", NULL, true, true))
 		{
 
-			//ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+			//ImGui::Text("start %f ", mVDSettings->iStart);
+
+
 			if (ImGui::Button("x##startx")) { mVDSettings->iStart = 0.0f; }
 			ImGui::SameLine();
 			ImGui::SliderFloat("start", &mVDSettings->iStart, 0.01f, 1.0f, "%.4f");

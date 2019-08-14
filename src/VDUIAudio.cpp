@@ -75,7 +75,7 @@ void VDUIAudio::Run(const char* title) {
 			static int tf = 5;
 			if (ImGui::Button("x##tfx")) { tf = 5;mVDSession->setTimeFactor(5); }
 			ImGui::SameLine();
-			if (ImGui::SliderInt("time x", &tf, 0, 8)) mVDSession->setTimeFactor(tf);
+			if (ImGui::SliderInt("time x", &tf, 0, 9)) mVDSession->setTimeFactor(tf);
 			
 			ImGui::Text("beat %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBEAT));
 			ImGui::SameLine();

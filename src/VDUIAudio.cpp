@@ -11,7 +11,7 @@ VDUIAudio::~VDUIAudio() {
 }
 
 void VDUIAudio::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.3), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.76), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 	sprintf(buf, "%s##inpt", mVDSession->getInputTextureName(0).c_str());
 	ImGui::Begin(buf);
@@ -81,7 +81,7 @@ void VDUIAudio::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::Text("bar %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBAR));
 			ImGui::SameLine();
-			ImGui::Text("phase %.2f ", mVDSession->getFloatUniformValueByIndex(mVDSettings->IPHASE));
+			ImGui::Text("bb %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBARBEAT));
 
 			ImGui::Text("Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME));
 			ImGui::SameLine();
@@ -97,6 +97,8 @@ void VDUIAudio::Run(const char* title) {
 			// duration			
 			ImGui::SameLine();
 			ImGui::Text("duration", &mVDSettings->iBarDuration);
+			ImGui::SameLine();
+			ImGui::Text("phase %.2f ", mVDSession->getFloatUniformValueByIndex(mVDSettings->IPHASE));
 			// BUG taptempo
 			if (ImGui::Button("Tap toggle")) { toggleSpinalTap(); }
 			if (spinalTap) {

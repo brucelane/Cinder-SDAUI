@@ -12,7 +12,6 @@ VDUIMidi::~VDUIMidi() {
 
 void VDUIMidi::Run(const char* title) {
 #if defined( CINDER_MSW )
-	//ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow2 + mVDSettings->uiMargin + mVDSettings->uiLargeH / 2 ), ImGuiSetCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiSmallH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 

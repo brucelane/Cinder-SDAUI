@@ -96,6 +96,21 @@ void VDUIRender::Run(const char* title) {
 		{
 			setValue(ctrl, (float)iResolutionY);
 		}
+
+		// mRenderXY
+		static float mx = mVDSettings->mRenderXY.x;
+		if (ImGui::SliderFloat("mx", &mx, 0.01, 1.0))
+		{
+			mVDSettings->mRenderXY.x = mx;
+		}
+		static float my = mVDSettings->mRenderXY.y;
+		if (ImGui::SliderFloat("my", &my, 0.01, 1.0))
+		{
+			mVDSettings->mRenderXY.y = my;
+		}
+
+
+
 		// rect mxLeft
 		static int mxLeft = mVDSettings->mxLeft;
 		if (ImGui::SliderInt("mxLeft", &mxLeft, 0, 2280))

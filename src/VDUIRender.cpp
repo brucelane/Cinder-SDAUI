@@ -103,35 +103,50 @@ void VDUIRender::Run(const char* title) {
 		{
 			mVDSettings->mRenderXY.x = mx;
 		}
+		ImGui::SameLine();
 		static float my = mVDSettings->mRenderXY.y;
 		if (ImGui::SliderFloat("my", &my, 0.01, 1.0))
 		{
 			mVDSettings->mRenderXY.y = my;
 		}
 
+		// mRenderXY
+		static float texMultW = mVDSettings->mTexMult.x;
+		if (ImGui::SliderFloat("texWx", &texMultW, 0.2, 4.0))
+		{
+			mVDSettings->mTexMult.x = texMultW;
+		}
+		ImGui::SameLine();
+		static float texMultH = mVDSettings->mTexMult.y;
+		if (ImGui::SliderFloat("texHx", &texMultH, 0.2, 4.0))
+		{
+			mVDSettings->mTexMult.x = texMultH;
+		}
 
 
 		// rect mxLeft
 		static int mxLeft = mVDSettings->mxLeft;
-		if (ImGui::SliderInt("mxLeft", &mxLeft, 0, 2280))
+		if (ImGui::SliderInt("mxL", &mxLeft, 0, 2280))
 		{
 			mVDSettings->mxLeft = mxLeft;
 		}
+		ImGui::SameLine();
 		// rect myLeft
 		static int myLeft = mVDSettings->myLeft;
-		if (ImGui::SliderInt("myLeft", &myLeft, 0, 2280))
+		if (ImGui::SliderInt("myL", &myLeft, 0, 2280))
 		{
 			mVDSettings->myLeft = myLeft;
 		}
 		// rect mxRight
 		static int mxRight = mVDSettings->mxRight;
-		if (ImGui::SliderInt("mxRight", &mxRight, 0, 2280))
+		if (ImGui::SliderInt("mxR", &mxRight, 0, 2280))
 		{
 			mVDSettings->mxRight = mxRight;
 		}
+		ImGui::SameLine();
 		// rect myRight
 		static int myRight = mVDSettings->myRight;
-		if (ImGui::SliderInt("myRight", &myRight, 0, 2280))
+		if (ImGui::SliderInt("myR", &myRight, 0, 2280))
 		{
 			mVDSettings->myRight = myRight;
 		}

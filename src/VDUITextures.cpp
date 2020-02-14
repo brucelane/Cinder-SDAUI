@@ -114,6 +114,18 @@ void VDUITextures::Run(const char* title) {
 					}
 					if (ImGui::IsItemHovered()) ImGui::SetTooltip("Pause loading from disk");
 				}
+
+				sprintf(buf, "%s##s%d", mVDSession->getStatus(t).c_str(), t);
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+
+				if (ImGui::Button(buf)) {
+					// TODO mVDSession->loadTextureAuto(t);
+				}
+				ImGui::PopStyleColor(3);
+				hue++;
+
 				speeds[t] = mVDSession->getSpeed(t);
 				sprintf(buf, "speed##spd%d", t);
 				if (ImGui::DragFloat(buf, &speeds[t], 0.01f, 0.0f, 1.0f))
@@ -129,7 +141,7 @@ void VDUITextures::Run(const char* title) {
 				}
 
 
-			}
+			} // end seq
 			//else {
 				//if (!mVDSession->isMovie(t)) {
 					// not a sequence nor video, animate x y...
@@ -213,6 +225,8 @@ void VDUITextures::Run(const char* title) {
 					rnd[t] ^= ImGui::Button(buf);
 					ImGui::PopStyleColor(3);
 					hue++;
+
+					
 				//}
 			//}
 			ImGui::PopItemWidth();

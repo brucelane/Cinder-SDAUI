@@ -212,23 +212,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			mVDSession->flipH();
 		}
 		ImGui::PopStyleColor(3);
-		// modes
-		for (int m = 0; m < 9; m++) {		
-			ImGui::SameLine();
-			if (mVDSession->getMode() == m) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 1.0f, 0.5f));
-			}
-			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 0.1f, 0.1f));
-			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 7.0f, 0.8f, 0.8f));
-			sprintf(buf, "%d##mode", m);
-			if (ImGui::Button(buf)) mVDSession->setMode(m);
-			//sprintf(buf, "Set mode %s", mVDSession->getModeName(s).c_str());
-			//if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::PopStyleColor(3);
-		}
+		
 		// shaders A
 		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
 			int f = 0;
@@ -286,7 +270,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Osc", &currentWindowRow1, 6); ImGui::SameLine();
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
 		ImGui::RadioButton("Midi", &currentWindowRow1, 8); 
-
+		/*
 		ctrl = mVDSettings->IWEIGHT0;
 		iWeight0 = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("W0", &iWeight0, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
@@ -346,6 +330,67 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		if (ImGui::DragFloat("W7", &iWeight7, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 		{
 			setValue(ctrl, iWeight7);
+		}*/
+		// modes
+		for (int m = 0; m < mVDSession->getModesCount(); m++) {
+			if (m > 0) ImGui::SameLine();
+			switch (m)
+			{
+			case 0:
+				ImGui::Image((void*)mVDSession->getMixetteTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			case 1:
+				ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			case 2:
+				ImGui::Image((void*)mVDSession->getRenderTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			case 3:
+				ImGui::Image((void*)mVDSession->getHydraTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			case 4:
+				ImGui::Image((void*)mVDSession->getFboTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			case 5:
+				ImGui::Image((void*)mVDSession->getFboTexture(1)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			case 6:
+				ImGui::Image((void*)mVDSession->getFboTexture(2)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			case 7:
+				ImGui::Image((void*)mVDSession->getFboTexture(3)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			default:
+				ImGui::Image((void*)mVDSession->getMixetteTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				break;
+			}
+		}
+		for (int m = 0; m < mVDSession->getModesCount(); m++) {
+			if (m > 0) ImGui::SameLine();
+			ctrl = mVDSettings->IWEIGHT0 + m;
+			float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
+			sprintf(buf, "W%d##modew", m);
+			if (ImGui::DragFloat(buf, &iWeight, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			{
+				setValue(ctrl, iWeight);
+			}
+			if (mVDSession->getMode() == m) {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 1.0f, 0.5f));
+			}
+			else {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 0.1f, 0.1f));
+			}
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 7.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 7.0f, 0.8f, 0.8f));
+		}
+		for (int m = 0; m < mVDSession->getModesCount(); m++) {
+			if (m > 0) ImGui::SameLine();
+
+			sprintf(buf, "%s##mode", mVDSession->getModeName(m).c_str());
+			if (ImGui::Button(buf)) mVDSession->setMode(m);
+			sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+			ImGui::PopStyleColor(3);
 		}
 		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
 		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());

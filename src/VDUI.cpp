@@ -254,7 +254,9 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
 			sprintf(buf, "%d##sf%d", s, f);
-			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
+			if (ImGui::Button(buf)) {
+				mVDSession->setFboFragmentShaderIndex(f, s);
+			};
 			sprintf(buf, "Set fbo B to %s", mVDSession->getShaderName(s).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 			ImGui::PopStyleColor(3);
@@ -270,67 +272,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Osc", &currentWindowRow1, 6); ImGui::SameLine();
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
 		ImGui::RadioButton("Midi", &currentWindowRow1, 8); 
-		/*
-		ctrl = mVDSettings->IWEIGHT0;
-		iWeight0 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W0", &iWeight0, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight0);
-		}
-		ImGui::SameLine();
-		ctrl = mVDSettings->IWEIGHT1;
-		iWeight1 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W1", &iWeight1, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight1);
-		}
-		ImGui::SameLine();
-		ctrl = mVDSettings->IWEIGHT2;
-		iWeight2 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W2", &iWeight2, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight2);
-		}
-		ImGui::SameLine();
-
-		ctrl = mVDSettings->IWEIGHT3;
-		iWeight3 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W3", &iWeight3, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight3);
-		}
-		ImGui::SameLine();
-
-		ctrl = mVDSettings->IWEIGHT4;
-		iWeight4 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W4", &iWeight4, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight4);
-		}
-		ImGui::SameLine();
-
-		ctrl = mVDSettings->IWEIGHT5;
-		iWeight5 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W5", &iWeight5, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight5);
-		}
-		ImGui::SameLine();
-
-		ctrl = mVDSettings->IWEIGHT6;
-		iWeight6 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W6", &iWeight6, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight6);
-		}
-		ImGui::SameLine();
-
-		ctrl = mVDSettings->IWEIGHT7;
-		iWeight7 = mVDSession->getFloatUniformValueByIndex(ctrl);
-		if (ImGui::DragFloat("W7", &iWeight7, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-		{
-			setValue(ctrl, iWeight7);
-		}*/
+	
 		// modes
 		for (int m = 0; m < mVDSession->getModesCount(); m++) {
 			if (m > 0) ImGui::SameLine();

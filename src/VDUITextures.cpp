@@ -30,28 +30,7 @@ void VDUITextures::Run(const char* title) {
 			ImGui::PushID(t);
 			ImGui::Image((void*)mVDSession->getInputTexture(t)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 0.7);
-			// flip vertically
-			mVDSession->isFlipVInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
-			sprintf(buf, "FlipV##vd%d", t);
-			if (ImGui::Button(buf)) {
-				mVDSession->inputTextureFlipV(t);
-			}
-			ImGui::PopStyleColor(3);
-			hue++;
-			ImGui::SameLine();
-			// flip horizontally
-			mVDSession->isFlipHInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
-			sprintf(buf, "FlipH##hd%d", t);
-			if (ImGui::Button(buf)) {
-				mVDSession->inputTextureFlipH(t);
-			}
-			ImGui::PopStyleColor(3);
-			hue++;
-
+			
 			/* obsolete? 
 			for (unsigned int f = 0; f < mVDMix->getWarpCount(); f++) {
 				if (f > 0) ImGui::SameLine();

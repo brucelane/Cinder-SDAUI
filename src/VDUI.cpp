@@ -268,8 +268,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Mouse", &currentWindowRow1, 2);  ImGui::SameLine();
 		ImGui::RadioButton("Render", &currentWindowRow1, 3); ImGui::SameLine();
 		ImGui::RadioButton("AudioTempo", &currentWindowRow1, 4); ImGui::SameLine();
-		ImGui::RadioButton("ColorWs", &currentWindowRow1, 5); ImGui::SameLine();
-		ImGui::RadioButton("Osc", &currentWindowRow1, 6); ImGui::SameLine();
+		ImGui::RadioButton("Color", &currentWindowRow1, 5); ImGui::SameLine();
+		ImGui::RadioButton("Network", &currentWindowRow1, 6); ImGui::SameLine();
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
 		ImGui::RadioButton("Midi", &currentWindowRow1, 8); 
 	

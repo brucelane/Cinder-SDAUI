@@ -12,7 +12,6 @@
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-//#define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 namespace videodromm
 {
@@ -38,7 +37,7 @@ namespace videodromm
 		int							xPos, yPos;
 		bool						mUseMixette = false;
 		void setValue(unsigned int aCtrl, float aValue) {
-			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+			mVDSession->setUniformValue(aCtrl, aValue);
 		}
 		int							ctrl;
 	};

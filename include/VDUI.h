@@ -137,7 +137,7 @@ namespace videodromm
 			mShowFbos = !mShowFbos;
 		}
 		void setFloatValue(unsigned int aCtrl, float aValue) {
-			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+			mVDSession->setUniformValue(aCtrl, aValue);
 		}
 		float getMinUniformValueByIndex(unsigned int aIndex) {
 			return mVDSession->getMinUniformValueByIndex(aIndex);
@@ -146,7 +146,7 @@ namespace videodromm
 			return mVDSession->getMaxUniformValueByIndex(aIndex);
 		}
 		float							getFloatValue(unsigned int aCtrl) {
-			return mVDSession->getFloatUniformValueByIndex(aCtrl);
+			return mVDSession->getUniformValue(aCtrl);
 		};
 		// mouse
 		float						mouseX, mouseY;

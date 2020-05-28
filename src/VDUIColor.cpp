@@ -15,10 +15,10 @@ VDUIColor::~VDUIColor() {
 
 }
 float VDUIColor::getValue(unsigned int aCtrl) {
-	return mVDSession->getFloatUniformValueByIndex(aCtrl);
+	return mVDSession->getUniformValue(aCtrl);
 }
 void VDUIColor::setValue(unsigned int aCtrl, float aValue) {
-	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+	mVDSession->setUniformValue(aCtrl, aValue);
 }
 void VDUIColor::toggleAuto(unsigned int aCtrl) {
 	mVDSession->toggleAuto(aCtrl);
@@ -82,7 +82,7 @@ void VDUIColor::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##redx")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("red x", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
@@ -95,7 +95,7 @@ void VDUIColor::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##greenx")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("green x", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
@@ -108,7 +108,7 @@ void VDUIColor::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##bluex")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("blue x", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);

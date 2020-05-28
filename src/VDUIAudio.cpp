@@ -87,22 +87,22 @@ void VDUIAudio::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::Text("bb %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBARBEAT));
 
-			ImGui::Text("Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME));
+			ImGui::Text("Time %.2f", mVDSession->getUniformValue(mVDSettings->ITIME));
 			ImGui::SameLine();
-			ImGui::Text("Tempo Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITEMPOTIME));
+			ImGui::Text("Tempo Time %.2f", mVDSession->getUniformValue(mVDSettings->ITEMPOTIME));
 
-			ImGui::Text("Delta Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IDELTATIME));
+			ImGui::Text("Delta Time %.2f", mVDSession->getUniformValue(mVDSettings->IDELTATIME));
 			// LiveOSC Obsolete ImGui::Text("Trk %s %.2f", mVDSettings->mTrackName.c_str(), mVDSettings->liveMeter);
 			ImGui::SameLine();
 			//			ImGui::Checkbox("Playing", &mVDSettings->mIsPlaying);
 			ImGui::Text("Tempo %.2f ", mVDSession->getBpm());
 
-			//ImGui::Text("Elapsed %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IELAPSED));
+			//ImGui::Text("Elapsed %.2f", mVDSession->getUniformValue(mVDSettings->IELAPSED));
 			// duration			
 			//ImGui::SameLine();
 			//ImGui::Text("duration", &mVDSettings->iBarDuration);
 			//ImGui::SameLine();
-			//ImGui::Text("phase %.2f ", mVDSession->getFloatUniformValueByIndex(mVDSettings->IPHASE));
+			//ImGui::Text("phase %.2f ", mVDSession->getUniformValue(mVDSettings->IPHASE));
 			// BUG taptempo
 			if (ImGui::Button("Tap toggle")) { toggleSpinalTap(); }
 			if (spinalTap) {

@@ -46,7 +46,7 @@ namespace videodromm
 		float							getValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			float rtn;
 			//if (mVDSession->getGlobal(aFboIndex) || aCtrl == 0) {
-				rtn = mVDSession->getFloatUniformValueByIndex(aCtrl);
+				rtn = mVDSession->getUniformValue(aCtrl);
 			/*}
 			else {
 				rtn = mVDSession->getFboFloatUniformValueByIndex(aCtrl, aFboIndex);
@@ -55,7 +55,7 @@ namespace videodromm
 		};
 		void							setValue(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
 			//if (mVDSession->getGlobal(aFboIndex)) {
-				mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+				mVDSession->setUniformValue(aCtrl, aValue);
 			/*}
 			else {
 				mVDSession->setFboFloatUniformValueByIndex(aCtrl, aFboIndex, aValue);

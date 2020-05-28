@@ -9,8 +9,8 @@ VDUIRender::VDUIRender(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// contour
 	minContour = getMinUniformValueByIndex(mVDSettings->ICONTOUR);
 	maxContour = getMaxUniformValueByIndex(mVDSettings->ICONTOUR);
-	iResolutionX = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESOLUTIONX);//(int)getFloatValueByName("iResolutionX");
-	iResolutionY = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESOLUTIONY);//(int)getFloatValueByName("iResolutionY");
+	iResolutionX = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONX);//(int)getFloatValueByName("iResolutionX");
+	iResolutionY = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONY);//(int)getFloatValueByName("iResolutionY");
 	iOutW = getIntValue(mVDSettings->IOUTW);
 	iOutH = getIntValue(mVDSettings->IOUTH);
 }
@@ -154,13 +154,13 @@ void VDUIRender::Run(const char* title) {
 		ImGui::PopStyleColor(3);
 		hue++;
 		ctrl = mVDSettings->IVAMOUNT;
-		iVAmount = mVDSession->getFloatUniformValueByIndex(ctrl);
+		iVAmount = mVDSession->getUniformValue(ctrl);
 		if (ImGui::DragFloat("Amount", &iVAmount, 0.001f, 0.0f, 1.0f))
 		{
 			setFloatValue(ctrl, iVAmount);
 		}
 		ctrl = mVDSettings->IVFALLOFF;
-		iVFallOff = mVDSession->getFloatUniformValueByIndex(ctrl);
+		iVFallOff = mVDSession->getUniformValue(ctrl);
 		if (ImGui::DragFloat("FallOff", &iVFallOff, 0.001f, 0.0f, 0.99f))
 		{
 			setFloatValue(ctrl, iVFallOff);
@@ -174,7 +174,7 @@ void VDUIRender::Run(const char* title) {
 		ImGui::SameLine();
 		if (ImGui::Button("x##contour")) { resetAutoAnimation(ctrl); }
 		ImGui::SameLine();
-		contour = mVDSession->getFloatUniformValueByIndex(ctrl);
+		contour = mVDSession->getUniformValue(ctrl);
 		if (ImGui::DragFloat("contour", &contour, 0.001f, minContour, maxContour))
 		{
 			setFloatValue(ctrl, contour);

@@ -215,13 +215,13 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		if (ImGui::GetTime() > refresh_time + 1.0f / 6.0f)
 		{
 			refresh_time = ImGui::GetTime();
-			values[values_offset] = mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS);
+			values[values_offset] = mVDSession->getUniformValue(mVDSettings->IFPS);
 			values_offset = (values_offset + 1) % values.size();
 		}
-		if (mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS) < 12.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+		if (mVDSession->getUniformValue(mVDSettings->IFPS) < 12.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
 		// TODO ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mVDSettings->sFps.c_str(), 0.0f, mVDSession->getTargetFps(), ImVec2(0, 30));
 		ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mVDSettings->sFps.c_str(), 0.0f, 100.0f, ImVec2(0, 30));
-		if (mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS) < 12.0) ImGui::PopStyleColor();
+		if (mVDSession->getUniformValue(mVDSettings->IFPS) < 12.0) ImGui::PopStyleColor();
 		// audio
 		ImGui::SameLine();
 		static ImVector<float> timeValues; if (timeValues.empty()) { timeValues.resize(40); memset(&timeValues.front(), 0, timeValues.size() * sizeof(float)); }
@@ -251,9 +251,9 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				*/
 
 
-		multx = mVDSession->getFloatUniformValueByIndex(mVDSettings->IAUDIOX); // 13
+		multx = mVDSession->getUniformValue(mVDSettings->IAUDIOX); // 13
 		if (ImGui::SliderFloat("mult x", &multx, 0.01f, 12.0f)) {
-			mVDSession->setFloatUniformValueByIndex(13, multx);
+			mVDSession->setUniformValue(13, multx);
 		}
 		ImGui::SameLine();
 		int hue = 0;
@@ -498,11 +498,11 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::SameLine();
 		ImGui::Text("bb %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBARBEAT));
 		ImGui::SameLine();
-		ImGui::Text("Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME));
+		ImGui::Text("Time %.2f", mVDSession->getUniformValue(mVDSettings->ITIME));
 		ImGui::SameLine();
-		ImGui::Text("Tempo Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITEMPOTIME));
+		ImGui::Text("Tempo Time %.2f", mVDSession->getUniformValue(mVDSettings->ITEMPOTIME));
 		ImGui::SameLine();
-		ImGui::Text("Delta Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IDELTATIME));
+		ImGui::Text("Delta Time %.2f", mVDSession->getUniformValue(mVDSettings->IDELTATIME));
 		// LiveOSC Obsolete ImGui::Text("Trk %s %.2f", mVDSettings->mTrackName.c_str(), mVDSettings->liveMeter);
 		ImGui::SameLine();
 		//			ImGui::Checkbox("Playing", &mVDSettings->mIsPlaying);
@@ -557,7 +557,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		/*for (int m = 0; m < mVDSession->getModesCount(); m++) {
 			if (m > 0) ImGui::SameLine();
 			ctrl = mVDSettings->IWEIGHT0 + m;
-			float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
+			float iWeight = mVDSession->getUniformValue(ctrl);
 			sprintf(buf, "W%d##modew", m);
 			if (ImGui::DragFloat(buf, &iWeight, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
@@ -606,7 +606,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::SameLine();*/
 			ctrl = mVDSettings->IWEIGHT0 + m;
 			//ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
-			float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
+			float iWeight = mVDSession->getUniformValue(ctrl);
 			ImGui::PushID(m);
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));

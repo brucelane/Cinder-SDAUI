@@ -68,7 +68,7 @@ void VDUIWarps::Run(const char* title) {
 						
 						//ctrl = mVDSettings->IWEIGHT0 + m;
 						ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
-						float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
+						float iWeight = mVDSession->getUniformValue(ctrl);
 						ImGui::PushID(m);
 						ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
 						ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));

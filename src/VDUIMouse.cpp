@@ -10,10 +10,10 @@ VDUIMouse::~VDUIMouse() {
 	
 }
 float VDUIMouse::getValue(unsigned int aCtrl) {
-	return mVDSession->getFloatUniformValueByIndex(aCtrl);
+	return mVDSession->getUniformValue(aCtrl);
 }
 void VDUIMouse::setValue(unsigned int aCtrl, float aValue) {
-	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+	mVDSession->setUniformValue(aCtrl, aValue);
 }
 void VDUIMouse::Run(const char* title) {
 	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiSmallH), ImGuiSetCond_Once);

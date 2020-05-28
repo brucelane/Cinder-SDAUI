@@ -37,13 +37,13 @@ namespace videodromm
 
 		// imgui
 		float							getFloatValue(unsigned int aCtrl) {
-			return mVDSession->getFloatUniformValueByIndex(aCtrl);
+			return mVDSession->getUniformValue(aCtrl);
 		};
 		void							setFloatValue(unsigned int aCtrl, float aValue) {
-			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+			mVDSession->setUniformValue(aCtrl, aValue);
 		};
 		float							getFloatValueByName(const string& aCtrlName) {
-			return mVDSession->getFloatUniformValueByName(aCtrlName);
+			return mVDSession->getUniformValueByName(aCtrlName);
 		}
 
 		int								getIntValue(unsigned int aCtrl) {

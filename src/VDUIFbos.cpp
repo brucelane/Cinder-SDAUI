@@ -8,7 +8,7 @@ VDUIFbos::VDUIFbos(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	//globalUniforms = true;
 	for (int c = 0; c < 128; c++)
 	{
-		localValues[c] = mVDSession->getFloatUniformValueByIndex(c);
+		localValues[c] = mVDSession->getUniformValue(c);
 	}
 }
 
@@ -367,7 +367,7 @@ void VDUIFbos::Run(const char* title) {
 				case GL_FLOAT:
 					// float 5126
 					//if (mVDSession->getGlobal(f) || ctrl == 0) {
-						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+						localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 					/*}
 					else {
 						localValues[ctrl] = mVDSession->getFboFloatUniformValueByIndex(ctrl, f);
@@ -391,7 +391,7 @@ void VDUIFbos::Run(const char* title) {
 					if (uName == "RENDERSIZE") {
 						float fw = mVDSession->getFboRenderedTexture(f)->getWidth();
 						//ctrl = mVDSession->getUniformIndexForName("iResolutionX");
-						//localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+						//localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 						//sprintf(buf, "rw %.0f##v2x%d", localValues[ctrl], f);
 						sprintf(buf, "rw %.0f", fw);
 						//ImGui::Button(buf);
@@ -399,7 +399,7 @@ void VDUIFbos::Run(const char* title) {
 						ImGui::SameLine();
 						float fh = mVDSession->getFboRenderedTexture(f)->getHeight();
 						//ctrl = mVDSession->getUniformIndexForName("iResolutionY");
-						//localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+						//localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 						//sprintf(buf, "rh %.0f##v2y%d", localValues[ctrl], f);
 						sprintf(buf, "rh %.0f", fh);
 						ImGui::TextColored(ImColor(100, 100, 100), buf);

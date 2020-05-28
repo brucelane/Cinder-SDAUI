@@ -10,13 +10,13 @@ VDUIAnimation::VDUIAnimation(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 	maxZoom = getMaxUniformValueByIndex(12);
 	for (int c = 0; c < 128; c++)
 	{
-		localValues[c] = mVDSession->getFloatUniformValueByIndex(c);
+		localValues[c] = mVDSession->getUniformValue(c);
 	}
 	// contour
 	minContour = getMinUniformValueByIndex(mVDSettings->ICONTOUR);
 	maxContour = getMaxUniformValueByIndex(mVDSettings->ICONTOUR);
-	iResolutionX = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESOLUTIONX);//(int)getFloatValueByName("iResolutionX");
-	iResolutionY = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESOLUTIONY);//(int)getFloatValueByName("iResolutionY");
+	iResolutionX = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONX);//(int)getFloatValueByName("iResolutionX");
+	iResolutionY = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONY);//(int)getFloatValueByName("iResolutionY");
 	iOutW = getIntValue(mVDSettings->IOUTW);
 	iOutH = getIntValue(mVDSettings->IOUTH);
 	iBarBeat = getIntValue(mVDSettings->IBARBEAT);
@@ -53,10 +53,10 @@ void VDUIAnimation::Run(const char* title) {
 				resetAutoAnimation(ctrl);
 			}
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("chromatic", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
-				mVDSession->setFloatUniformValueByIndex(ctrl, localValues[ctrl]);
+				mVDSession->setUniformValue(ctrl, localValues[ctrl]);
 			}
 
 			// ratio
@@ -73,7 +73,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##ratio")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("ratio/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -93,7 +93,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##sobel")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("sobel/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -112,7 +112,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##exposure")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("exposure", &localValues[ctrl], 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -134,7 +134,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##zoom")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("zoom", &localValues[ctrl], 0.1f, minZoom, maxZoom))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -153,7 +153,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##speed")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("speed", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -166,7 +166,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##rotationspeed")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("rotationSpeed", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -179,7 +179,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##badtv")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("badTv", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -188,7 +188,7 @@ void VDUIAnimation::Run(const char* title) {
 			ctrl = mVDSettings->IPIXELX;
 			if (ImGui::Button("x##iPixelX")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("iPixelX/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -197,7 +197,7 @@ void VDUIAnimation::Run(const char* title) {
 			ctrl = mVDSettings->IPIXELY;
 			if (ImGui::Button("x##iPixelY")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("iPixelY/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -217,7 +217,7 @@ void VDUIAnimation::Run(const char* title) {
 			ctrl = mVDSettings->ISTEPS;
 			if (ImGui::Button("x##steps")) { localValues[ctrl] = 16.0f; setFloatValue(ctrl, localValues[ctrl]); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("steps", &localValues[ctrl], 1.0f, 128.0f))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -226,7 +226,7 @@ void VDUIAnimation::Run(const char* title) {
 			ctrl = mVDSettings->IPIXELATE;
 			if (ImGui::Button("x##pixelate")) { localValues[ctrl] = 1.0f; setFloatValue(ctrl, localValues[ctrl]); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("pixelate", &localValues[ctrl], 0.01f, 1.0f))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -235,7 +235,7 @@ void VDUIAnimation::Run(const char* title) {
 			ctrl = mVDSettings->ITRIXELS;
 			if (ImGui::Button("x##trixels")) { localValues[ctrl] = 0.0f; setFloatValue(ctrl, localValues[ctrl]); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("trixels", &localValues[ctrl], 0.00f, 1.0f))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -295,18 +295,18 @@ void VDUIAnimation::Run(const char* title) {
 			*/
 			// iTimeFactor
 			ctrl = mVDSettings->ITIMEFACTOR;
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("timeFactor", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
-				mVDSession->setFloatUniformValueByIndex(ctrl, localValues[ctrl]);
+				mVDSession->setUniformValue(ctrl, localValues[ctrl]);
 			}
 
-			//ImGui::Text("Elapsed %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IELAPSED));
+			//ImGui::Text("Elapsed %.2f", mVDSession->getUniformValue(mVDSettings->IELAPSED));
 			// duration			
 			//ImGui::SameLine();
 			//ImGui::Text("duration", &mVDSettings->iBarDuration);
 			//ImGui::SameLine();
-			//ImGui::Text("phase %.2f ", mVDSession->getFloatUniformValueByIndex(mVDSettings->IPHASE));
+			//ImGui::Text("phase %.2f ", mVDSession->getUniformValue(mVDSettings->IPHASE));
 			// BUG taptempo
 			if (ImGui::Button("Tap toggle")) { toggleSpinalTap(); }
 			if (spinalTap) {
@@ -668,13 +668,13 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::PopStyleColor(3);
 			hue++;
 			ctrl = mVDSettings->IVAMOUNT;
-			iVAmount = mVDSession->getFloatUniformValueByIndex(ctrl);
+			iVAmount = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("Amount", &iVAmount, 0.001f, 0.0f, 1.0f))
 			{
 				setFloatValue(ctrl, iVAmount);
 			}
 			ctrl = mVDSettings->IVFALLOFF;
-			iVFallOff = mVDSession->getFloatUniformValueByIndex(ctrl);
+			iVFallOff = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("FallOff", &iVFallOff, 0.001f, 0.0f, 0.99f))
 			{
 				setFloatValue(ctrl, iVFallOff);
@@ -688,7 +688,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##contour")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			contour = mVDSession->getFloatUniformValueByIndex(ctrl);
+			contour = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("contour", &contour, 0.001f, minContour, maxContour))
 			{
 				setFloatValue(ctrl, contour);
@@ -754,7 +754,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##redx")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("red x", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -767,7 +767,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##greenx")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("green x", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
@@ -780,7 +780,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("x##bluex")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("blue x", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);

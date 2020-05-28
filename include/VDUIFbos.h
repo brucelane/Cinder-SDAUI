@@ -45,21 +45,21 @@ namespace videodromm
 		map<int, float>					localValues;
 		float							getValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			float rtn;
-			if (mVDSession->getGlobal(aFboIndex) || aCtrl == 0) {
+			//if (mVDSession->getGlobal(aFboIndex) || aCtrl == 0) {
 				rtn = mVDSession->getFloatUniformValueByIndex(aCtrl);
-			}
+			/*}
 			else {
 				rtn = mVDSession->getFboFloatUniformValueByIndex(aCtrl, aFboIndex);
-			}
+			}*/
 			return rtn;
 		};
 		void							setValue(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
-			if (mVDSession->getGlobal(aFboIndex)) {
+			//if (mVDSession->getGlobal(aFboIndex)) {
 				mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
-			}
+			/*}
 			else {
 				mVDSession->setFboFloatUniformValueByIndex(aCtrl, aFboIndex, aValue);
-			}
+			}*/
 			
 		};
 		float							getMinUniformValueByIndex(unsigned int aIndex) {
@@ -69,13 +69,15 @@ namespace videodromm
 			return mVDSession->getMaxUniformValueByIndex(aIndex);
 		};
 		bool							getBoolValue(unsigned int aCtrl, unsigned int aFboIndex) {
-			return (mVDSession->getGlobal(aFboIndex)) ? mVDSession->getBoolUniformValueByIndex(aCtrl) : mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
+			//return (mVDSession->getGlobal(aFboIndex)) ? mVDSession->getBoolUniformValueByIndex(aCtrl) : mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
+			return mVDSession->getBoolUniformValueByIndex(aCtrl);
 		};
 		int								getIntValue(unsigned int aCtrl, unsigned int aFboIndex) {
-			return mVDSession->getFboIntUniformValueByIndex(aCtrl, aFboIndex);
+			//return mVDSession->getFboIntUniformValueByIndex(aCtrl, aFboIndex);
+			return mVDSession->getIntUniformValueByIndex(aCtrl);
 		};
 		void							toggleValue(unsigned int aCtrl, unsigned int aFboIndex) {
-			mVDSession->toggleFboValue(aCtrl, aFboIndex);
+			mVDSession->toggleValue(aCtrl); //toggleFboValue(aCtrl, aFboIndex);
 		};
 		// mouse
 		float						mouseX, mouseY;

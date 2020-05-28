@@ -366,12 +366,12 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case GL_FLOAT:
 					// float 5126
-					if (mVDSession->getGlobal(f) || ctrl == 0) {
+					//if (mVDSession->getGlobal(f) || ctrl == 0) {
 						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
-					}
+					/*}
 					else {
 						localValues[ctrl] = mVDSession->getFboFloatUniformValueByIndex(ctrl, f);
-					}
+					*/
 					
 					if (ctrl == 0) {
 						sprintf(buf, "time %.0f", localValues[ctrl]);

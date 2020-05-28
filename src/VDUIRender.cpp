@@ -9,51 +9,13 @@ VDUIRender::VDUIRender(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// contour
 	minContour = getMinUniformValueByIndex(mVDSettings->ICONTOUR);
 	maxContour = getMaxUniformValueByIndex(mVDSettings->ICONTOUR);
-	iResolutionX = (int)getValueByName("iResolutionX");
-	iResolutionY = (int)getValueByName("iResolutionY");
+	iResolutionX = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESOLUTIONX);//(int)getFloatValueByName("iResolutionX");
+	iResolutionY = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESOLUTIONY);//(int)getFloatValueByName("iResolutionY");
 	iOutW = getIntValue(mVDSettings->IOUTW);
 	iOutH = getIntValue(mVDSettings->IOUTH);
 }
 
-int VDUIRender::getIntValue(unsigned int aCtrl) {
-	return mVDSession->getIntUniformValueByIndex(aCtrl);
-}
-float VDUIRender::getValueByName(string aCtrlName) {
-	return mVDSession->getFloatUniformValueByName(aCtrlName);
-}
-float VDUIRender::getValue(unsigned int aCtrl) {
-	return mVDSession->getFloatUniformValueByIndex(aCtrl);
-}
-void VDUIRender::setValue(unsigned int aCtrl, float aValue) {
-	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
-}
-void VDUIRender::setIntValue(unsigned int aCtrl, int aValue) {
-	mVDSession->setIntUniformValueByIndex(aCtrl, aValue);
-}
-void VDUIRender::toggleAuto(unsigned int aCtrl) {
-	mVDSession->toggleAuto(aCtrl);
-}
-void VDUIRender::toggleTempo(unsigned int aCtrl) {
-	mVDSession->toggleTempo(aCtrl);
-}
-void VDUIRender::toggleSpoutSender() {
-	//mVDSettings->mSpoutSender = !mVDSettings->mSpoutSender;
-}
-bool VDUIRender::getBoolValue(unsigned int aCtrl) {
-	return mVDSession->getBoolUniformValueByIndex(aCtrl);
-}
-void VDUIRender::toggleValue(unsigned int aCtrl) {
-	mVDSession->toggleValue(aCtrl);
-}
-void VDUIRender::resetAutoAnimation(unsigned int aCtrl) {
-	mVDSession->resetAutoAnimation(aCtrl);
-}
-float VDUIRender::getMinUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMinUniformValueByIndex(aIndex);
-}
-float VDUIRender::getMaxUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMaxUniformValueByIndex(aIndex);
-}
+
 void VDUIRender::Run(const char* title) {
 	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.76), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
@@ -73,30 +35,49 @@ void VDUIRender::Run(const char* title) {
 			setIntValue(ctrl, iOutW);
 		}
 		ctrl = mVDSettings->IOUTH;
-		if (ImGui::Button("x##iouth")) { iOutH = 800; setIntValue(ctrl, 800); }
+		if (ImGui::Button("x##iouth")) { iOutH = 720; setIntValue(ctrl, iOutH); }
 		ImGui::SameLine();
-		if (ImGui::SliderInt("iOutH", &iOutH, 240, 2000))
+		if (ImGui::SliderInt("iOutH", &iOutH, 480, 2000))
 		{
 			setIntValue(ctrl, iOutH);
 		}
 		// iResolution
-		ctrl = mVDSettings->IRESX;
+		ctrl = mVDSettings->IRESOLUTIONX;
 		//iResolutionX = getValueByName("iResolutionX");
-		if (ImGui::Button("x##iresx")) { iResolutionX = 1280; setValue(ctrl, 1280); }
+		if (ImGui::Button("x##IRESOLUTIONX")) { iResolutionX = 1280; setFloatValue(ctrl, 1280); }
 		ImGui::SameLine();
 		if (ImGui::SliderInt("iResolutionX", &iResolutionX, (int)getMinUniformValueByIndex(ctrl), (int)getMaxUniformValueByIndex(ctrl)))
 		{
-			setValue(ctrl, (float)iResolutionX);
+			setFloatValue(ctrl, (float)iResolutionX);
 		}
-		ctrl = mVDSettings->IRESY;
+		ctrl = mVDSettings->IRESOLUTIONY;
 		//iResolutionY = getValueByName("iResolutionY");
-		if (ImGui::Button("x##iresy")) { iResolutionY = 720; setValue(ctrl, 720); }
+		if (ImGui::Button("x##IRESOLUTIONY")) { iResolutionY = 720; setFloatValue(ctrl, 720); }
 		ImGui::SameLine();
 		if (ImGui::SliderInt("iResolutionY", &iResolutionY, (int)getMinUniformValueByIndex(ctrl), (int)getMaxUniformValueByIndex(ctrl)))
 		{
-			setValue(ctrl, (float)iResolutionY);
+			setFloatValue(ctrl, (float)iResolutionY);
 		}
-
+		// post flip		
+		ctrl = mVDSettings->IFLIPPOSTH;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostH")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+		ctrl = mVDSettings->IFLIPPOSTV;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostV")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
 		// mRenderXY
 		static float mx = mVDSettings->mRenderXY.x;
 		if (ImGui::SliderFloat("mx", &mx, 0.01, 1.0))
@@ -151,11 +132,22 @@ void VDUIRender::Run(const char* title) {
 			mVDSettings->myRight = myRight;
 		}
 		
+		// debug
+		/*ctrl = mVDSettings->IDEBUG;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("debug")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;*/
+
 		// iVignette
 		ctrl = mVDSettings->IVIGN;
-		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 		if (ImGui::Button("vignette")) {
 			toggleValue(ctrl);
 		}
@@ -165,13 +157,13 @@ void VDUIRender::Run(const char* title) {
 		iVAmount = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Amount", &iVAmount, 0.001f, 0.0f, 1.0f))
 		{
-			setValue(ctrl, iVAmount);
+			setFloatValue(ctrl, iVAmount);
 		}
 		ctrl = mVDSettings->IVFALLOFF;
 		iVFallOff = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("FallOff", &iVFallOff, 0.001f, 0.0f, 0.99f))
 		{
-			setValue(ctrl, iVFallOff);
+			setFloatValue(ctrl, iVFallOff);
 		}
 
 		// iContour
@@ -185,7 +177,7 @@ void VDUIRender::Run(const char* title) {
 		contour = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("contour", &contour, 0.001f, minContour, maxContour))
 		{
-			setValue(ctrl, contour);
+			setFloatValue(ctrl, contour);
 		}
 		ImGui::DragFloat("mincr", &minContour, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl));
 		ImGui::SameLine();

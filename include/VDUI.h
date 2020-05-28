@@ -10,31 +10,33 @@
 #include "VDSession.h"
 
 // UITextures
-#include "VDUITextures.h"
+//#include "VDUITextures.h"
 // UIFbos
 #include "VDUIFbos.h"
 // Animation
 #include "VDUIAnimation.h"
 // Midi
-#include "VDUIMidi.h"
+//#include "VDUIMidi.h"
 // Audio
-#include "VDUIAudio.h"
+//#include "VDUIAudio.h"
 // Color
-#include "VDUIColor.h"
+//#include "VDUIColor.h"
 // Tempo
-#include "VDUITempo.h"
+//#include "VDUITempo.h"
 // Blend
-#include "VDUIBlend.h"
+//#include "VDUIBlend.h"
 // Websockets
-#include "VDUIWebsockets.h"
+//#include "VDUIWebsockets.h"
 // Osc
-#include "VDUIOsc.h"
+//#include "VDUIOsc.h"
 // Mouse
-#include "VDUIMouse.h"
+//#include "VDUIMouse.h"
 // Shaders
-#include "VDUIShaders.h"
+//#include "VDUIShaders.h"
 // Render
-#include "VDUIRender.h"
+//#include "VDUIRender.h"
+// Warps
+#include "VDUIWarps.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -55,7 +57,11 @@ namespace videodromm
 		}
 
 		void    Run(const char* title, unsigned int fps);
-		void	resize();
+		void resize() {
+			mIsResizing = true;
+			// disconnect ui window and io events callbacks
+			ImGui::disconnectWindow(getWindow());
+		}
 		bool	isReady() { return !mIsResizing; };
 	private:
 		// Settings
@@ -64,16 +70,17 @@ namespace videodromm
 		VDSessionRef				mVDSession;
 
 		// UITextures
-		VDUITexturesRef				mUITextures;
-		bool						showUITextures;
+		//VDUITexturesRef				mUITextures;
+		//bool						showUITextures;
 		// UIFbos
 		VDUIFbosRef					mUIFbos;
 		bool						showUIFbos;
+		bool						mShowFbos;
 		// UIAnimation
 		VDUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
 		// UIMidi
-		VDUIMidiRef					mUIMidi;
+		/*VDUIMidiRef					mUIMidi;
 		bool						showUIMidi;
 		// UIAudio
 		VDUIAudioRef				mUIAudio;
@@ -101,10 +108,12 @@ namespace videodromm
 		bool						showUIShaders;
 		// UIRender
 		VDUIRenderRef				mUIRender;
-		bool						showUIRender;
-		
-		float						getMinUniformValueByIndex(unsigned int aIndex);
-		float						getMaxUniformValueByIndex(unsigned int aIndex);
+		bool						showUIRender;*/
+		// UIWarps
+		VDUIWarpsRef				mUIWarps;
+		bool						showUIWarps;
+		bool						mShowWarps;
+
 		// imgui
 		char						buf[64];
 		bool						mIsResizing;
@@ -114,6 +123,33 @@ namespace videodromm
 		bool						mouseGlobal;
 		int							ctrl;
 		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4, iWeight5, iWeight6, iWeight7;
-		void						setValue(unsigned int aCtrl, float aValue);
+
+		bool getBoolValue(unsigned int aCtrl) {
+			return mVDSession->getBoolUniformValueByIndex(aCtrl);
+		}
+		void toggleValue(unsigned int aCtrl) {
+			mVDSession->toggleValue(aCtrl);
+		}
+		void mToggleShowWarps() {
+			mShowWarps = !mShowWarps;
+		}
+		void mToggleShowFbos() {
+			mShowFbos = !mShowFbos;
+		}
+		void setFloatValue(unsigned int aCtrl, float aValue) {
+			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+		}
+		float getMinUniformValueByIndex(unsigned int aIndex) {
+			return mVDSession->getMinUniformValueByIndex(aIndex);
+		}
+		float getMaxUniformValueByIndex(unsigned int aIndex) {
+			return mVDSession->getMaxUniformValueByIndex(aIndex);
+		}
+		float							getFloatValue(unsigned int aCtrl) {
+			return mVDSession->getFloatUniformValueByIndex(aCtrl);
+		};
+		// mouse
+		float						mouseX, mouseY;
+		bool						mouseZ;
 	};
 }

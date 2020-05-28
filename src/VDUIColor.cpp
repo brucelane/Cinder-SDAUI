@@ -116,7 +116,7 @@ void VDUIColor::Run(const char* title) {
 
 			ImGui::PopItemWidth();
 		}
-		
+
 	}
 	ImGui::End();
 }

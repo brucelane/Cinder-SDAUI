@@ -8,14 +8,14 @@ VDUIShaders::VDUIShaders(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mVDSession = aVDSession;
 	try
 	{
-		fs::path vertexFile = getAssetPath("") / "passthru.vert";
+		fs::path vertexFile = getAssetPath("") / "passthrough.vs";
 		if (fs::exists(vertexFile)) {
-			mPassthruVextexShaderString = loadString(loadAsset("passthru.vert"));
-			CI_LOG_V("passthru.vert loaded");
+			mPassthruVextexShaderString = loadString(loadAsset("passthrough.vs"));
+			CI_LOG_V("passthrough.vs loaded");
 		}
 		else
 		{
-			CI_LOG_V("passthru.vert does not exist, should quit");
+			CI_LOG_V("passthrough.vs does not exist, should quit");
 		}
 	}
 	catch (gl::GlslProgCompileExc &exc)
@@ -34,7 +34,7 @@ VDUIShaders::~VDUIShaders() {
 }
 
 void VDUIShaders::Run(const char* title) {
-	static int shaderToEdit = -1;
+	/* TODO 20200218 static int shaderToEdit = -1;
 
 	xPos = mVDSettings->uiMargin;
 	yPos = mVDSettings->uiYPosRow3;
@@ -95,10 +95,10 @@ void VDUIShaders::Run(const char* title) {
 			for (unsigned int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
 				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
 				if (mVDSession->getFboInputTextureIndex(s) == t) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 16.0f, 1.0f, 1.0f));
 				}
 				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 16.0f, 0.1f, 0.1f));
 				}
 				sprintf(buf, "%d##fboit%d%d", t, s, t);
 				if (ImGui::Button(buf)) mVDSession->setFboInputTexture(s, t);
@@ -108,13 +108,13 @@ void VDUIShaders::Run(const char* title) {
 				ImGui::PopStyleColor(1);
 			}
 			if (mVDSession->isFboFlipV(s)) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 1.0f, 1.0f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 16.0f, 1.0f, 1.0f));
 			}
 			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 0.1f, 0.1f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 16.0f, 0.1f, 0.1f));
 			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 16.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 16.0f, 0.8f, 0.8f));
 			sprintf(buf, "FlipV##fboflipv%d", s);
 			if (ImGui::Button(buf)) mVDSession->fboFlipV(s);
 			ImGui::PopStyleColor(3);
@@ -123,22 +123,22 @@ void VDUIShaders::Run(const char* title) {
 			if (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(s);
 			ImGui::Text("wh %dx%d", mVDSession->getFboRenderedTexture(s)->getWidth(), mVDSession->getFboRenderedTexture(s)->getHeight());
 
-			/*
-			for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
-				if (f > 0 && (f % 6 != 0)) ImGui::SameLine();
-				if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
-				}
-				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-				}
-				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
-				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
-				sprintf(buf, "%d##sf%d", f, s);
-				if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to fbo");
-				ImGui::PopStyleColor(3);
-			} */
+			
+			//for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
+			//	if (f > 0 && (f % 6 != 0)) ImGui::SameLine();
+			//	if (mVDSession->getFboFragmentShaderIndex(f) == s) {
+			//		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+			//	}
+			//	else {
+			//		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			//	}
+			//	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+			//	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+			//	sprintf(buf, "%d##sf%d", f, s);
+			//	if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
+			//	if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to fbo");
+			//	ImGui::PopStyleColor(3);
+			//}
 			ImGui::PopID();
 			ImGui::PopItemWidth();
 		}
@@ -162,7 +162,7 @@ void VDUIShaders::Run(const char* title) {
 				static char mShaderText[MAX] =
 					"uniform vec3 iResolution;\n"
 					"uniform vec3 iColor;\n"
-					"uniform float iTime;\n"
+					"uniform float TIME;\n"
 					"uniform sampler2D iChannel0;\n"
 					"uniform sampler2D iChannel1;\n"
 					"uniform sampler2D iChannel2;\n"
@@ -174,12 +174,12 @@ void VDUIShaders::Run(const char* title) {
 					"\tvec4 t0 = texture(iChannel0, uv);\n"
 					"\tvec4 t1 = texture(iChannel1, uv);\n"
 					"\tvec4 t2 = texture(iChannel2, uv);\n"
-					"\toColor = vec4(t0.x, t1.y, cos(iTime), 1.0);\n"
+					"\toColor = vec4(t0.x, t1.y, cos(TIME), 1.0);\n"
 					"}\n";
 				// check if shader text needs to be loaded in the editor
 				if (mVDSettings->shaderEditIndex != shaderToEdit) {
-					/* ptr error
-					*/
+					// ptr error
+					
 					mFboTextureFragmentShaderString = mVDSession->getFragmentShaderString(shaderToEdit);
 					mVDSettings->shaderEditIndex = shaderToEdit;
 					// delete content
@@ -204,9 +204,9 @@ void VDUIShaders::Run(const char* title) {
 						CI_LOG_V("live.frag loaded and compiled");
 						mFboTextureFragmentShaderString = mShaderText;
 						stringstream sParams;
-						sParams << "/*{ \"title\" : \"" << getElapsedSeconds() << "\" }*/ " << mFboTextureFragmentShaderString;
+						sParams << "//{ \"title\" : \"" << getElapsedSeconds() << "\" } " << mFboTextureFragmentShaderString;
 						mVDSession->wsWrite(sParams.str());
-						//OK mVDRouter->wsWrite("/*{ \"title\" : \"live\" }*/ " + mFboTextureFragmentShaderString);
+						
 						mError = "";
 						// compiles, update the shader for display
 						mVDSession->setFragmentShaderString(shaderToEdit, mFboTextureFragmentShaderString);
@@ -229,6 +229,6 @@ void VDUIShaders::Run(const char* title) {
 			ImGui::End();
 		}
 #pragma endregion Editor
-	}
+	}*/
 
 }

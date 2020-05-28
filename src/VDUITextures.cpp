@@ -11,8 +11,12 @@ VDUITextures::~VDUITextures() {
 }
 
 void VDUITextures::Run(const char* title) {
-
-	static int XLeft[64];
+	sprintf(buf, "Create Warp##cw");
+	if (ImGui::Button(buf))
+	{
+		mVDSession->createWarp();
+	}
+	/*static int XLeft[64];
 	static int YTop[64];
 	static int XRight[64];
 	static int YBottom[64];
@@ -30,20 +34,20 @@ void VDUITextures::Run(const char* title) {
 			ImGui::PushID(t);
 			ImGui::Image((void*)mVDSession->getInputTexture(t)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 0.7);
-			
+			*/
 			/* obsolete? 
 			for (unsigned int f = 0; f < mVDMix->getWarpCount(); f++) {
 				if (f > 0) ImGui::SameLine();
 				//int ti = mVDMix->getFboInputTextureIndex(f);
 				//CI_LOG_V("fbo" + toString(f) + " t" + toString(t) + " ti" + toString(ti));
 				if (mVDMix->getWarpATextureIndex(f) == t) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 16.0f, 1.0f, 1.0f));
 				}
 				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 16.0f, 0.1f, 0.1f));
 				}
-				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(t / 7.0f, 0.7f, 0.7f));
-				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(t / 7.0f, 0.8f, 0.8f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(t / 16.0f, 0.7f, 0.7f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(t / 16.0f, 0.8f, 0.8f));
 				sprintf(buf, "%d##fboinputtex%d%d", f, t, f);
 				if (ImGui::Button(buf)) mVDMix->setFboInputTexture(f, t);
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set input texture for warp");
@@ -59,7 +63,7 @@ void VDUITextures::Run(const char* title) {
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via WebSockets");
 			*/
 			
-			if (mVDSession->isSequence(t) || mVDSession->isMovie(t)) {
+			/*if (mVDSession->isSequence(t) || mVDSession->isMovie(t)) {
 				sprintf(buf, "p##s%d", t);
 				if (ImGui::Button(buf))
 				{
@@ -95,9 +99,9 @@ void VDUITextures::Run(const char* title) {
 				}
 
 				sprintf(buf, "%s##s%d", mVDSession->getStatus(t).c_str(), t);
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f));
-				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 
 				if (ImGui::Button(buf)) {
 					// TODO mVDSession->loadTextureAuto(t);
@@ -120,11 +124,11 @@ void VDUITextures::Run(const char* title) {
 				}
 
 
-			} // end seq
+			}*/ // end seq
 			//else {
 				//if (!mVDSession->isMovie(t)) {
 					// not a sequence nor video, animate x y...
-					XLeft[t] = mVDSession->getInputTextureXLeft(t);
+					/*XLeft[t] = mVDSession->getInputTextureXLeft(t);
 					if (anim[t]) {
 						if (rnd[t]) {
 							XLeft[t] += xStep * Rand::randBool();
@@ -166,9 +170,9 @@ void VDUITextures::Run(const char* title) {
 
 
 					ImGui::SameLine();
-					(mVDSession->getInputTextureLockBounds(t)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+					(mVDSession->getInputTextureLockBounds(t)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 					sprintf(buf, "8##lk%d", t);
 					if (ImGui::Button(buf)) {
 						mVDSession->toggleInputTextureLockBounds(t);
@@ -182,9 +186,9 @@ void VDUITextures::Run(const char* title) {
 						mVDSession->setInputTextureXRight(t, XRight[t]);
 					}
 					ImGui::SameLine();
-					(anim[t]) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+					(anim[t]) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 					sprintf(buf, "ani##r%d", t);
 					anim[t] ^= ImGui::Button(buf);
 					ImGui::PopStyleColor(3);
@@ -197,22 +201,22 @@ void VDUITextures::Run(const char* title) {
 					}
 
 					ImGui::SameLine();
-					(rnd[t]) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+					(rnd[t]) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 					sprintf(buf, "rnd##r%d", t);
 					rnd[t] ^= ImGui::Button(buf);
 					ImGui::PopStyleColor(3);
 					hue++;
-
+					*/
 					
 				//}
 			//}
-			ImGui::PopItemWidth();
+			/*ImGui::PopItemWidth();
 			ImGui::PopID();
 			ImGui::PopItemWidth();
 		}
 		ImGui::End();
-	}
+	}*/
 
 }

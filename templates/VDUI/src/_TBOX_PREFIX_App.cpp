@@ -20,9 +20,7 @@
  /*
 	 TODO
 	 migrate to vs2019, thus remove boost dependencies in websocket block
-	 MVC project from scratch
 	 Lazy Loading for MIDI and network
-	 double map
 	 mutex
 	 factory
 	 builder
@@ -108,9 +106,9 @@ _TBOX_PREFIX_App::_TBOX_PREFIX_App() //: mSpoutOut("rewrite", app::getWindowSize
 	//mVDSession->toggleValue(132); //flipv
 	// sos
 	//mVDSession->setBpm(160.0f);
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IMOUSEX, 0.27710f);
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IMOUSEY, 0.5648f);
-	// sos only mVDSession->setFloatUniformValueByIndex(mVDSettings->IEXPOSURE, 1.93f);
+	mVDSession->setUniformValue(mVDSettings->IMOUSEX, 0.27710f);
+	mVDSession->setUniformValue(mVDSettings->IMOUSEY, 0.5648f);
+	// sos only mVDSession->setUniformValue(mVDSettings->IEXPOSURE, 1.93f);
 	mFadeInDelay = true;
 	// UI
 	mVDUI = VDUI::create(mVDSettings, mVDSession);
@@ -236,7 +234,7 @@ void _TBOX_PREFIX_App::update()
 		//deleteControlWindows();
 		break;
 	}
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
+	mVDSession->setUniformValue(mVDSettings->IFPS, getAverageFps());
 	mVDSession->update();
 	/*mVideo.update();
 	mVideoPos = mVideo.getPosition();

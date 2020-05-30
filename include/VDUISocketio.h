@@ -17,18 +17,18 @@ using namespace std;
 
 namespace videodromm
 {
-	// stores the pointer to the VDUIWebsockets instance
-	typedef std::shared_ptr<class VDUIWebsockets> VDUIWebsocketsRef;
+	// stores the pointer to the VDUISocketio instance
+	typedef std::shared_ptr<class VDUISocketio> VDUISocketioRef;
 
-	class VDUIWebsockets
+	class VDUISocketio
 	{
 	public:
-		VDUIWebsockets(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
-		static VDUIWebsocketsRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
+		VDUISocketio(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
+		static VDUISocketioRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 		{
-			return shared_ptr<VDUIWebsockets>(new VDUIWebsockets(aVDSettings, aVDSession));
+			return shared_ptr<VDUISocketio>(new VDUISocketio(aVDSettings, aVDSession));
 		}
-		~VDUIWebsockets();
+		~VDUISocketio();
 		void    Run(const char* title);
 	private:
 		// Settings

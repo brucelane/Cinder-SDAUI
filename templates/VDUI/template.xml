@@ -3,12 +3,17 @@
 <template name="VDUI: Basic" parent="org.libcinder.apptemplates.basicopengl">
 	<requires>com.sophiadigitalart.vd</requires>
 	<requires>com.sophiadigitalart.vdui</requires>
+	<requires>com.sophiadigitalart.socketio</requires>
 	<requires>nl.cowlumbus.warping</requires>
 	<requires>ocornut.imgui</requires>
+	<requires>org.libcinder.OSC</requires>
 	<requires>fr.batchass.spout</requires>
 	<requires>mb.cinder.midi2</requires>
 	<source replaceContents="true" replaceName="true">src/_TBOX_PREFIX_App.cpp</source>
 	<asset>assets/0.jpg</asset>
-	<asset>assets/shadertoy.min</asset>
+	<asset>assets/passthrough.vs</asset>
+	<asset>assets/post.glsl</asset>
+	<asset>assets/mixette.glsl</asset>
+	<asset>assets/shadertoy.vd</asset>
 </template>
 </cinder>

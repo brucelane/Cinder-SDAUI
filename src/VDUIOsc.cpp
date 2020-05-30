@@ -88,7 +88,7 @@ void VDUIOsc::Run(const char* title) {
 				if (ImGui::Button("srv->clt"))
 				{
 					mVDSettings->mIsSocketIOServer = false;
-					mVDSession->wsConnect();
+					mVDSession->sioConnect();
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS client");
 			}
@@ -98,7 +98,7 @@ void VDUIOsc::Run(const char* title) {
 				if (ImGui::Button("clt->srv"))
 				{
 					mVDSettings->mIsSocketIOServer = true;
-					mVDSession->wsConnect();
+					mVDSession->sioConnect();
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS server");
 			}
@@ -113,13 +113,13 @@ void VDUIOsc::Run(const char* title) {
 				else {
 					mVDSettings->mSocketIOProtocol = "http://";
 				}
-				mVDSession->wsConnect();
+				mVDSession->sioConnect();
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change WS protocol");
 			ImGui::SameLine();
-			if (ImGui::Button("Connect")) { mVDSession->wsConnect(); }
-			ImGui::SameLine();
-			if (ImGui::Button("Ping")) { mVDSession->wsPing(); }
+			if (ImGui::Button("Connect")) { mVDSession->sioConnect(); }
+			//ImGui::SameLine();
+			//if (ImGui::Button("Ping")) { mVDSession->sioPing(); }
 			static char host[128] = "127.0.0.1";
 			std::copy(mVDSettings->mSocketIOHost.begin(), (mVDSettings->mSocketIOHost.size() >= 128 ? mVDSettings->mSocketIOHost.begin() + 128 : mVDSettings->mSocketIOHost.end()), host);
 

@@ -32,7 +32,7 @@ void VDUIAnimation::Run(const char* title) {
 	ImGui::Begin("Animation", NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 	{
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-		
+
 		if (ImGui::CollapsingHeader("Animation", NULL, true, true))
 		{
 			// iChromatic
@@ -339,7 +339,7 @@ void VDUIAnimation::Run(const char* title) {
 			//ImGui::SameLine();
 			ImGui::PopItemWidth();
 
-		}		
+		}
 		if (ImGui::CollapsingHeader("Midi", NULL, true))
 		{
 			sprintf(buf, "Enable");
@@ -422,27 +422,10 @@ void VDUIAnimation::Run(const char* title) {
 		if (ImGui::CollapsingHeader("SocketIO", NULL, true))
 		{
 			// SocketIO
-			if (mVDSettings->mIsSocketIOServer)
-			{
-				ImGui::Text("WS Server %s%s:%d/%s/%s", mVDSettings->mSocketIOProtocol.c_str(), mVDSettings->mSocketIOHost.c_str(), mVDSettings->mSocketIOPort, mVDSettings->mSocketIORoom.c_str(), mVDSettings->mSocketIONickname.c_str());
-				if (ImGui::Button("srv->clt"))
-				{
-					mVDSettings->mIsSocketIOServer = false;
-					mVDSession->wsConnect();
-				}
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS client");
-			}
-			else
-			{
-				ImGui::Text("WS Client %s%s:%d/%s/%s", mVDSettings->mSocketIOProtocol.c_str(), mVDSettings->mSocketIOHost.c_str(), mVDSettings->mSocketIOPort, mVDSettings->mSocketIORoom.c_str(), mVDSettings->mSocketIONickname.c_str());
-				if (ImGui::Button("clt->srv"))
-				{
-					mVDSettings->mIsSocketIOServer = true;
-					mVDSession->wsConnect();
-				}
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS server");
-			}
-			ImGui::SameLine();
+
+			ImGui::Text("SIO Client %s%s:%d/%s/%s", mVDSettings->mSocketIOProtocol.c_str(), mVDSettings->mSocketIOHost.c_str(),
+				mVDSettings->mSocketIOPort, mVDSettings->mSocketIORoom.c_str(), mVDSettings->mSocketIONickname.c_str());
+
 			// toggle secure protocol
 			sprintf(buf, "%s", mVDSettings->mSocketIOProtocol.c_str());
 			if (ImGui::Button(buf))
@@ -453,13 +436,13 @@ void VDUIAnimation::Run(const char* title) {
 				else {
 					mVDSettings->mSocketIOProtocol = "http://";
 				}
-				mVDSession->wsConnect();
+				mVDSession->sioConnect();
 			}
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change WS protocol");
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change SIO protocol");
 			ImGui::SameLine();
-			if (ImGui::Button("Connect")) { mVDSession->wsConnect(); }
-			ImGui::SameLine();
-			if (ImGui::Button("Ping")) { mVDSession->wsPing(); }
+			if (ImGui::Button("Connect")) { mVDSession->sioConnect(); }
+			//ImGui::SameLine();
+			//if (ImGui::Button("Ping")) { mVDSession->sioPing(); }
 			// host
 			static char host[128] = "127.0.0.1";
 			std::copy(mVDSettings->mSocketIOHost.begin(), (mVDSettings->mSocketIOHost.size() >= 128 ? mVDSettings->mSocketIOHost.begin() + 128 : mVDSettings->mSocketIOHost.end()), host);
@@ -557,7 +540,7 @@ void VDUIAnimation::Run(const char* title) {
 		}
 		if (ImGui::CollapsingHeader("Render", NULL, true, true))
 		{
-		
+
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			// output resolution
 			ctrl = mVDSettings->IOUTW;
@@ -789,7 +772,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::PopItemWidth();
 		}
 
-		
+
 	}
 	ImGui::End();
 }

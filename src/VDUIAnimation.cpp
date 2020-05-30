@@ -419,39 +419,39 @@ void VDUIAnimation::Run(const char* title) {
 			}
 		}
 
-		if (ImGui::CollapsingHeader("Websockets", NULL, true))
+		if (ImGui::CollapsingHeader("SocketIO", NULL, true))
 		{
-			// websockets
-			if (mVDSettings->mIsWebSocketsServer)
+			// SocketIO
+			if (mVDSettings->mIsSocketIOServer)
 			{
-				ImGui::Text("WS Server %s%s:%d/%s/%s", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort, mVDSettings->mWebSocketsRoom.c_str(), mVDSettings->mWebSocketsNickname.c_str());
+				ImGui::Text("WS Server %s%s:%d/%s/%s", mVDSettings->mSocketIOProtocol.c_str(), mVDSettings->mSocketIOHost.c_str(), mVDSettings->mSocketIOPort, mVDSettings->mSocketIORoom.c_str(), mVDSettings->mSocketIONickname.c_str());
 				if (ImGui::Button("srv->clt"))
 				{
-					mVDSettings->mIsWebSocketsServer = false;
+					mVDSettings->mIsSocketIOServer = false;
 					mVDSession->wsConnect();
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS client");
 			}
 			else
 			{
-				ImGui::Text("WS Client %s%s:%d/%s/%s", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort, mVDSettings->mWebSocketsRoom.c_str(), mVDSettings->mWebSocketsNickname.c_str());
+				ImGui::Text("WS Client %s%s:%d/%s/%s", mVDSettings->mSocketIOProtocol.c_str(), mVDSettings->mSocketIOHost.c_str(), mVDSettings->mSocketIOPort, mVDSettings->mSocketIORoom.c_str(), mVDSettings->mSocketIONickname.c_str());
 				if (ImGui::Button("clt->srv"))
 				{
-					mVDSettings->mIsWebSocketsServer = true;
+					mVDSettings->mIsSocketIOServer = true;
 					mVDSession->wsConnect();
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS server");
 			}
 			ImGui::SameLine();
 			// toggle secure protocol
-			sprintf(buf, "%s", mVDSettings->mWebSocketsProtocol.c_str());
+			sprintf(buf, "%s", mVDSettings->mSocketIOProtocol.c_str());
 			if (ImGui::Button(buf))
 			{
-				if (mVDSettings->mWebSocketsProtocol == "ws://") {
-					mVDSettings->mWebSocketsProtocol = "wss://";
+				if (mVDSettings->mSocketIOProtocol == "http://") {
+					mVDSettings->mSocketIOProtocol = "https://";
 				}
 				else {
-					mVDSettings->mWebSocketsProtocol = "ws://";
+					mVDSettings->mSocketIOProtocol = "http://";
 				}
 				mVDSession->wsConnect();
 			}
@@ -462,33 +462,33 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::Button("Ping")) { mVDSession->wsPing(); }
 			// host
 			static char host[128] = "127.0.0.1";
-			std::copy(mVDSettings->mWebSocketsHost.begin(), (mVDSettings->mWebSocketsHost.size() >= 128 ? mVDSettings->mWebSocketsHost.begin() + 128 : mVDSettings->mWebSocketsHost.end()), host);
+			std::copy(mVDSettings->mSocketIOHost.begin(), (mVDSettings->mSocketIOHost.size() >= 128 ? mVDSettings->mSocketIOHost.begin() + 128 : mVDSettings->mSocketIOHost.end()), host);
 			if (ImGui::InputText("address", host, IM_ARRAYSIZE(host)))
 			{
-				mVDSettings->mWebSocketsHost = host;
+				mVDSettings->mSocketIOHost = host;
 			}
 			// port
-			static int port = mVDSettings->mWebSocketsPort;
-			if (ImGui::InputInt("port", &port)) mVDSettings->mWebSocketsPort = port;
+			static int port = mVDSettings->mSocketIOPort;
+			if (ImGui::InputInt("port", &port)) mVDSettings->mSocketIOPort = port;
 			// room
 			static char room[128] = "roomtest";
-			std::copy(mVDSettings->mWebSocketsRoom.begin(), (mVDSettings->mWebSocketsRoom.size() >= 128 ? mVDSettings->mWebSocketsRoom.begin() + 128 : mVDSettings->mWebSocketsRoom.end()), room);
+			std::copy(mVDSettings->mSocketIORoom.begin(), (mVDSettings->mSocketIORoom.size() >= 128 ? mVDSettings->mSocketIORoom.begin() + 128 : mVDSettings->mSocketIORoom.end()), room);
 
 			if (ImGui::InputText("room", room, IM_ARRAYSIZE(room)))
 			{
-				mVDSettings->mWebSocketsRoom = room;
+				mVDSettings->mSocketIORoom = room;
 			}
 			// nickname
 			static char nick[128] = "bruce";
-			std::copy(mVDSettings->mWebSocketsNickname.begin(), (mVDSettings->mWebSocketsNickname.size() >= 128 ? mVDSettings->mWebSocketsNickname.begin() + 128 : mVDSettings->mWebSocketsNickname.end()), nick);
+			std::copy(mVDSettings->mSocketIONickname.begin(), (mVDSettings->mSocketIONickname.size() >= 128 ? mVDSettings->mSocketIONickname.begin() + 128 : mVDSettings->mSocketIONickname.end()), nick);
 
 			if (ImGui::InputText("nick", nick, IM_ARRAYSIZE(nick)))
 			{
-				mVDSettings->mWebSocketsNickname = nick;
+				mVDSettings->mSocketIONickname = nick;
 			}
 
 			//ImGui::PushItemWidth(mVDSettings->uiLargeW/3); // useless?
-			ImGui::TextWrapped(">%s", mVDSettings->mWebSocketsMsg.c_str());
+			ImGui::TextWrapped(">%s", mVDSettings->mSocketIOMsg.c_str());
 			//ImGui::PopItemWidth();
 
 		}

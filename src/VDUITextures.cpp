@@ -60,7 +60,7 @@ void VDUITextures::Run(const char* title) {
 			sprintf(buf, "IMG=%d.jpg", i);
 			//mVDRouter->wsWrite(buf);
 			}
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via WebSockets");
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via SocketIO");
 			*/
 			
 			/*if (mVDSession->isSequence(t) || mVDSession->isMovie(t)) {

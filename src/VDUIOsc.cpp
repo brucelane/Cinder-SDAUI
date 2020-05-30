@@ -79,39 +79,39 @@ void VDUIOsc::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::Text(" on port %d", mVDSettings->mOSCDestinationPort2);*/
 		}
-		if (ImGui::CollapsingHeader("Websockets", NULL, true, true))
+		if (ImGui::CollapsingHeader("SocketIO", NULL, true, true))
 		{
-			// websockets
-			if (mVDSettings->mIsWebSocketsServer)
+			// SocketIO
+			if (mVDSettings->mIsSocketIOServer)
 			{
-				ImGui::Text("WS Server %s%s:%d", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort);
+				ImGui::Text("WS Server %s%s:%d", mVDSettings->mSocketIOProtocol.c_str(), mVDSettings->mSocketIOHost.c_str(), mVDSettings->mSocketIOPort);
 				if (ImGui::Button("srv->clt"))
 				{
-					mVDSettings->mIsWebSocketsServer = false;
+					mVDSettings->mIsSocketIOServer = false;
 					mVDSession->wsConnect();
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS client");
 			}
 			else
 			{
-				ImGui::Text("WS Client %s%s:%d", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort);
+				ImGui::Text("WS Client %s%s:%d", mVDSettings->mSocketIOProtocol.c_str(), mVDSettings->mSocketIOHost.c_str(), mVDSettings->mSocketIOPort);
 				if (ImGui::Button("clt->srv"))
 				{
-					mVDSettings->mIsWebSocketsServer = true;
+					mVDSettings->mIsSocketIOServer = true;
 					mVDSession->wsConnect();
 				}
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a WS server");
 			}
 			ImGui::SameLine();
 			// toggle secure protocol
-			sprintf(buf, "%s", mVDSettings->mWebSocketsProtocol.c_str());
+			sprintf(buf, "%s", mVDSettings->mSocketIOProtocol.c_str());
 			if (ImGui::Button(buf))
 			{
-				if (mVDSettings->mWebSocketsProtocol == "ws://") {
-					mVDSettings->mWebSocketsProtocol = "wss://";
+				if (mVDSettings->mSocketIOProtocol == "http://") {
+					mVDSettings->mSocketIOProtocol = "https://";
 				}
 				else {
-					mVDSettings->mWebSocketsProtocol = "ws://";
+					mVDSettings->mSocketIOProtocol = "http://";
 				}
 				mVDSession->wsConnect();
 			}
@@ -121,16 +121,16 @@ void VDUIOsc::Run(const char* title) {
 			ImGui::SameLine();
 			if (ImGui::Button("Ping")) { mVDSession->wsPing(); }
 			static char host[128] = "127.0.0.1";
-			std::copy(mVDSettings->mWebSocketsHost.begin(), (mVDSettings->mWebSocketsHost.size() >= 128 ? mVDSettings->mWebSocketsHost.begin() + 128 : mVDSettings->mWebSocketsHost.end()), host);
+			std::copy(mVDSettings->mSocketIOHost.begin(), (mVDSettings->mSocketIOHost.size() >= 128 ? mVDSettings->mSocketIOHost.begin() + 128 : mVDSettings->mSocketIOHost.end()), host);
 
-			static int port = mVDSettings->mWebSocketsPort;
+			static int port = mVDSettings->mSocketIOPort;
 			if (ImGui::InputText("address", host, IM_ARRAYSIZE(host)))
 			{
-				mVDSettings->mWebSocketsHost = host; // CHECK if ok
+				mVDSettings->mSocketIOHost = host; // CHECK if ok
 			}
-			if (ImGui::InputInt("port", &port)) mVDSettings->mWebSocketsPort = port;
+			if (ImGui::InputInt("port", &port)) mVDSettings->mSocketIOPort = port;
 			//ImGui::PushItemWidth(mVDSettings->uiLargeW/3); // useless?
-			ImGui::TextWrapped(">%s", mVDSettings->mWebSocketsMsg.c_str());
+			ImGui::TextWrapped(">%s", mVDSettings->mSocketIOMsg.c_str());
 			//ImGui::PopItemWidth();
 
 		}

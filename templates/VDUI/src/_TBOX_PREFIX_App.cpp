@@ -300,5 +300,8 @@ void _TBOX_PREFIX_App::draw()
 	}
 	getWindow()->setTitle(mVDSettings->sFps + " fps");
 }
-
+void prepareSettings(App::Settings *settings)
+{
+	settings->setWindowSize(1280, 720);
+}
 CINDER_APP(_TBOX_PREFIX_App, RendererGl(RendererGl::Options().msaa(8)),  prepareSettings)

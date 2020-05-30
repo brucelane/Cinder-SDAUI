@@ -23,8 +23,8 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mUIBlend = VDUIBlend::create(mVDSettings, mVDSession);
 	// UIOsc
 	mUIOsc = VDUIOsc::create(mVDSettings, mVDSession);
-	// UIWebsockets
-	mUIWebsockets = VDUIWebsockets::create(mVDSettings, mVDSession);
+	// UISocketIO
+	mUISocketIO = VDUISocketIO::create(mVDSettings, mVDSession);
 	// UIMouse
 	mUIMouse = VDUIMouse::create(mVDSettings, mVDSession);
 	// UIShaders
@@ -172,7 +172,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	if (ImGui::Button("Clear")) {
 		mVDSettings->mMsg = "";
 		mVDSettings->mMidiMsg = "";
-		mVDSettings->mWebSocketsMsg = "";
+		mVDSettings->mSocketIOMsg = "";
 		mVDSettings->mOSCMsg = "";
 		mVDSettings->mErrorMsg = "";
 		mVDSettings->mShaderMsg = "";
@@ -183,7 +183,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	ImGui::TextWrapped("Fbo: %s", mVDSettings->mFboMsg.c_str());
 	ImGui::TextWrapped("Shader: %s", mVDSettings->mShaderMsg.c_str());
 	ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
-	ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
+	ImGui::TextWrapped("WS Msg: %s", mVDSettings->mSocketIOMsg.c_str());
 	ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
 	//ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 	ImGui::TextColored(ImColor(255, 0, 0), "Last error: %s", mVDSettings->mErrorMsg.c_str());
@@ -639,7 +639,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 				ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
 				ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
-				ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
+				ImGui::TextWrapped("WS Msg: %s", mVDSettings->mSocketIOMsg.c_str());
 				ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
 				hue++;
 
@@ -684,8 +684,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mUIOsc->Run("Osc");
 		break;
 	case 7:
-		// Websockets
-		mUIWebsockets->Run("Websockets");
+		// SocketIO
+		mUISocketIO->Run("SocketIO");
 		break;
 	case 8:
 		// Midi

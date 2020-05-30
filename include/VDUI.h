@@ -25,8 +25,8 @@
 //#include "VDUITempo.h"
 // Blend
 //#include "VDUIBlend.h"
-// Websockets
-//#include "VDUIWebsockets.h"
+// SocketIO
+//#include "VDUISocketIO.h"
 // Osc
 //#include "VDUIOsc.h"
 // Mouse
@@ -100,9 +100,9 @@ namespace videodromm
 		// UIOsc
 		VDUIOscRef					mUIOsc;
 		bool						showUIOsc;
-		// UIWebsockets
-		VDUIWebsocketsRef			mUIWebsockets;
-		bool						showUIWebsockets;
+		// UISocketIO
+		VDUISocketIORef			mUISocketIO;
+		bool						showUISocketIO;
 		// UIShaders
 		VDUIShadersRef				mUIShaders;
 		bool						showUIShaders;

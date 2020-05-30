@@ -35,10 +35,11 @@
 #include "cinder/Rand.h"
  // json
 //#include "cinder/Json.h"
+// Spout
+#include "CiSpoutOut.h"
 //#include "Warp.h"
 #include "VDSession.h"
-// Spout
-//#include "CiSpoutOut.h"
+
 // Video
 //#include "ciWMFVideoPlayer.h"
 
@@ -53,7 +54,6 @@ using namespace std;
 
 class _TBOX_PREFIX_App : public App {
 public:
-	static void prepare(Settings* settings);
 	_TBOX_PREFIX_App();
 	//void setup() override;
 	void cleanup() override;
@@ -84,19 +84,15 @@ private:
 	bool							mFadeInDelay = true;
 	//void							saveWarps();
 	void							toggleCursorVisibility(bool visible);
-	//SpoutOut 						mSpoutOut;
+	SpoutOut 						mSpoutOut;
 };
 
-void _TBOX_PREFIX_App::prepare(Settings* settings)
-{
-	settings->setWindowSize(1440, 900);
-}
 
-_TBOX_PREFIX_App::_TBOX_PREFIX_App() //: mSpoutOut("rewrite", app::getWindowSize())
+_TBOX_PREFIX_App::_TBOX_PREFIX_App() : mSpoutOut("VD", app::getWindowSize())
 {
 
 	// Settings
-	mVDSettings = VDSettings::create("Rewrite");
+	mVDSettings = VDSettings::create("VD");
 	// Session
 	mVDSession = VDSession::create(mVDSettings);
 	mVDSession->getWindowsResolution();
@@ -290,7 +286,8 @@ void _TBOX_PREFIX_App::draw()
 	}
 	// Spout Send
 	// KO mSpoutOut.sendViewport();
-	// OK mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(1));
+	// OK
+	 mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(1));
 
 	// imgui
 	if (mVDSession->showUI()) {

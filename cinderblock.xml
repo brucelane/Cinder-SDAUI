@@ -18,7 +18,6 @@
 	<requires>nl.cowlumbus.warping</requires>
 	<requires>com.sophiadigitalart.vd</requires>
 	<requires>ocornut.imgui</requires>
-	<requires>org.libcinder.OSC</requires>
 	<requires>com.sophiadigitalart.socketio</requires>
 	<platform os="msw">
 		<libraryPath>lib</libraryPath>

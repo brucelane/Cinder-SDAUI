@@ -65,12 +65,12 @@ void VDUIOsc::Run(const char* title) {
 				if (ImGui::Button("Enable"))
 				{
 					mVDSettings->mOSCEnabled = true;
-					/*if (mVDSettings->mIsOSCSender) {
+					if (mVDSettings->mIsOSCSender) {
 						mVDSession->setupOSCSender();
 					}
 					else {
 						mVDSession->setupOSCReceiver();
-					}*/
+					}
 				}
 			}
 			ImGui::Text(">%s", mVDSettings->mOSCMsg.c_str());

@@ -19,8 +19,7 @@
  */
  /*
 	 TODO
-	 migrate to vs2019, thus remove boost dependencies in websocket block
-	 Lazy Loading for MIDI and network
+	 Lazy Loading for network
 	 mutex
 	 factory
 	 builder
@@ -35,11 +34,11 @@
 #include "cinder/Rand.h"
  // json
 //#include "cinder/Json.h"
-// Spout
-#include "CiSpoutOut.h"
+
 //#include "Warp.h"
 #include "VDSession.h"
-
+// Spout
+#include "CiSpoutOut.h"
 // Video
 //#include "ciWMFVideoPlayer.h"
 

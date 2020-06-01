@@ -7,34 +7,11 @@
 // Settings
 #include "VDSettings.h"
 // Session
-#include "VDSession.h"
-
-// UITextures
-//#include "VDUITextures.h"
+#include "VDSessionFacade.h"
 // UIFbos
 #include "VDUIFbos.h"
 // Animation
 #include "VDUIAnimation.h"
-// Midi
-//#include "VDUIMidi.h"
-// Audio
-//#include "VDUIAudio.h"
-// Color
-//#include "VDUIColor.h"
-// Tempo
-//#include "VDUITempo.h"
-// Blend
-//#include "VDUIBlend.h"
-// SocketIO
-//#include "VDUISocketIO.h"
-// Osc
-//#include "VDUIOsc.h"
-// Mouse
-//#include "VDUIMouse.h"
-// Shaders
-//#include "VDUIShaders.h"
-// Render
-//#include "VDUIRender.h"
 // Warps
 #include "VDUIWarps.h"
 
@@ -50,10 +27,10 @@ namespace videodromm
 	class VDUI
 	{
 	public:
-		VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
-		static VDUIRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
+		VDUI(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSessionFacade);
+		static VDUIRef	create(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSessionFacade)
 		{
-			return shared_ptr<VDUI>(new VDUI(aVDSettings, aVDSession));
+			return shared_ptr<VDUI>(new VDUI(aVDSettings, aVDSessionFacade));
 		}
 
 		void    Run(const char* title, unsigned int fps);
@@ -67,11 +44,8 @@ namespace videodromm
 		// Settings
 		VDSettingsRef				mVDSettings;
 		// Session
-		VDSessionRef				mVDSession;
-
-		// UITextures
-		//VDUITexturesRef				mUITextures;
-		//bool						showUITextures;
+		//VDSessionRef				mVDSession;
+		VDSessionFacadeRef			mVDSession;
 		// UIFbos
 		VDUIFbosRef					mUIFbos;
 		bool						showUIFbos;
@@ -79,36 +53,7 @@ namespace videodromm
 		// UIAnimation
 		VDUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
-		// UIMidi
-		/*VDUIMidiRef					mUIMidi;
-		bool						showUIMidi;
-		// UIAudio
-		VDUIAudioRef				mUIAudio;
-		bool						showUIAudio;
-		// UIColor
-		VDUIColorRef				mUIColor;
-		bool						showUIColor;
-		// UITempo
-		VDUITempoRef				mUITempo;
-		bool						showUITempo;
-		// UIBlend
-		VDUIBlendRef				mUIBlend;
-		bool						showUIBlend;
-		// UIMouse
-		VDUIMouseRef				mUIMouse;
-		bool						showUIMouse;
-		// UIOsc
-		VDUIOscRef					mUIOsc;
-		bool						showUIOsc;
-		// UISocketIO
-		VDUISocketIORef			mUISocketIO;
-		bool						showUISocketIO;
-		// UIShaders
-		VDUIShadersRef				mUIShaders;
-		bool						showUIShaders;
-		// UIRender
-		VDUIRenderRef				mUIRender;
-		bool						showUIRender;*/
+		
 		// UIWarps
 		VDUIWarpsRef				mUIWarps;
 		bool						showUIWarps;
@@ -125,7 +70,7 @@ namespace videodromm
 		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4, iWeight5, iWeight6, iWeight7;
 
 		bool getBoolValue(unsigned int aCtrl) {
-			return mVDSession->getBoolUniformValueByIndex(aCtrl);
+			return mVDSession->getUniformValue(aCtrl);
 		}
 		void toggleValue(unsigned int aCtrl) {
 			mVDSession->toggleValue(aCtrl);
@@ -139,11 +84,11 @@ namespace videodromm
 		void setFloatValue(unsigned int aCtrl, float aValue) {
 			mVDSession->setUniformValue(aCtrl, aValue);
 		}
-		float getMinUniformValueByIndex(unsigned int aIndex) {
-			return mVDSession->getMinUniformValueByIndex(aIndex);
+		float getMinUniformValue(unsigned int aIndex) {
+			return mVDSession->getMinUniformValue(aIndex);
 		}
-		float getMaxUniformValueByIndex(unsigned int aIndex) {
-			return mVDSession->getMaxUniformValueByIndex(aIndex);
+		float getMaxUniformValue(unsigned int aIndex) {
+			return mVDSession->getMaxUniformValue(aIndex);
 		}
 		float							getFloatValue(unsigned int aCtrl) {
 			return mVDSession->getUniformValue(aCtrl);

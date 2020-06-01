@@ -7,7 +7,7 @@
 // Settings
 #include "VDSettings.h"
 // Session
-#include "VDSession.h"
+#include "VDSessionFacade.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -22,8 +22,8 @@ namespace videodromm
 	class VDUIAnimation
 	{
 	public:
-		VDUIAnimation(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
-		static VDUIAnimationRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
+		VDUIAnimation(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession);
+		static VDUIAnimationRef	create(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession)
 		{
 			return shared_ptr<VDUIAnimation>(new VDUIAnimation(aVDSettings, aVDSession));
 		}
@@ -33,7 +33,7 @@ namespace videodromm
 		// Settings
 		VDSettingsRef					mVDSettings;
 		// Session
-		VDSessionRef					mVDSession;
+		VDSessionFacadeRef				mVDSession;
 
 		// imgui
 		float							getFloatValue(unsigned int aCtrl) {
@@ -43,21 +43,21 @@ namespace videodromm
 			mVDSession->setUniformValue(aCtrl, aValue);
 		};
 		float							getFloatValueByName(const string& aCtrlName) {
-			return mVDSession->getUniformValueByName(aCtrlName);
+			return 1.0;// TODO mVDSession->getUniformValueByName(aCtrlName);
 		}
 
 		int								getIntValue(unsigned int aCtrl) {
-			return mVDSession->getIntUniformValueByIndex(aCtrl);
+			return mVDSession->getUniformValue(aCtrl);
 		}
 
 		void							toggleValue(unsigned int aCtrl) {
 			mVDSession->toggleValue(aCtrl);
 		};
 		void							toggleAuto(unsigned int aCtrl) {
-			mVDSession->toggleAuto(aCtrl);
+			//mVDSession->toggleAuto(aCtrl);
 		};
 		void							toggleTempo(unsigned int aCtrl) {
-			mVDSession->toggleTempo(aCtrl);
+			//mVDSession->toggleTempo(aCtrl);
 		};
 		void							toggleBass(unsigned int aCtrl) {
 			//mVDSession->toggleBass(aCtrl);
@@ -69,20 +69,20 @@ namespace videodromm
 			//mVDSession->toggleTreble(aCtrl);
 		};
 		bool							getBoolValue(unsigned int aCtrl) {
-			return mVDSession->getBoolUniformValueByIndex(aCtrl);
+			return mVDSession->getUniformValue(aCtrl);
 		};
 		void							resetAutoAnimation(unsigned int aCtrl) {
-			mVDSession->resetAutoAnimation(aCtrl);
+			//mVDSession->resetAutoAnimation(aCtrl);
 		};
-		float							getMinUniformValueByIndex(unsigned int aIndex) {
-			return mVDSession->getMinUniformValueByIndex(aIndex);
+		float							getMinUniformValue(unsigned int aIndex) {
+			return mVDSession->getMinUniformValue(aIndex);
 		};
-		float							getMaxUniformValueByIndex(unsigned int aIndex) {
-			return mVDSession->getMaxUniformValueByIndex(aIndex);
+		float							getMaxUniformValue(unsigned int aIndex) {
+			return mVDSession->getMaxUniformValue(aIndex);
 		};
 
 		void							setIntValue(unsigned int aCtrl, int aValue) {
-			mVDSession->setIntUniformValueByIndex(aCtrl, aValue);
+			mVDSession->setUniformValue(aCtrl, aValue);
 		}
 
 		unsigned int					ctrl;

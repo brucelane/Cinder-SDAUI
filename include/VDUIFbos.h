@@ -7,7 +7,7 @@
 // Settings
 #include "VDSettings.h"
 // Session
-#include "VDSession.h"
+#include "VDSessionFacade.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -21,8 +21,8 @@ namespace videodromm
 	class VDUIFbos
 	{
 	public:
-		VDUIFbos(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
-		static VDUIFbosRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
+		VDUIFbos(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession);
+		static VDUIFbosRef	create(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession)
 		{
 			return shared_ptr<VDUIFbos>(new VDUIFbos(aVDSettings, aVDSession));
 		}
@@ -31,7 +31,7 @@ namespace videodromm
 		// Settings
 		VDSettingsRef					mVDSettings;
 		// Session
-		VDSessionRef					mVDSession;
+		VDSessionFacadeRef				mVDSession;
 		// imgui
 		char							buf[64];
 		int								xPos, yPos;
@@ -62,19 +62,19 @@ namespace videodromm
 			}*/
 			
 		};
-		float							getMinUniformValueByIndex(unsigned int aIndex) {
-			return mVDSession->getMinUniformValueByIndex(aIndex);
+		float							getMinUniformValue(unsigned int aIndex) {
+			return mVDSession->getMinUniformValue(aIndex);
 		};
-		float							getMaxUniformValueByIndex(unsigned int aIndex) {
-			return mVDSession->getMaxUniformValueByIndex(aIndex);
+		float							getMaxUniformValue(unsigned int aIndex) {
+			return mVDSession->getMaxUniformValue(aIndex);
 		};
 		bool							getBoolValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			//return (mVDSession->getGlobal(aFboIndex)) ? mVDSession->getBoolUniformValueByIndex(aCtrl) : mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
-			return mVDSession->getBoolUniformValueByIndex(aCtrl);
+			return mVDSession->getUniformValue(aCtrl);
 		};
 		int								getIntValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			//return mVDSession->getFboIntUniformValueByIndex(aCtrl, aFboIndex);
-			return mVDSession->getIntUniformValueByIndex(aCtrl);
+			return mVDSession->getUniformValue(aCtrl);
 		};
 		void							toggleValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			mVDSession->toggleValue(aCtrl); //toggleFboValue(aCtrl, aFboIndex);

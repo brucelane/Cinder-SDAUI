@@ -7,7 +7,7 @@
 // Settings
 #include "VDSettings.h"
 // Session
-#include "VDSession.h"
+#include "VDSessionFacade.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -21,8 +21,8 @@ namespace videodromm
 	class VDUIWarps
 	{
 	public:
-		VDUIWarps(VDSettingsRef aVDSettings, VDSessionRef aVDSession);
-		static VDUIWarpsRef	create(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
+		VDUIWarps(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession);
+		static VDUIWarpsRef	create(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession)
 		{
 			return shared_ptr<VDUIWarps>(new VDUIWarps(aVDSettings, aVDSession));
 		}
@@ -31,7 +31,7 @@ namespace videodromm
 		// Settings
 		VDSettingsRef				mVDSettings;
 		// Session
-		VDSessionRef				mVDSession;
+		VDSessionFacadeRef			mVDSession;
 		// imgui
 		char						buf[64];
 		int							xPos, yPos;

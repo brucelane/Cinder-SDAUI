@@ -2,7 +2,7 @@
 
 using namespace videodromm;
 
-VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
+VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
 	// UITextures
@@ -198,13 +198,13 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		/*ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Mixette");
 		ImGui::SameLine();*/
-		ImGui::Image((void*)mVDSession->getRenderedMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::Image((void*)mVDSession->buildRenderedMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("RenderedMixette");
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getPostFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::Image((void*)mVDSession->buildPostFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Post");
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getRenderedWarpFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::Image((void*)mVDSession->buildRenderedWarpFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Warp");
 
 		ImGui::SameLine();
@@ -257,7 +257,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::SameLine();
 		int hue = 0;
-		(mVDSession->isAudioBuffered()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		/*(mVDSession->isAudioBuffered()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(3.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(3.0f, 0.8f, 0.8f));
 		if (ImGui::Button("Wave")) {
@@ -273,7 +273,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			mVDSession->toggleUseLineIn();
 		}
 		ImGui::PopStyleColor(3);
-		hue++;
+		hue++;/**/
 		
 		// debug
 		ctrl = mVDSettings->IDEBUG;
@@ -289,11 +289,11 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 
 	
-		if (ImGui::Button("CreateWarp")) {
+		/*if (ImGui::Button("CreateWarp")) {
 			mVDSession->createWarp();
 		}	
 		hue++;
-		ImGui::SameLine();
+		ImGui::SameLine();*/
 
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
@@ -314,7 +314,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::PopStyleColor(3);
 		hue++;
 		ImGui::SameLine();
-
+		/*
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.9f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
 
@@ -346,8 +346,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			}
 		}
 		ImGui::PopStyleColor(3);
-
 		ImGui::SameLine();
+*/
 
 		ctrl = mVDSettings->IGLITCH;
 		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -492,11 +492,11 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			setFloatValue(mVDSettings->IMOUSEZ, 0.0f);
 		}
 		ImGui::SameLine();
-		ImGui::Text("beat %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBEAT));
+		ImGui::Text("beat %d ", mVDSession->getUniformValue(mVDSettings->IBEAT));
 		ImGui::SameLine();
-		ImGui::Text("bar %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBAR));
+		ImGui::Text("bar %d ", mVDSession->getUniformValue(mVDSettings->IBAR));
 		ImGui::SameLine();
-		ImGui::Text("bb %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBARBEAT));
+		ImGui::Text("bb %d ", mVDSession->getUniformValue(mVDSettings->IBARBEAT));
 		ImGui::SameLine();
 		ImGui::Text("Time %.2f", mVDSession->getUniformValue(mVDSettings->ITIME));
 		ImGui::SameLine();
@@ -559,7 +559,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ctrl = mVDSettings->IWEIGHT0 + m;
 			float iWeight = mVDSession->getUniformValue(ctrl);
 			sprintf(buf, "W%d##modew", m);
-			if (ImGui::DragFloat(buf, &iWeight, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			if (ImGui::DragFloat(buf, &iWeight, 0.001f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
 			{
 				setFloatValue(ctrl, iWeight);
 			}
@@ -612,9 +612,9 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));
-			ImGui::Image((void*)mVDSession->getFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			string tooltip = mVDSession->getFboName(m) + " - " + mVDSession->getFboInputTextureName(m);
-			sprintf(buf, "%s", tooltip.c_str());
+			ImGui::Image((void*)mVDSession->buildFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			//string tooltip = mVDSession->getFboName(m) + " - " + mVDSession->getFboInputTextureName(m);
+			//sprintf(buf, "%s", tooltip.c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 
 

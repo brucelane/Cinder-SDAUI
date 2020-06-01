@@ -2,7 +2,7 @@
 
 using namespace videodromm;
 
-VDUIWarps::VDUIWarps(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
+VDUIWarps::VDUIWarps(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
 }
@@ -37,14 +37,14 @@ void VDUIWarps::Run(const char* title) {
 			sprintf(buf, "WarpWidth##ww%d", w);
 			if (ImGui::SliderInt(buf, &ww, 0.0f, mVDSettings->mFboWidth*2))
 			{
-				mVDSession->setWarpWidth(w, ww);
+				//mVDSession->setWarpWidth(w, ww);
 			}
 			
 			int wh = mVDSession->getWarpHeight(w);
 			sprintf(buf, "WarpHeight##wh%d", w);
 			if (ImGui::SliderInt(buf, &wh, 0.0f, mVDSettings->mFboHeight*2))
 			{
-				mVDSession->setWarpHeight(w, wh);
+				//mVDSession->setWarpHeight(w, wh);
 			}
 
 
@@ -95,7 +95,7 @@ void VDUIWarps::Run(const char* title) {
 				int fboa = mVDSession->getWarpAFboIndex(w);
 
 				//if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboa)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-				if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image(mVDSession->getFboRenderedTexture(fboa), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				if (mVDSession->buildFboRenderedTexture(fboa)) ImGui::Image(mVDSession->buildFboRenderedTexture(fboa), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 
 				/*ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip(mVDSession->getWarpName(w).c_str());*/
@@ -111,10 +111,10 @@ void VDUIWarps::Run(const char* title) {
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(a / 16.0f, 0.7f, 0.7f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(a / 16.0f, 0.8f, 0.8f));
 
-					sprintf(buf, "%d##wia%d%d", a, w, a);
+					/*sprintf(buf, "%d##wia%d%d", a, w, a);
 					if (ImGui::Button(buf)) {
 						mVDSession->setWarpAFboIndex(w, a);
-					};
+					};*/
 					//sprintf(buf, "Set input fbo A to %s", mVDSession->getShaderName(a).c_str());
 					//if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 					ImGui::PopStyleColor(3);

@@ -391,7 +391,7 @@ void VDUIAnimation::Run(const char* title) {
 				{
 					mVDSettings->mOSCEnabled = true;
 					if (mVDSettings->mIsOSCSender) {
-						mVDSession->setupOSCSender();
+						mVDSession->addOSCObserver(mVDSettings->mOSCDestinationHost, mVDSettings->mOSCDestinationPort);// setupOSCSender();
 					}
 					else {
 						mVDSession->setupOSCReceiver();

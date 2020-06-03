@@ -482,6 +482,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		{
 			setFloatValue(mVDSettings->IMOUSEY, mouseY);
 		}
+		mouseZ = getFloatValue(mVDSettings->IMOUSEZ);
+		if (ImGui::Button("MouseZ"))
+		{
+			setFloatValue(mVDSettings->IMOUSEZ, !mouseZ);
+		}
+		/*
 		mouseZ ^= ImGui::Button("mouse click");
 		if (mouseZ)
 		{
@@ -490,7 +496,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		else
 		{
 			setFloatValue(mVDSettings->IMOUSEZ, 0.0f);
-		}
+		}*/
 		ImGui::SameLine();
 		ImGui::Text("beat %d ", mVDSession->getUniformValue(mVDSettings->IBEAT));
 		ImGui::SameLine();

@@ -231,15 +231,15 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		if (ImGui::GetTime() > tRefresh_time + 1.0f / 20.0f)
 		{
 			tRefresh_time = ImGui::GetTime();
-			timeValues[timeValues_offset] = mVDSession->getMaxVolume();
+			timeValues[timeValues_offset] = mVDSession->getUniformValue(mVDSettings->IMAXVOLUME);
 			timeValues_offset = (timeValues_offset + 1) % timeValues.size();
 		}
 
 		ImGui::PlotHistogram("H", mVDSession->getFreqs(), mVDSession->getFFTWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
 		ImGui::SameLine();
-		if (mVDSession->getMaxVolume() > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
-		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mVDSession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
-		if (mVDSession->getMaxVolume() > 240.0) ImGui::PopStyleColor();
+		if (mVDSession->getUniformValue(mVDSettings->IMAXVOLUME) > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mVDSession->getUniformValue(mVDSettings->IMAXVOLUME))).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
+		if (mVDSession->getUniformValue(mVDSettings->IMAXVOLUME) > 240.0) ImGui::PopStyleColor();
 
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 		ImGui::SameLine();

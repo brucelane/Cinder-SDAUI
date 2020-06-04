@@ -310,14 +310,14 @@ void VDUIAnimation::Run(const char* title) {
 			// BUG taptempo
 			if (ImGui::Button("Tap toggle")) { toggleSpinalTap(); }
 			if (spinalTap) {
-				static float tempo = mVDSession->getBpm();
+				static float tempo = mVDSession->getUniformValue(mVDSettings->IBPM);
 				//ImGui::Text("Tempo %.2f ", tempo);
 				if (ImGui::DragFloat("Tempo", &tempo, 0.01f, 0.01f, 200.0f, "%.2f"))
 				{
-					mVDSession->setBpm(tempo);
+					mVDSession->setUniformValue(mVDSettings->IBPM, tempo);
 				}
 				if (ImGui::SliderFloat("TempoS", &tempo, 0.01f, 200.0f, "%.01f")) {
-					mVDSession->setBpm(tempo);
+					mVDSession->setUniformValue(mVDSettings->IBPM, tempo);
 				}
 			}
 			else {

@@ -512,7 +512,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		// LiveOSC Obsolete ImGui::Text("Trk %s %.2f", mVDSettings->mTrackName.c_str(), mVDSettings->liveMeter);
 		ImGui::SameLine();
 		//			ImGui::Checkbox("Playing", &mVDSettings->mIsPlaying);
-		ImGui::Text("Tempo %.2f ", mVDSession->getBpm());
+		ImGui::Text("Tempo %.2f ", mVDSession->getUniformValue(mVDSettings->IBPM));
 
 
 		// line 3

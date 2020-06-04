@@ -276,7 +276,7 @@ void VDUIAnimation::Run(const char* title) {
 			}
 			ImGui::PopItemWidth();
 		}*/
-		if (ImGui::CollapsingHeader("Tempo", NULL, true, true))
+		if (ImGui::CollapsingHeader("Tempo", NULL, true, false))
 		{
 			if (ImGui::Button("x##startx")) { mVDSettings->iStart = 0.0f; }
 			ImGui::SameLine();
@@ -341,7 +341,7 @@ void VDUIAnimation::Run(const char* title) {
 
 		}
 		
-		if (ImGui::CollapsingHeader("OSC", NULL, true))
+		if (ImGui::CollapsingHeader("OSC", NULL, true, true))
 		{
 			if (mVDSettings->mOSCEnabled) {
 				ImGui::Text("OSC enabled");
@@ -404,7 +404,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::Text(" on port %d", mVDSettings->mOSCDestinationPort2);*/
 		}
-		if (ImGui::CollapsingHeader("Render", NULL, true, true))
+		if (ImGui::CollapsingHeader("Render", NULL, true, false))
 		{
 
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
@@ -562,7 +562,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::PopItemWidth();
 		}
 
-		if (ImGui::CollapsingHeader("Color", NULL, true))
+		if (ImGui::CollapsingHeader("Color", NULL, true, true))
 		{
 			ImGui::PushItemWidth(200.0f);
 			// foreground color

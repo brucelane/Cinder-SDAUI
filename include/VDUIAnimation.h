@@ -54,25 +54,25 @@ namespace videodromm
 			mVDSession->toggleValue(aCtrl);
 		};
 		void							toggleAuto(unsigned int aCtrl) {
-			//mVDSession->toggleAuto(aCtrl);
+			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_TIME); 
 		};
 		void							toggleTempo(unsigned int aCtrl) {
-			//mVDSession->toggleTempo(aCtrl);
+			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_AUTO);
 		};
 		void							toggleBass(unsigned int aCtrl) {
-			//mVDSession->toggleBass(aCtrl);
+			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_BASS);
 		};
 		void							toggleMid(unsigned int aCtrl) {
-			//mVDSession->toggleMid(aCtrl);
+			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_MID);
 		};
 		void							toggleTreble(unsigned int aCtrl) {
-			//mVDSession->toggleTreble(aCtrl);
+			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_TREBLE);
+		};
+		void							resetAutoAnimation(unsigned int aCtrl) {
+			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_NONE);
 		};
 		bool							getBoolValue(unsigned int aCtrl) {
 			return mVDSession->getUniformValue(aCtrl);
-		};
-		void							resetAutoAnimation(unsigned int aCtrl) {
-			//mVDSession->resetAutoAnimation(aCtrl);
 		};
 		float							getMinUniformValue(unsigned int aIndex) {
 			return mVDSession->getMinUniformValue(aIndex);

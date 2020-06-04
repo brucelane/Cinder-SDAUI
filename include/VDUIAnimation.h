@@ -42,13 +42,13 @@ namespace videodromm
 		void							setFloatValue(unsigned int aCtrl, float aValue) {
 			mVDSession->setUniformValue(aCtrl, aValue);
 		};
-		float							getFloatValueByName(const string& aCtrlName) {
+		/*float							getFloatValueByName(const string& aCtrlName) {
 			return 1.0;// TODO mVDSession->getUniformValueByName(aCtrlName);
-		}
+		}*/
 
-		int								getIntValue(unsigned int aCtrl) {
+		/*int								getIntValue(unsigned int aCtrl) {
 			return mVDSession->getUniformValue(aCtrl);
-		}
+		}*/
 
 		void							toggleValue(unsigned int aCtrl) {
 			mVDSession->toggleValue(aCtrl);
@@ -80,10 +80,6 @@ namespace videodromm
 		float							getMaxUniformValue(unsigned int aIndex) {
 			return mVDSession->getMaxUniformValue(aIndex);
 		};
-
-		void							setIntValue(unsigned int aCtrl, int aValue) {
-			mVDSession->setUniformValue(aCtrl, aValue);
-		}
 
 		unsigned int					ctrl;
 		map<int, float>					localValues;

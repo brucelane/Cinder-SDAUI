@@ -15,11 +15,11 @@ VDUIAnimation::VDUIAnimation(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSe
 	// contour
 	minContour = getMinUniformValue(mVDSettings->ICONTOUR);
 	maxContour = getMaxUniformValue(mVDSettings->ICONTOUR);
-	iResolutionX = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONX);//(int)getFloatValueByName("iResolutionX");
-	iResolutionY = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONY);//(int)getFloatValueByName("iResolutionY");
-	iOutW = getIntValue(mVDSettings->IOUTW);
-	iOutH = getIntValue(mVDSettings->IOUTH);
-	iBarBeat = getIntValue(mVDSettings->IBARBEAT);
+	iResolutionX = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONX);
+	iResolutionY = (int)mVDSession->getUniformValue(mVDSettings->IRESOLUTIONY);
+	iOutW = (int)mVDSession->getUniformValue(mVDSettings->IOUTW);
+	iOutH = (int)mVDSession->getUniformValue(mVDSettings->IOUTH);
+	iBarBeat = (int)mVDSession->getUniformValue(mVDSettings->IBARBEAT);
 }
 VDUIAnimation::~VDUIAnimation() {
 
@@ -204,11 +204,11 @@ void VDUIAnimation::Run(const char* title) {
 			}
 			// iBarBeat
 			ctrl = mVDSettings->IBARBEAT;
-			if (ImGui::Button("x##iBarBeat")) { iBarBeat = 1; setIntValue(ctrl, 1); }
+			if (ImGui::Button("x##iBarBeat")) { iBarBeat = 1; setFloatValue(ctrl, 1); }
 			ImGui::SameLine();
 			if (ImGui::SliderInt("iBarBeat", &iBarBeat, 1, 50))
 			{
-				setIntValue(ctrl, iBarBeat);
+				setFloatValue(ctrl, iBarBeat);
 			}
 			/*sprintf(buf, "XorY");
 			mVDSettings->iXorY ^= ImGui::Button(buf);*/
@@ -410,22 +410,21 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			// output resolution
 			ctrl = mVDSettings->IOUTW;
-			if (ImGui::Button("x##ioutw")) { iOutW = 1280; setIntValue(ctrl, 1280); }
+			if (ImGui::Button("x##ioutw")) { iOutW = 1280; setFloatValue(ctrl, 1280); }
 			ImGui::SameLine();
 			if (ImGui::SliderInt("iOutW", &iOutW, 320, 5000))
 			{
-				setIntValue(ctrl, iOutW);
+				setFloatValue(ctrl, iOutW);
 			}
 			ctrl = mVDSettings->IOUTH;
-			if (ImGui::Button("x##iouth")) { iOutH = 720; setIntValue(ctrl, iOutH); }
+			if (ImGui::Button("x##iouth")) { iOutH = 720; setFloatValue(ctrl, iOutH); }
 			ImGui::SameLine();
 			if (ImGui::SliderInt("iOutH", &iOutH, 480, 2000))
 			{
-				setIntValue(ctrl, iOutH);
+				setFloatValue(ctrl, iOutH);
 			}
 			// iResolution
 			ctrl = mVDSettings->IRESOLUTIONX;
-			//iResolutionX = getFloatValueByName("iResolutionX");
 			if (ImGui::Button("x##IRESOLUTIONX")) { iResolutionX = 1280; setFloatValue(ctrl, 1280); }
 			ImGui::SameLine();
 			if (ImGui::SliderInt("iResolutionX", &iResolutionX, (int)getMinUniformValue(ctrl), (int)getMaxUniformValue(ctrl)))
@@ -433,7 +432,6 @@ void VDUIAnimation::Run(const char* title) {
 				setFloatValue(ctrl, (float)iResolutionX);
 			}
 			ctrl = mVDSettings->IRESOLUTIONY;
-			//iResolutionY = getFloatValueByName("iResolutionY");
 			if (ImGui::Button("x##IRESOLUTIONY")) { iResolutionY = 720; setFloatValue(ctrl, 720); }
 			ImGui::SameLine();
 			if (ImGui::SliderInt("iResolutionY", &iResolutionY, (int)getMinUniformValue(ctrl), (int)getMaxUniformValue(ctrl)))
@@ -496,7 +494,7 @@ void VDUIAnimation::Run(const char* title) {
 			}
 
 			// debug
-			/*ctrl = mVDSettings->IDEBUG;
+			ctrl = mVDSettings->IDEBUG;
 			(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
@@ -504,7 +502,7 @@ void VDUIAnimation::Run(const char* title) {
 				toggleValue(ctrl);
 			}
 			ImGui::PopStyleColor(3);
-			hue++;*/
+			hue++;
 
 			// iVignette
 			ctrl = mVDSettings->IVIGN;

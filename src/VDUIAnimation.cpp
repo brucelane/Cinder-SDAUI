@@ -32,152 +32,80 @@ void VDUIAnimation::Run(const char* title) {
 	ImGui::Begin("Animation", NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 	{
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+		if (ImGui::CollapsingHeader("Color", NULL, true, true))
+		{
+			ImGui::PushItemWidth(200.0f);
+			// foreground color
+			color[0] = getFloatValue(mVDSettings->IFR);
+			color[1] = getFloatValue(mVDSettings->IFG);
+			color[2] = getFloatValue(mVDSettings->IFB);
+			color[3] = getFloatValue(mVDSettings->IFA);
+			ImGui::ColorEdit4("f", color);
+			for (int i = 0; i < 4; i++)
+			{
+				if (getFloatValue(i + mVDSettings->IFR) != color[i])
+				{
+					setFloatValue(i + mVDSettings->IFR, color[i]);
+				}
+			}
 
+			// background color
+			backcolor[0] = getFloatValue(mVDSettings->IBR);
+			backcolor[1] = getFloatValue(mVDSettings->IBG);
+			backcolor[2] = getFloatValue(mVDSettings->IBB);
+			ImGui::ColorEdit3("g", backcolor);
+			for (int i = 0; i < 3; i++)
+			{
+				if (getFloatValue(i + mVDSettings->IBR) != backcolor[i])
+				{
+					setFloatValue(i + mVDSettings->IBR, backcolor[i]);
+				}
+
+			}
+			ImGui::PopItemWidth();
+			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+		}
 		if (ImGui::CollapsingHeader("Animation", NULL, true, true))
 		{
-			// iChromatic
-			ctrl = mVDSettings->ICHROMATIC;
-			if (ImGui::Button("a##chromatic")) {
-				toggleAuto(ctrl);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("f##chromatic")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("b##chromatic")) { toggleBass(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("m##chromatic")) { toggleMid(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##chromatic")) { toggleTreble(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##chromatic")) {
-				resetAutoAnimation(ctrl);
-			}
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::SliderFloat("chromatic", &localValues[ctrl], getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
+			for (size_t iUniform = 5; iUniform < 49; iUniform++)
 			{
-				mVDSession->setUniformValue(ctrl, localValues[ctrl]);
+				sprintf(buf, "a##%s", mVDSession->getUniformName(iUniform).c_str());
+				if (ImGui::Button(buf)) {					
+					mVDSession->setAnim(iUniform, mVDSettings->ANIM_TIME);
+				}
+				ImGui::SameLine();
+				sprintf(buf, "f##%s", mVDSession->getUniformName(iUniform).c_str());
+				if (ImGui::Button(buf)) { mVDSession->setAnim(iUniform, mVDSettings->ANIM_AUTO); }
+				ImGui::SameLine();
+				sprintf(buf, "b##%s", mVDSession->getUniformName(iUniform).c_str());
+				if (ImGui::Button(buf)) { mVDSession->setAnim(iUniform, mVDSettings->ANIM_BASS); }
+				ImGui::SameLine();
+				sprintf(buf, "m##%s", mVDSession->getUniformName(iUniform).c_str());
+				if (ImGui::Button(buf)) { mVDSession->setAnim(iUniform, mVDSettings->ANIM_MID); }
+				ImGui::SameLine();
+				sprintf(buf, "t##%s", mVDSession->getUniformName(iUniform).c_str());
+				if (ImGui::Button(buf)) { mVDSession->setAnim(iUniform, mVDSettings->ANIM_TREBLE); }
+				ImGui::SameLine();
+				sprintf(buf, "x##%s", mVDSession->getUniformName(iUniform).c_str());
+				if (ImGui::Button(buf)) {
+					mVDSession->setAnim(iUniform, mVDSettings->ANIM_NONE);
+				}
+				ImGui::SameLine();
+				localValues[iUniform] = mVDSession->getUniformValue(iUniform);
+				sprintf(buf, "%d %s", iUniform, mVDSession->getUniformName(iUniform).c_str());
+				if (ImGui::SliderFloat(buf, &localValues[iUniform], getMinUniformValue(iUniform), getMaxUniformValue(iUniform)))
+				{
+					mVDSession->setUniformValue(iUniform, localValues[iUniform]);
+				}
 			}
 
-			// ratio
-			ctrl = mVDSettings->IRATIO;
-			if (ImGui::Button("a##ratio")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("f##ratio")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("b##ratio")) { toggleBass(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("m##ratio")) { toggleMid(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##ratio")) { toggleTreble(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##ratio")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::SliderFloat("ratio/min/max", &localValues[ctrl], getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
-
-			// sobel
-			ctrl = mVDSettings->ISOBEL;
-			if (ImGui::Button("a##sobel")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("f##sobel")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("b##sobel")) { toggleBass(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("m##sobel")) { toggleMid(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##sobel")) { toggleTreble(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##sobel")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::SliderFloat("sobel/min/max", &localValues[ctrl], getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
-			// exposure
-			ctrl = mVDSettings->IEXPOSURE;
-			if (ImGui::Button("a##exposure")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("f##exposure")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("b##exposure")) { toggleBass(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("m##exposure")) { toggleMid(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##exposure")) { toggleTreble(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##exposure")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::DragFloat("exposure", &localValues[ctrl], 0.1f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
-			// zoom
-			ctrl = mVDSettings->IZOOM;
-			if (ImGui::Button("a##zoom"))
-			{
-				toggleAuto(ctrl);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("f##zoom")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("b##zoom")) { toggleBass(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("m##zoom")) { toggleMid(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##zoom")) { toggleTreble(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##zoom")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::DragFloat("zoom", &localValues[ctrl], 0.1f, minZoom, maxZoom))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
-			/* todo crash:
-			ImGui::DragFloat("minzm", &minZoom, 0.1f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl));
-			ImGui::SameLine();
-			ImGui::DragFloat("maxzm", &maxZoom, 0.1f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl));
-			*/
-			//  speed sequence
-// 20190727 TODO CHECK IF NEEDED
-			/*ctrl = mVDSettings->ISPEED;
-			if (ImGui::Button("a##speed")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("f##speed")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##speed")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::DragFloat("speed", &localValues[ctrl], 0.01f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			} */
-			// rotation speed 
-			ctrl = mVDSettings->IROTATIONSPEED;
-			if (ImGui::Button("a##rotationspeed")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("f##rotationspeed")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##rotationspeed")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::DragFloat("rotationSpeed", &localValues[ctrl], 0.01f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
 			// badTv
 			/*ctrl = mVDSettings->IBADTV;
-			if (ImGui::Button("a##badtv")) { toggleAuto(ctrl); }
+			if (ImGui::Button("a##badtv")) { mVDSession->setAnim(iUniform, mVDSettings->ANIM_TIME); }
 			ImGui::SameLine();
-			if (ImGui::Button("f##badtv")) { toggleTempo(ctrl); }
+			if (ImGui::Button("f##badtv")) { mVDSession->setAnim(iUniform, mVDSettings->ANIM_AUTO); }
 			ImGui::SameLine();
-			if (ImGui::Button("x##badtv")) { resetAutoAnimation(ctrl); }
+			if (ImGui::Button("x##badtv")) { mVDSession->setAnim(iUniform, mVDSettings->ANIM_NONE); }
 			ImGui::SameLine();
 			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("badTv", &localValues[ctrl], 0.01f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
@@ -186,7 +114,7 @@ void VDUIAnimation::Run(const char* title) {
 			}*/
 			// iPixelX
 			ctrl = mVDSettings->IPIXELX;
-			if (ImGui::Button("x##iPixelX")) { resetAutoAnimation(ctrl); }
+			if (ImGui::Button("x##iPixelX")) { mVDSession->setAnim(ctrl, mVDSettings->ANIM_NONE); }
 			ImGui::SameLine();
 			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("iPixelX/min/max", &localValues[ctrl], getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
@@ -195,7 +123,7 @@ void VDUIAnimation::Run(const char* title) {
 			}
 			// iPixelY
 			ctrl = mVDSettings->IPIXELY;
-			if (ImGui::Button("x##iPixelY")) { resetAutoAnimation(ctrl); }
+			if (ImGui::Button("x##iPixelY")) { mVDSession->setAnim(ctrl, mVDSettings->ANIM_NONE); }
 			ImGui::SameLine();
 			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 			if (ImGui::SliderFloat("iPixelY/min/max", &localValues[ctrl], getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
@@ -214,7 +142,7 @@ void VDUIAnimation::Run(const char* title) {
 			mVDSettings->iXorY ^= ImGui::Button(buf);*/
 
 			// steps
-			ctrl = mVDSettings->ISTEPS;
+			/*ctrl = mVDSettings->ISTEPS;
 			if (ImGui::Button("x##steps")) { localValues[ctrl] = 16.0f; setFloatValue(ctrl, localValues[ctrl]); }
 			ImGui::SameLine();
 			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
@@ -239,7 +167,7 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::SliderFloat("trixels", &localValues[ctrl], 0.00f, 1.0f))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
-			}
+			}*/
 		}
 		/*
 		if (ImGui::CollapsingHeader("Audio", NULL, true, true))
@@ -340,7 +268,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::PopItemWidth();
 
 		}
-		
+
 		if (ImGui::CollapsingHeader("OSC", NULL, true, true))
 		{
 			if (mVDSettings->mOSCEnabled) {
@@ -494,19 +422,19 @@ void VDUIAnimation::Run(const char* title) {
 			}
 
 			// debug
-			ctrl = mVDSettings->IDEBUG;
-			(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+			/*ctrl = mVDSettings->IDEBUG;
+			(getFloatValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 			if (ImGui::Button("debug")) {
 				toggleValue(ctrl);
 			}
 			ImGui::PopStyleColor(3);
-			hue++;
+			hue++;*/
 
 			// iVignette
 			ctrl = mVDSettings->IVIGN;
-			(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+			(getFloatValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 			if (ImGui::Button("vignette")) {
@@ -529,11 +457,11 @@ void VDUIAnimation::Run(const char* title) {
 
 			// iContour
 			ctrl = mVDSettings->ICONTOUR;
-			if (ImGui::Button("a##contour")) { toggleAuto(ctrl); }
+			if (ImGui::Button("a##contour")) { mVDSession->setAnim(ctrl, mVDSettings->ANIM_TIME); }
 			ImGui::SameLine();
-			if (ImGui::Button("t##contour")) { toggleTempo(ctrl); }
+			if (ImGui::Button("t##contour")) { mVDSession->setAnim(ctrl, mVDSettings->ANIM_AUTO); }
 			ImGui::SameLine();
-			if (ImGui::Button("x##contour")) { resetAutoAnimation(ctrl); }
+			if (ImGui::Button("x##contour")) { mVDSession->setAnim(ctrl, mVDSettings->ANIM_NONE); }
 			ImGui::SameLine();
 			contour = mVDSession->getUniformValue(ctrl);
 			if (ImGui::DragFloat("contour", &contour, 0.001f, minContour, maxContour))
@@ -559,83 +487,6 @@ void VDUIAnimation::Run(const char* title) {
 
 			ImGui::PopItemWidth();
 		}
-
-		if (ImGui::CollapsingHeader("Color", NULL, true, true))
-		{
-			ImGui::PushItemWidth(200.0f);
-			// foreground color
-			color[0] = getFloatValue(mVDSettings->IFR);
-			color[1] = getFloatValue(mVDSettings->IFG);
-			color[2] = getFloatValue(mVDSettings->IFB);
-			color[3] = getFloatValue(mVDSettings->IFA);
-			ImGui::ColorEdit4("f", color);
-			for (int i = 0; i < 4; i++)
-			{
-				if (getFloatValue(i + mVDSettings->IFR) != color[i])
-				{
-					setFloatValue(i + mVDSettings->IFR, color[i]);
-				}
-			}
-
-			// background color
-			backcolor[0] = getFloatValue(mVDSettings->IBR);
-			backcolor[1] = getFloatValue(mVDSettings->IBG);
-			backcolor[2] = getFloatValue(mVDSettings->IBB);
-			ImGui::ColorEdit3("g", backcolor);
-			for (int i = 0; i < 3; i++)
-			{
-				if (getFloatValue(i + mVDSettings->IBR) != backcolor[i])
-				{
-					setFloatValue(i + mVDSettings->IBR, backcolor[i]);
-				}
-
-			}
-			ImGui::PopItemWidth();
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-			// color multipliers
-			// red x
-			ctrl = mVDSettings->IFRX;
-			if (ImGui::Button("a##redx")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##redx")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##redx")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::DragFloat("red x", &localValues[ctrl], 0.01f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
-			// green x
-			ctrl = mVDSettings->IFGX;
-			if (ImGui::Button("a##greenx")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##greenx")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##greenx")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::DragFloat("green x", &localValues[ctrl], 0.01f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
-			// blue x
-			ctrl = mVDSettings->IFBX;
-			if (ImGui::Button("a##bluex")) { toggleAuto(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("t##bluex")) { toggleTempo(ctrl); }
-			ImGui::SameLine();
-			if (ImGui::Button("x##bluex")) { resetAutoAnimation(ctrl); }
-			ImGui::SameLine();
-			localValues[ctrl] = mVDSession->getUniformValue(ctrl);
-			if (ImGui::DragFloat("blue x", &localValues[ctrl], 0.01f, getMinUniformValue(ctrl), getMaxUniformValue(ctrl)))
-			{
-				setFloatValue(ctrl, localValues[ctrl]);
-			}
-
-			ImGui::PopItemWidth();
-		}
-
 
 	}
 	ImGui::End();

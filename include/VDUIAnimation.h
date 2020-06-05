@@ -42,38 +42,10 @@ namespace videodromm
 		void							setFloatValue(unsigned int aCtrl, float aValue) {
 			mVDSession->setUniformValue(aCtrl, aValue);
 		};
-		/*float							getFloatValueByName(const string& aCtrlName) {
-			return 1.0;// TODO mVDSession->getUniformValueByName(aCtrlName);
-		}*/
-
-		/*int								getIntValue(unsigned int aCtrl) {
-			return mVDSession->getUniformValue(aCtrl);
-		}*/
-
 		void							toggleValue(unsigned int aCtrl) {
 			mVDSession->toggleValue(aCtrl);
 		};
-		void							toggleAuto(unsigned int aCtrl) {
-			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_TIME); 
-		};
-		void							toggleTempo(unsigned int aCtrl) {
-			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_AUTO);
-		};
-		void							toggleBass(unsigned int aCtrl) {
-			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_BASS);
-		};
-		void							toggleMid(unsigned int aCtrl) {
-			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_MID);
-		};
-		void							toggleTreble(unsigned int aCtrl) {
-			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_TREBLE);
-		};
-		void							resetAutoAnimation(unsigned int aCtrl) {
-			mVDSession->setAnim(aCtrl, mVDSettings->ANIM_NONE);
-		};
-		bool							getBoolValue(unsigned int aCtrl) {
-			return mVDSession->getUniformValue(aCtrl);
-		};
+
 		float							getMinUniformValue(unsigned int aIndex) {
 			return mVDSession->getMinUniformValue(aIndex);
 		};

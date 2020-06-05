@@ -333,9 +333,10 @@ void VDUIFbos::Run(const char* title) {
 			for (auto u : mVDSession->getUniforms(f)) {
 				string uName = u.getName(); // TODO use getIndex?
 				ctrl = mVDSession->getUniformIndexForName(uName);
+
 				switch (u.getType()) {
 				case GL_BOOL:
-					// boolean 35670
+					// boolean 35670 GL_BOOL 0x8B56
 					(getValue(ctrl, f) > 0.0f) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
@@ -346,8 +347,8 @@ void VDUIFbos::Run(const char* title) {
 					ImGui::PopStyleColor(3);
 					hue++;
 					break;
-				case 35111:
-					// int
+				case GL_INT: 
+					// int 5124 GL_INT 0x1404
 					(getValue(ctrl, f)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
@@ -358,13 +359,13 @@ void VDUIFbos::Run(const char* title) {
 					ImGui::PopStyleColor(3);
 					hue++;
 					break;
-				case 35678:
-					// sampler2d
+				case GL_SAMPLER_2D:
+					// sampler2d 35678 GL_SAMPLER_2D 0x8B5E
 					sprintf(buf, "%s##texuniform%d", uName.c_str(), f);
 					mShowInputTexture ^= ImGui::Button(buf);
 					break;
 				case GL_FLOAT:
-					// float 5126
+					// float 5126 GL_FLOAT 0x1406
 					//if (mVDSession->getGlobal(f) || ctrl == 0) {
 						localValues[ctrl] = mVDSession->getUniformValue(ctrl);
 					/*}
@@ -433,7 +434,7 @@ void VDUIFbos::Run(const char* title) {
 					}
 					break;
 				default:
-					//ciModelViewProjection 35676
+					//ciModelViewProjection 35676 GL_FLOAT_MAT4 0x8B5C
 					/* gl2.h
 						GL_FLOAT_VEC2                     0x8B50
 						GL_FLOAT_VEC3                     0x8B51

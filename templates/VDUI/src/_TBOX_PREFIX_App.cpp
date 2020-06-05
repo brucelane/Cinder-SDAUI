@@ -17,26 +17,15 @@
  You should have received a copy of the GNU General Public License
  along with Cinder-Warping.  If not, see <http://www.gnu.org/licenses/>.
  */
- /*
-	 TODO
-	 Lazy Loading for network
-	 mutex
-	 factory
-	 builder
-	 unit tests
-	 object pool
- */
+ 
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/gl/Texture.h"
 
-#include "cinder/Rand.h"
- // json
-//#include "cinder/Json.h"
-
-//#include "Warp.h"
-#include "VDSession.h"
+// Animation
+#include "VDAnimation.h"
+// Session Facade
+#include "VDSessionFacade.h"
 // Spout
 #include "CiSpoutOut.h"
 // Video
@@ -49,12 +38,10 @@
 using namespace ci;
 using namespace ci::app;
 using namespace videodromm;
-using namespace std;
 
 class _TBOX_PREFIX_App : public App {
 public:
 	_TBOX_PREFIX_App();
-	//void setup() override;
 	void cleanup() override;
 	void update() override;
 	void draw() override;
@@ -69,8 +56,10 @@ public:
 private:
 	// Settings
 	VDSettingsRef					mVDSettings;
+	// Animation
+	VDAnimationRef					mVDAnimation;
 	// Session
-	VDSessionRef					mVDSession;
+	VDSessionFacadeRef				mVDSessionFacade;
 	// UI
 	VDUIRef							mVDUI;
 	// video
@@ -79,34 +68,36 @@ private:
 	float							mVideoDuration;
 	bool							mIsVideoLoaded;*/
 
-
 	bool							mFadeInDelay = true;
-	//void							saveWarps();
 	void							toggleCursorVisibility(bool visible);
 	SpoutOut 						mSpoutOut;
 };
 
 
-_TBOX_PREFIX_App::_TBOX_PREFIX_App() : mSpoutOut("VD", app::getWindowSize())
+_TBOX_PREFIX_App::_TBOX_PREFIX_App() : mSpoutOut("VDUI", app::getWindowSize())
 {
 
 	// Settings
-	mVDSettings = VDSettings::create("VD");
+	mVDSettings = VDSettings::create("VDUI");
+	// Animation
+	mVDAnimation = VDAnimation::create(mVDSettings);
 	// Session
-	mVDSession = VDSession::create(mVDSettings);
-	mVDSession->getWindowsResolution();
-	toggleCursorVisibility(mVDSettings->mCursorVisible);
-	mVDSession->toggleUI();
-	mVDSession->setMode(8);
-	//mVDSession->toggleValue(132); //flipv
-	// sos
-	//mVDSession->setBpm(160.0f);
-	mVDSession->setUniformValue(mVDSettings->IMOUSEX, 0.27710f);
-	mVDSession->setUniformValue(mVDSettings->IMOUSEY, 0.5648f);
+	mVDSessionFacade = VDSessionFacade::createVDSession(mVDSettings, mVDAnimation)
+		->setUniformValue(mVDSettings->IBPM, 160.0f)
+		->setUniformValue(mVDSettings->IMOUSEX, 0.27710f)
+		->setUniformValue(mVDSettings->IMOUSEY, 0.5648f)
+		->setMode(8)
+		->loadFromJsonFile("fbo0.json")
+		->loadFromJsonFile("fbo1.json")
+		//->setupOSCReceiver()
+		//->addOSCObserver(mVDSettings->mOSCDestinationHost, mVDSettings->mOSCDestinationPort)
+		->addUIObserver(mVDSettings, mVDAnimation)
+		->toggleValue(mVDSettings->IFLIPV);
+
 	// sos only mVDSession->setUniformValue(mVDSettings->IEXPOSURE, 1.93f);
 	mFadeInDelay = true;
 	// UI
-	mVDUI = VDUI::create(mVDSettings, mVDSession);
+	mVDUI = VDUI::create(mVDSettings, mVDSessionFacade);
 	/*fs::path texFileOrPath = getAssetPath("") / mVDSettings->mAssetsPath / "accueil.mp4";
 	if (fs::exists(texFileOrPath)) {
 		string ext = "";
@@ -213,7 +204,6 @@ void _TBOX_PREFIX_App::cleanup()
 {
 	CI_LOG_V("cleanup and save");
 	ui::Shutdown();
-	mVDSession->save();
 
 	mVDSettings->save();
 	CI_LOG_V("quit");
@@ -229,8 +219,8 @@ void _TBOX_PREFIX_App::update()
 		//deleteControlWindows();
 		break;
 	}
-	mVDSession->setUniformValue(mVDSettings->IFPS, getAverageFps());
-	mVDSession->update();
+	mVDSessionFacade->setUniformValue(mVDSettings->IFPS, getAverageFps());
+	mVDSessionFacade->update();
 	/*mVideo.update();
 	mVideoPos = mVideo.getPosition();
 	if (mVideo.isStopped() || mVideo.isPaused()) {
@@ -243,8 +233,6 @@ void _TBOX_PREFIX_App::update()
 void _TBOX_PREFIX_App::resize()
 {
 	mVDUI->resize();
-
-
 }
 void _TBOX_PREFIX_App::draw()
 {
@@ -259,9 +247,9 @@ void _TBOX_PREFIX_App::draw()
 		}
 	}
 	else {
-		//gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
-		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), true);
-		int m = mVDSession->getMode();
+		gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
+		//gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), true);
+		/*int m = mVDSession->getMode();
 		if (m < mVDSession->getModesCount() && m < mVDSession->getFboListSize()) {
 			gl::draw(mVDSession->getFboTexture(m), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			//mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(m));
@@ -272,6 +260,9 @@ void _TBOX_PREFIX_App::draw()
 			// ok gl::draw(mVDSession->getWarpFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
 			//mSpoutOut.sendTexture(mVDSession->getRenderedMixetteTexture(0));
 		}
+		gl::draw(mVDSessionFacade->buildFboTexture(0), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+		*/
+		gl::draw(mVDSessionFacade->buildRenderedMixetteTexture(0), Area(50, 50, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 
 		/*vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());
 		mGlslVideoTexture->uniform("uVideoSize", videoSize);

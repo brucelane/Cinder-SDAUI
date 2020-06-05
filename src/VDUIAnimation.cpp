@@ -67,10 +67,10 @@ void VDUIAnimation::Run(const char* title) {
 		}
 		if (ImGui::CollapsingHeader("Animation", NULL, true, true))
 		{
-			for (size_t iUniform = 5; iUniform < 49; iUniform++)
+			for (size_t iUniform = 5; iUniform < 29; iUniform++)
 			{
 				sprintf(buf, "a##%s", mVDSession->getUniformName(iUniform).c_str());
-				if (ImGui::Button(buf)) {					
+				if (ImGui::Button(buf)) {
 					mVDSession->setAnim(iUniform, mVDSettings->ANIM_TIME);
 				}
 				ImGui::SameLine();
@@ -271,62 +271,33 @@ void VDUIAnimation::Run(const char* title) {
 
 		if (ImGui::CollapsingHeader("OSC", NULL, true, true))
 		{
-			if (mVDSettings->mOSCEnabled) {
-				ImGui::Text("OSC enabled");
-				if (mVDSettings->mIsOSCSender) {
-					/*ImGui::Text("Sending to host %s", mVDSettings->mOSCDestinationHost.c_str());
-					ImGui::SameLine();
-					ImGui::Text(" on port %d", mVDSettings->mOSCDestinationPort);
-					static char str0[128] = "/live/play";
-					static int i0 = 0;
-					static float f0 = 0.0f;
-					ImGui::InputText("address", str0, IM_ARRAYSIZE(str0));
-					ImGui::InputInt("track", &i0);
-					ImGui::InputFloat("clip", &f0, 0.01f, 1.0f);
-					if (ImGui::Button("Send")) { mVDSession->sendOSCIntMessage(str0, i0); }*/
-				}
-				else {
-					ImGui::Text(" Receiving on port %d", mVDSettings->mOSCReceiverPort);
-				}
+			static char host[128] = "127.0.0.1";
+			std::copy(mVDSettings->mOSCDestinationHost.begin(), (mVDSettings->mOSCDestinationHost.size() >= 128 ? mVDSettings->mOSCDestinationHost.begin() + 128 : mVDSettings->mOSCDestinationHost.end()), host);
+			static int senderPort = mVDSettings->mOSCDestinationPort;
+			ImGui::InputText("destination host", host, IM_ARRAYSIZE(host));
+			if (ImGui::InputInt("destination port", &senderPort)) mVDSettings->mOSCDestinationPort = senderPort;
+			if (mVDSession->isOscSenderConnected()) {
+				ImGui::Text("Osc sender connected %d", mVDSettings->mOSCDestinationPort);
 			}
 			else {
-				ImGui::Text("OSC disabled");
-
-				if (mVDSettings->mIsOSCSender) {
-					if (ImGui::Button("sender->receiver"))
-					{
-						mVDSettings->mIsOSCSender = false;
-					}
-					if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a OSC receiver");
-
-					static char host[128] = "127.0.0.1";
-					std::copy(mVDSettings->mOSCDestinationHost.begin(), (mVDSettings->mOSCDestinationHost.size() >= 128 ? mVDSettings->mOSCDestinationHost.begin() + 128 : mVDSettings->mOSCDestinationHost.end()), host);
-					static int senderPort = mVDSettings->mOSCDestinationPort;
-					ImGui::InputText("destination address", host, IM_ARRAYSIZE(host));
-					if (ImGui::InputInt("destination port", &senderPort)) mVDSettings->mOSCDestinationPort = senderPort;
-				}
-				else {
-					if (ImGui::Button("receiver->sender"))
-					{
-						mVDSettings->mIsOSCSender = true;
-					}
-					if (ImGui::IsItemHovered()) ImGui::SetTooltip("Change to a OSC sender");
-
-					static int receiverPort = mVDSettings->mOSCReceiverPort;
-					if (ImGui::InputInt("receiver port", &receiverPort)) mVDSettings->mOSCReceiverPort = receiverPort;
-				}
-				if (ImGui::Button("Enable"))
+				if (ImGui::Button("Sender connect"))
 				{
-					mVDSettings->mOSCEnabled = true;
-					if (mVDSettings->mIsOSCSender) {
-						mVDSession->addOSCObserver(mVDSettings->mOSCDestinationHost, mVDSettings->mOSCDestinationPort);// setupOSCSender();
-					}
-					else {
-						mVDSession->setupOSCReceiver();
-					}
+					mVDSession->addOSCObserver(mVDSettings->mOSCDestinationHost, mVDSettings->mOSCDestinationPort);
 				}
 			}
-			ImGui::Text(">%s", mVDSettings->mOSCMsg.c_str());
+
+			static int receiverPort = mVDSettings->mOSCReceiverPort;
+			if (ImGui::InputInt("receiver port", &receiverPort)) mVDSettings->mOSCReceiverPort = receiverPort;
+			if (mVDSession->isOscReceiverConnected()) {
+				ImGui::Text("Osc receiver connected %d", mVDSettings->mOSCReceiverPort);
+				ImGui::Text(">%s", mVDSettings->mOSCMsg.c_str());
+			}
+			else {
+				if (ImGui::Button("Receiver connect"))
+				{
+					mVDSession->setupOSCReceiver();
+				}
+			}
 
 			/* TODO if useful ImGui::Text("Sending to 2nd host %s", mVDSettings->mOSCDestinationHost2.c_str());
 			ImGui::SameLine();

@@ -271,7 +271,8 @@ void VDUIAnimation::Run(const char* title) {
 
 		if (ImGui::CollapsingHeader("OSC", NULL, true, true))
 		{
-			static char host[128] = "127.0.0.1";
+			static char host[128] = "127.0.0.1"; // #define IP_LOCALHOST 127.0.0.1
+			// validate in loading, not here 
 			std::copy(mVDSettings->mOSCDestinationHost.begin(), (mVDSettings->mOSCDestinationHost.size() >= 128 ? mVDSettings->mOSCDestinationHost.begin() + 128 : mVDSettings->mOSCDestinationHost.end()), host);
 			static int senderPort = mVDSettings->mOSCDestinationPort;
 			ImGui::InputText("destination host", host, IM_ARRAYSIZE(host));
@@ -286,11 +287,11 @@ void VDUIAnimation::Run(const char* title) {
 				}
 			}
 
-			static int receiverPort = mVDSettings->mOSCReceiverPort;
-			if (ImGui::InputInt("receiver port", &receiverPort)) mVDSettings->mOSCReceiverPort = receiverPort;
+			static int receiverPort = mVDSession->getOSCReceiverPort();
+			if (ImGui::InputInt("receiver port", &receiverPort)) mVDSession->setOSCReceiverPort(receiverPort);
 			if (mVDSession->isOscReceiverConnected()) {
-				ImGui::Text("Osc receiver connected %d", mVDSettings->mOSCReceiverPort);
-				ImGui::Text(">%s", mVDSettings->mOSCMsg.c_str());
+				ImGui::Text("Osc receiver connected %d", mVDSession->getOSCReceiverPort());
+				ImGui::Text(">%s", mVDSession->getOSCMsg().c_str());
 			}
 			else {
 				if (ImGui::Button("Receiver connect"))

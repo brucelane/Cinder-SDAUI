@@ -33,7 +33,7 @@ namespace videodromm
 			return shared_ptr<VDUI>(new VDUI(aVDSettings, aVDSessionFacade));
 		}
 
-		void    Run(const char* title, unsigned int fps);
+		void Run(const char* title, unsigned int fps);
 		void resize() {
 			mIsResizing = true;
 			// disconnect ui window and io events callbacks

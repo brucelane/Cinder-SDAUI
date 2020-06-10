@@ -173,7 +173,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mVDSettings->mMsg = "";
 		mVDSettings->mMidiMsg = "";
 		mVDSettings->mSocketIOMsg = "";
-		mVDSettings->mOSCMsg = "";
+		mVDSession->setOSCMsg("");
 		mVDSettings->mErrorMsg = "";
 		mVDSettings->mShaderMsg = "";
 		mVDSettings->mFboMsg = "";
@@ -184,7 +184,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	ImGui::TextWrapped("Shader: %s", mVDSettings->mShaderMsg.c_str());
 	ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
 	ImGui::TextWrapped("WS Msg: %s", mVDSettings->mSocketIOMsg.c_str());
-	ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
+	ImGui::TextWrapped("OSC Msg: %s", mVDSession->getOSCMsg().c_str());
 	//ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 	ImGui::TextColored(ImColor(255, 0, 0), "Last error: %s", mVDSettings->mErrorMsg.c_str());
 	ImGui::SetNextWindowSize(ImVec2(800, mVDSettings->uiLargeH), ImGuiSetCond_Once);

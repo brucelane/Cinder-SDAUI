@@ -45,6 +45,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	static int currentWindowRow1 = 1;
 	static int currentWindowRow2 = 0;
 
+		ImGuiStyle& style = ImGui::GetStyle();
 	//ImGuiStyle& style = ImGui::GetStyle();
 
 	if (mIsResizing) {
@@ -52,10 +53,9 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 		// set ui window and io events callbacks 
 		//ImGui::connectWindow(getWindow());
-		ImGui::Initialize();
+		//ImGui::Initialize();
 
 #pragma region style
-		ImGuiStyle& style = ImGui::GetStyle();
 		// our theme variables
 		style.WindowRounding = 8;
 		style.WindowPadding = ImVec2(3, 3);
@@ -158,7 +158,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 #pragma endregion style
 	}
 #pragma region menu
-	/*if (ImGui::BeginMainMenuBar()) {
+	if (ImGui::BeginMainMenuBar()) {
 
 		if (ImGui::BeginMenu("Options"))
 		{
@@ -166,7 +166,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
-	}*/
+	}
 
 #pragma endregion menu
 	if (ImGui::Button("Clear")) {

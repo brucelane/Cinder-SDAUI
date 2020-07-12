@@ -97,6 +97,7 @@ _TBOX_PREFIX_App::_TBOX_PREFIX_App() : mSpoutOut("VDUI", app::getWindowSize())
 	// sos only mVDSession->setUniformValue(mVDSettings->IEXPOSURE, 1.93f);
 	mFadeInDelay = true;
 	// UI
+	ImGui::Initialize();
 	mVDUI = VDUI::create(mVDSettings, mVDSessionFacade);
 	/*fs::path texFileOrPath = getAssetPath("") / mVDSettings->mAssetsPath / "accueil.mp4";
 	if (fs::exists(texFileOrPath)) {

@@ -5,6 +5,8 @@ using namespace videodromm;
 VDUIAnimation::VDUIAnimation(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
+	// Params
+	mVDParams = VDParams::create();
 	// zoom
 	minZoom = getMinUniformValue(12);
 	maxZoom = getMaxUniformValue(12);
@@ -26,12 +28,12 @@ VDUIAnimation::~VDUIAnimation() {
 }
 
 void VDUIAnimation::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 3.4), ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mVDParams->getUILargeW(), mVDParams->getUILargeH() * 3.4), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mVDParams->getUIMargin(), mVDParams->getUIYPosRow1()), ImGuiCond_Once);
 	int hue = 0;
 	ImGui::Begin("Animation", NULL, ImGuiWindowFlags_NoSavedSettings);
 	{
-		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+		ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
 		if (ImGui::CollapsingHeader("Color", true))
 		{
 			ImGui::PushItemWidth(200.0f);
@@ -63,7 +65,7 @@ void VDUIAnimation::Run(const char* title) {
 
 			}
 			ImGui::PopItemWidth();
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+			ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
 		}
 		if (ImGui::CollapsingHeader("Animation", true))
 		{
@@ -172,8 +174,8 @@ void VDUIAnimation::Run(const char* title) {
 		/*
 		if (ImGui::CollapsingHeader("Audio", NULL, true, true))
 		{
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 2);
-			//ImGui::Image((void*)mVDSession->getAudioTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			ImGui::PushItemWidth(mVDParams->getPreviewFboWidth() * 2);
+			//ImGui::Image((void*)mVDSession->getAudioTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 			// TODO 20200221 ImGui::Text("Position %d", mVDSession->getPosition(0));
 
 			static int iFreq0 = mVDSession->getFreqIndex(0);
@@ -307,7 +309,7 @@ void VDUIAnimation::Run(const char* title) {
 		if (ImGui::CollapsingHeader("Render", false))
 		{
 
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+			ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
 			// output resolution
 			ctrl = mVDSettings->IOUTW;
 			if (ImGui::Button("x##ioutw")) { iOutW = 1280; setFloatValue(ctrl, 1280); }

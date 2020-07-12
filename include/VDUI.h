@@ -14,6 +14,8 @@
 #include "VDUIAnimation.h"
 // Warps
 #include "VDUIWarps.h"
+// Params
+#include "VDParams.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -41,10 +43,11 @@ namespace videodromm
 		}
 		bool	isReady() { return !mIsResizing; };
 	private:
+		// Params
+		VDParamsRef					mVDParams;
 		// Settings
 		VDSettingsRef				mVDSettings;
 		// Session
-		//VDSessionRef				mVDSession;
 		VDSessionFacadeRef			mVDSession;
 		// UIFbos
 		VDUIFbosRef					mUIFbos;
@@ -93,5 +96,6 @@ namespace videodromm
 		// mouse
 		float						mouseX, mouseY;
 		bool						mouseZ;
+		
 	};
 }

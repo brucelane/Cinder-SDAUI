@@ -5,19 +5,21 @@ using namespace videodromm;
 VDUIWarps::VDUIWarps(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
+	// Params
+	mVDParams = VDParams::create();
 }
 
 void VDUIWarps::Run(const char* title) {
 	//static int currentNode = 0;
 
-	//xPos = mVDSettings->uiMargin;
+	//xPos = mVDParams->getUIMargin();
 	//yPos = mVDSettings->uiYPosRow2;
 	for (int w = 0; w < mVDSession->getWarpCount(); w++) {
 
 
-		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (w));//+1
-		yPos = mVDSettings->uiYPosRow2;
-		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiCond_Once);
+		xPos = mVDParams->getUIMargin() + mVDParams->getUIXPosCol1() + ((mVDParams->getUILargePreviewW() + mVDParams->getUIMargin()) * (w));//+1
+		yPos = mVDParams->getUIYPosRow2();
+		ImGui::SetNextWindowSize(ImVec2(mVDParams->getUILargePreviewW(), mVDParams->getUILargePreviewH()), ImGuiCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiCond_Once);
 
 
@@ -35,14 +37,14 @@ void VDUIWarps::Run(const char* title) {
 			ImGui::TextColored(ImColor(150, 220, 0), buf);
 			int ww = mVDSession->getWarpWidth(w);
 			sprintf(buf, "WarpWidth##ww%d", w);
-			if (ImGui::SliderInt(buf, &ww, 0.0f, mVDSettings->mFboWidth*2))
+			if (ImGui::SliderInt(buf, &ww, 0.0f, mVDParams->getFboWidth()*2))
 			{
 				//mVDSession->setWarpWidth(w, ww);
 			}
 			
 			int wh = mVDSession->getWarpHeight(w);
 			sprintf(buf, "WarpHeight##wh%d", w);
-			if (ImGui::SliderInt(buf, &wh, 0.0f, mVDSettings->mFboHeight*2))
+			if (ImGui::SliderInt(buf, &wh, 0.0f, mVDParams->getFboHeight()*2))
 			{
 				//mVDSession->setWarpHeight(w, wh);
 			}
@@ -90,14 +92,14 @@ void VDUIWarps::Run(const char* title) {
 					ImGui::Indent();		
 			}
 			else {
-				ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+				ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
 				ImGui::PushID(w);
 				int fboa = mVDSession->getWarpAFboIndex(w);
 
-				//if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboa)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-				if (mVDSession->buildFboRenderedTexture(fboa)) ImGui::Image(mVDSession->buildFboRenderedTexture(fboa), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				//if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboa)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
+				if (mVDSession->buildFboRenderedTexture(fboa)) ImGui::Image(mVDSession->buildFboRenderedTexture(fboa), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 
-				/*ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				/*ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip(mVDSession->getWarpName(w).c_str());*/
 				// loop on the fbos A
 				for (unsigned int a = 0; a < mVDSession->getFboListSize(); a++) {

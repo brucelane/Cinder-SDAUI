@@ -5,6 +5,8 @@ using namespace videodromm;
 VDUIFbos::VDUIFbos(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
+	// Params
+	mVDParams = VDParams::create();
 	//globalUniforms = true;
 	for (int c = 0; c < 128; c++)
 	{
@@ -25,19 +27,19 @@ void VDUIFbos::Run(const char* title) {
 	static bool anim[64];
 
 	/*for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
-		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * t);
+		xPos = mVDParams->getUIMargin() + mVDParams->getUIXPosCol1() + ((mVDParams->getUILargePreviewW() + mVDParams->getUIMargin()) * t);
 		yPos = mVDSettings->uiYPosRow2;
 
-		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(mVDParams->getUILargePreviewW(), mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		int hue = 0;
 		printf(buf, "%s##s%d", mVDSession->getInputTextureName(t).c_str(), t);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+			ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
 			ImGui::PushID(t);
-			ImGui::Image((void*)mVDSession->getInputTexture(t)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			/*ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 0.7);
+			ImGui::Image((void*)mVDSession->getInputTexture(t)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
+			/*ImGui::PushItemWidth(mVDParams->getPreviewFboWidth() * 0.7);
 			// flip vertically
 			mVDSession->isFlipVInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
@@ -152,12 +154,12 @@ void VDUIFbos::Run(const char* title) {
 						if (XLeft[t] < 1) {
 							xStep = -xStep;
 						}
-						if (XLeft[t] > mVDSession->getInputTextureOriginalWidth(t) - mVDSettings->mFboWidth - 1) {
+						if (XLeft[t] > mVDSession->getInputTextureOriginalWidth(t) - mVDParams->getFboWidth() - 1) {
 							xStep = -xStep;
 						}
 					}
 					sprintf(buf, "XL##xl%d", t);
-					ImGui::SliderInt(buf, &XLeft[t], 0, mVDSession->getInputTextureOriginalWidth(t));// CHECK - mVDSettings->mFboWidth
+					ImGui::SliderInt(buf, &XLeft[t], 0, mVDSession->getInputTextureOriginalWidth(t));// CHECK - mVDParams->getFboWidth()
 					mVDSession->setInputTextureXLeft(t, XLeft[t]);
 
 					YTop[t] = mVDSession->getInputTextureYTop(t);
@@ -172,12 +174,12 @@ void VDUIFbos::Run(const char* title) {
 						if (YTop[t] < 1) {
 							yStep = -yStep;
 						}
-						if (YTop[t] > mVDSession->getInputTextureOriginalHeight(t) - mVDSettings->mFboHeight - 1) {
+						if (YTop[t] > mVDSession->getInputTextureOriginalHeight(t) - mVDParams->getFboHeight() - 1) {
 							yStep = -yStep;
 						}
 					}
 					sprintf(buf, "YT##yt%d", t);
-					ImGui::SliderInt(buf, &YTop[t], 0, mVDSession->getInputTextureOriginalHeight(t));// - mVDSettings->mFboHeight
+					ImGui::SliderInt(buf, &YTop[t], 0, mVDSession->getInputTextureOriginalHeight(t));// - mVDParams->getFboHeight()
 					mVDSession->setInputTextureYTop(t, YTop[t]);
 
 
@@ -232,17 +234,17 @@ void VDUIFbos::Run(const char* title) {
 
 #pragma region mix
 	int w = 0;
-	xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1;
-	yPos = mVDSettings->uiYPosRow2;// - mVDSettings->uiLargePreviewH
+	xPos = mVDParams->getUIMargin() + mVDParams->getUIXPosCol1();
+	yPos = mVDParams->getUIYPosRow2();// - mVDSettings->uiLargePreviewH
 
-	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mVDParams->getUILargePreviewW(), mVDParams->getUILargePreviewH()), ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiCond_Once);
 	/*
 	sprintf(buf, "%s##sh%d", "mix", 0);
 	ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 	{
-		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-		ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
+		ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 		// crossfade
 		float xFade = mVDSession->getCrossfade();// getWarpCrossfade(w);
 		sprintf(buf, "xfade##xf%d", w);
@@ -298,16 +300,16 @@ void VDUIFbos::Run(const char* title) {
 	*/
 	
 	for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
-		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (f));//+1
-		yPos = mVDSettings->uiYPosRow3;
-		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH * 2), ImGuiCond_Once);
+		xPos = mVDParams->getUIMargin() + mVDParams->getUIXPosCol1() + ((mVDParams->getUILargePreviewW() + mVDParams->getUIMargin()) * (f));//+1
+		yPos = mVDParams->getUIYPosRow3();
+		ImGui::SetNextWindowSize(ImVec2(mVDParams->getUILargePreviewW(), mVDParams->getUILargePreviewH() * 2), ImGuiCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiCond_Once);
 		ImGui::PushStyleColor(ImGuiCol_TitleBg, (ImVec4)ImColor::HSV(f / 16.0f, 0.7f, 0.7f));
 		sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
 		ImGui::Begin(buf, NULL, ImGuiWindowFlags_NoSavedSettings);
 		{
 			ImGui::PushID(f);
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+			ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
 
 			sprintf(buf, "show##rdrtexuniform%d", f);
 			mShowRenderedTexture ^= ImGui::Button(buf);
@@ -324,8 +326,8 @@ void VDUIFbos::Run(const char* title) {
 				sprintf(buf, "T##fboupd%d", f);
 				if(ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);
 			}*/
-			//if (mVDSession->getFboRenderedTexture(f)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			if (mVDSession->buildFboRenderedTexture(f) && mShowRenderedTexture) ImGui::Image(mVDSession->buildFboRenderedTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			//if (mVDSession->getFboRenderedTexture(f)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
+			if (mVDSession->buildFboRenderedTexture(f) && mShowRenderedTexture) ImGui::Image(mVDSession->buildFboRenderedTexture(f), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 			// uniforms
 			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
 
@@ -422,12 +424,12 @@ void VDUIFbos::Run(const char* title) {
 					ImGui::TextColored(ImColor(100, 100, 100), buf);
 					if (ctrl == mVDSettings->IMOUSE) {
 						mouseX = getValue(mVDSettings->IMOUSEX, f);
-						if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mVDSettings->mFboWidth, "%.4f", 3.0f))
+						if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mVDParams->getFboWidth(), "%.4f", 3.0f))
 						{
 							setValue(mVDSettings->IMOUSEX, mouseX, f);
 						}
 						mouseY = getValue(mVDSettings->IMOUSEY, f);
-						if (ImGui::SliderFloat("MouseY", &mouseY, 0.0f, mVDSettings->mFboHeight, "%.4f", 0.3f))
+						if (ImGui::SliderFloat("MouseY", &mouseY, 0.0f, mVDParams->getFboHeight(), "%.4f", 0.3f))
 						{
 							setValue(mVDSettings->IMOUSEY, mouseY, f);
 						}
@@ -449,8 +451,8 @@ void VDUIFbos::Run(const char* title) {
 
 			} //for uniforms
 
-			//if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			if (mVDSession->buildFboInputTexture(f)  && mShowInputTexture) ImGui::Image(mVDSession->buildFboInputTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			//if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
+			if (mVDSession->buildFboInputTexture(f)  && mShowInputTexture) ImGui::Image(mVDSession->buildFboInputTexture(f), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 

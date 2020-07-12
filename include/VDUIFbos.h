@@ -6,6 +6,8 @@
 #include "Cinder/CinderImGui.h"
 // Settings
 #include "VDSettings.h"
+// Params
+#include "VDParams.h"
 // Session
 #include "VDSessionFacade.h"
 
@@ -28,6 +30,8 @@ namespace videodromm
 		}
 		void    Run(const char* title);
 	private:
+		// Params
+		VDParamsRef						mVDParams;
 		// Settings
 		VDSettingsRef					mVDSettings;
 		// Session

@@ -8,6 +8,8 @@
 #include "VDSettings.h"
 // Session
 #include "VDSessionFacade.h"
+// Params
+#include "VDParams.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -30,6 +32,8 @@ namespace videodromm
 		~VDUIAnimation();
 		void    Run(const char* title);
 	private:
+		// Params
+		VDParamsRef						mVDParams;
 		// Settings
 		VDSettingsRef					mVDSettings;
 		// Session

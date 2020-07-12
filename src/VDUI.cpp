@@ -5,6 +5,8 @@ using namespace videodromm;
 VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionFacadeRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
+	// Params
+	mVDParams = VDParams::create();
 	// UITextures
 	//mUITextures = VDUITextures::create(mVDSettings, mVDSession);
 	// UIFbos
@@ -45,15 +47,11 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	static int currentWindowRow1 = 1;
 	static int currentWindowRow2 = 0;
 
-		ImGuiStyle& style = ImGui::GetStyle();
+	ImGuiStyle& style = ImGui::GetStyle();
 	//ImGuiStyle& style = ImGui::GetStyle();
 
 	if (mIsResizing) {
 		mIsResizing = false;
-
-		// set ui window and io events callbacks 
-		//ImGui::connectWindow(getWindow());
-		//ImGui::Initialize();
 
 #pragma region style
 		// our theme variables
@@ -63,13 +61,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.FrameRounding = 16;
 		style.ItemSpacing = ImVec2(3, 3);
 		style.ItemInnerSpacing = ImVec2(3, 3);
-		style.WindowMinSize = ImVec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight);
+		style.WindowMinSize = ImVec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight());
 		style.Alpha = 0.65f;
 
 		style.Colors[ImGuiCol_Text] = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);
 		style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.70f);
-		//style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 		style.Colors[ImGuiCol_PopupBg] = ImVec4(0.05f, 0.05f, 0.10f, 0.90f);
 		style.Colors[ImGuiCol_Border] = ImVec4(0.70f, 0.70f, 0.70f, 0.65f);
 		style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
@@ -84,7 +81,6 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.40f, 0.40f, 0.80f, 0.30f);
 		style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.40f, 0.40f, 0.80f, 0.40f);
 		style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.80f, 0.50f, 0.50f, 0.40f);
-		//style.Colors[ImGuiCol_ComboBg] = ImVec4(0.20f, 0.20f, 0.20f, 0.99f);
 		style.Colors[ImGuiCol_CheckMark] = ImVec4(0.90f, 0.90f, 0.90f, 0.50f);
 		style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.00f, 1.00f, 1.00f, 0.30f);
 		style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.80f, 0.50f, 0.50f, 1.00f);
@@ -94,15 +90,9 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.Colors[ImGuiCol_Header] = ImVec4(0.40f, 0.40f, 0.90f, 0.45f);
 		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.45f, 0.45f, 0.90f, 0.80f);
 		style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.53f, 0.53f, 0.87f, 0.80f);
-		/*style.Colors[ImGuiCol_Column] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-		style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.70f, 0.60f, 0.60f, 1.00f);
-		style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.90f, 0.70f, 0.70f, 1.00f);*/
 		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 1.00f, 1.00f, 0.30f);
 		style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.00f, 1.00f, 1.00f, 0.60f);
 		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(1.00f, 1.00f, 1.00f, 0.90f);
-		/*style.Colors[ImGuiCol_CloseButton] = ImVec4(0.50f, 0.50f, 0.90f, 0.50f);
-		style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.70f, 0.70f, 0.90f, 0.60f);
-		style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.70f, 0.70f, 0.70f, 1.00f);*/
 		style.Colors[ImGuiCol_PlotLines] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
 		style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
@@ -110,51 +100,6 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.00f, 0.00f, 1.00f, 0.35f);
 		style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
-
-
-		/*style.Colors[ImGuiCol_Text] = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);
-		style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
-		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.70f);
-		style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-		style.Colors[ImGuiCol_PopupBg] = ImVec4(0.05f, 0.05f, 0.10f, 0.90f);
-		style.Colors[ImGuiCol_Border] = ImVec4(0.70f, 0.70f, 0.70f, 0.65f);
-		style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-		style.Colors[ImGuiCol_FrameBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.30f);
-		style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.90f, 0.80f, 0.80f, 0.40f);
-		style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.90f, 0.65f, 0.65f, 0.45f);
-		style.Colors[ImGuiCol_TitleBg] = ImVec4(0.55f, 0.00f, 0.93f, 1.00f);
-		style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.40f, 0.00f, 0.80f, 0.39f);
-		style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.32f, 0.00f, 0.63f, 0.71f);
-		style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.40f, 0.40f, 0.55f, 0.80f);
-		style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.20f, 0.25f, 0.30f, 0.60f);
-		style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.40f, 0.40f, 0.80f, 0.30f);
-		style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.40f, 0.40f, 0.80f, 0.40f);
-		style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.80f, 0.50f, 0.50f, 0.40f);
-		style.Colors[ImGuiCol_ComboBg] = ImVec4(0.20f, 0.20f, 0.20f, 0.99f);
-		style.Colors[ImGuiCol_CheckMark] = ImVec4(0.90f, 0.90f, 0.90f, 0.50f);
-		style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.00f, 1.00f, 1.00f, 0.30f);
-		style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.80f, 0.50f, 0.50f, 1.00f);
-		style.Colors[ImGuiCol_Button] = ImVec4(0.56f, 0.09f, 1.00f, 0.46f);
-		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(1.00f, 0.95f, 0.50f, 1.00f);
-		style.Colors[ImGuiCol_ButtonActive] = ImVec4(1.00f, 0.94f, 0.00f, 1.00f);
-		style.Colors[ImGuiCol_Header] = ImVec4(0.40f, 0.40f, 0.90f, 0.45f);
-		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.45f, 0.45f, 0.90f, 0.80f);
-		style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.53f, 0.53f, 0.87f, 0.80f);
-		style.Colors[ImGuiCol_Column] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-		style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.70f, 0.60f, 0.60f, 1.00f);
-		style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.90f, 0.70f, 0.70f, 1.00f);
-		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 1.00f, 1.00f, 0.30f);
-		style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.00f, 1.00f, 1.00f, 0.60f);
-		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(1.00f, 1.00f, 1.00f, 0.90f);
-		style.Colors[ImGuiCol_CloseButton] = ImVec4(0.50f, 0.50f, 0.90f, 0.50f);
-		style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.70f, 0.70f, 0.90f, 0.60f);
-		style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.70f, 0.70f, 0.70f, 1.00f);
-		style.Colors[ImGuiCol_PlotLines] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
-		style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
-		style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
-		style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
-		style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.00f, 0.00f, 1.00f, 0.35f);
-		style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);*/
 #pragma endregion style
 	}
 #pragma region menu
@@ -169,50 +114,59 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	}
 
 #pragma endregion menu
-	if (ImGui::Button("Clear")) {
-		mVDSettings->mMsg = "";
-		mVDSettings->mMidiMsg = "";
-		mVDSettings->mSocketIOMsg = "";
-		mVDSession->setOSCMsg("");
-		mVDSettings->mErrorMsg = "";
-		mVDSettings->mShaderMsg = "";
-		mVDSettings->mFboMsg = "";
+	ImGui::SetNextWindowSize(ImVec2(400, mVDParams->getUILargeH()), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mVDParams->getUIXPosCol3(), mVDParams->getUIYPosRow2()), ImGuiCond_Once);
+	
+
+	ImGui::Begin("Messages");
+	{
+		if (ImGui::Button("Clear")) {
+			mVDSettings->mMsg = "";
+			mVDSettings->mMidiMsg = "";
+			mVDSettings->mSocketIOMsg = "";
+			mVDSession->setOSCMsg("");
+			mVDSettings->mErrorMsg = "";
+			mVDSettings->mShaderMsg = "";
+			mVDSettings->mFboMsg = "";
+		}
+
+		ImGui::TextColored(ImColor(200, 200, 0), "Msg: %s", mVDSettings->mMsg.c_str());
+		//ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
+		ImGui::TextWrapped("Fbo: %s", mVDSettings->mFboMsg.c_str());
+		ImGui::TextWrapped("Shader: %s", mVDSettings->mShaderMsg.c_str());
+		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
+		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mSocketIOMsg.c_str());
+		ImGui::TextWrapped("OSC Msg: %s", mVDSession->getOSCMsg().c_str());
+		ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
+		ImGui::TextColored(ImColor(255, 0, 0), "Last error: %s", mVDSettings->mErrorMsg.c_str());
 	}
-	ImGui::TextColored(ImColor(200, 200, 0), "Msg: %s", mVDSettings->mMsg.c_str());
-	//ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
-	ImGui::TextWrapped("Fbo: %s", mVDSettings->mFboMsg.c_str());
-	ImGui::TextWrapped("Shader: %s", mVDSettings->mShaderMsg.c_str());
-	ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
-	ImGui::TextWrapped("WS Msg: %s", mVDSettings->mSocketIOMsg.c_str());
-	ImGui::TextWrapped("OSC Msg: %s", mVDSession->getOSCMsg().c_str());
-	//ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
-	ImGui::TextColored(ImColor(255, 0, 0), "Last error: %s", mVDSettings->mErrorMsg.c_str());
-	ImGui::SetNextWindowSize(ImVec2(800, mVDSettings->uiLargeH), ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiCond_Once);
-	//sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mVDSession->getTargetFps());
+	ImGui::End();
+	ImGui::SetNextWindowSize(ImVec2(800, mVDParams->getUILargeH()), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mVDParams->getUIXPosCol1(), mVDParams->getUIYPosRow1()), ImGuiCond_Once);
+
 	sprintf(buf, "Fps %c %d ###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps);
 	ImGui::Begin(buf);
 	{
 		// line 1
-		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-		/*ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
+		/*ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Mixette");
 		ImGui::SameLine();*/
-		ImGui::Image((void*)mVDSession->buildRenderedMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::Image((void*)mVDSession->buildRenderedMixetteTexture(0)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("RenderedMixette");
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->buildPostFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::Image((void*)mVDSession->buildPostFboTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Post");
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->buildRenderedWarpFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::Image((void*)mVDSession->buildRenderedWarpFboTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Warp");
 
 		ImGui::SameLine();
 		// fps
 		static ImVector<float> values; if (values.empty()) { values.resize(100); memset(&values.front(), 0, values.size() * sizeof(float)); }
 		static int values_offset = 0;
-		static float refresh_time = -1.0f;
-		if (ImGui::GetTime() > refresh_time + 1.0f / 6.0f)
+		static float refresh_time = -1.0f + 1.0f / 6.0f;
+		if (ImGui::GetTime() > refresh_time)
 		{
 			refresh_time = ImGui::GetTime();
 			values[values_offset] = mVDSession->getUniformValue(mVDSettings->IFPS);
@@ -227,8 +181,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		static ImVector<float> timeValues; if (timeValues.empty()) { timeValues.resize(40); memset(&timeValues.front(), 0, timeValues.size() * sizeof(float)); }
 		static int timeValues_offset = 0;
 		// audio maxVolume
-		static float tRefresh_time = -1.0f;
-		if (ImGui::GetTime() > tRefresh_time + 1.0f / 20.0f)
+		static float tRefresh_time = -1.0f + 1.0f / 20.0f;
+		if (ImGui::GetTime() > tRefresh_time)
 		{
 			tRefresh_time = ImGui::GetTime();
 			timeValues[timeValues_offset] = mVDSession->getUniformValue(mVDSettings->IMAXVOLUME);
@@ -241,13 +195,13 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mVDSession->getUniformValue(mVDSettings->IMAXVOLUME))).c_str(), 0.0f, 255.0f, ImVec2(0, 30));
 		if (mVDSession->getUniformValue(mVDSettings->IMAXVOLUME) > 240.0) ImGui::PopStyleColor();
 
-		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+		ImGui::PushItemWidth(mVDParams->getPreviewFboWidth());
 		ImGui::SameLine();
-		/*		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(0))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		/*		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(0))->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				ImGui::SameLine();
-				ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				ImGui::SameLine();
-				ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(1))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(1))->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				*/
 
 
@@ -274,7 +228,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::PopStyleColor(3);
 		hue++;/**/
-		
+
 		// debug
 		ctrl = mVDSettings->IDEBUG;
 		(getFloatValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -288,10 +242,10 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::SameLine();
 
 
-	
+
 		/*if (ImGui::Button("CreateWarp")) {
 			mVDSession->createWarp();
-		}	
+		}
 		hue++;
 		ImGui::SameLine();*/
 
@@ -449,18 +403,18 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			toggleValue(ctrl);
 		}
 		ImGui::PopStyleColor(3);
-/*
-		if (ImGui::Button("blackout"))
-		{
-			setFloatValue(1, 0.0);
-			setFloatValue(2, 0.0);
-			setFloatValue(3, 0.0);
-			setFloatValue(4, 0.0);
-		}*/
+		/*
+				if (ImGui::Button("blackout"))
+				{
+					setFloatValue(1, 0.0);
+					setFloatValue(2, 0.0);
+					setFloatValue(3, 0.0);
+					setFloatValue(4, 0.0);
+				}*/
 
 		ImGui::TextColored(ImColor(255, 150, 0), "Mode: %d - %s", mVDSession->getMode(), mVDSession->getModeName(mVDSession->getMode()).c_str());
 		ImGui::SameLine();
-		ImGui::Text("fp %dx%d f %dx%d", mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, mVDSettings->mFboWidth, mVDSettings->mFboHeight);
+		ImGui::Text("fp %dx%d f %dx%d", mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight(), mVDParams->getFboWidth(), mVDParams->getFboHeight());
 		ImGui::SameLine();
 		ImGui::Text("main %dx%d", mVDSettings->mMainWindowWidth, mVDSettings->mMainWindowHeight);
 		ImGui::SameLine();
@@ -473,12 +427,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 		// mouse
 		mouseX = getFloatValue(mVDSettings->IMOUSEX);
-		if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mVDSettings->mFboWidth, "%.4f", 3.0f))
+		if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mVDParams->getFboWidth(), "%.4f", 3.0f))
 		{
 			setFloatValue(mVDSettings->IMOUSEX, mouseX);
 		}
 		mouseY = getFloatValue(mVDSettings->IMOUSEY);
-		if (ImGui::SliderFloat("MouseY", &mouseY, 0.0f, mVDSettings->mFboHeight, "%.4f", 0.3f))
+		if (ImGui::SliderFloat("MouseY", &mouseY, 0.0f, mVDParams->getFboHeight(), "%.4f", 0.3f))
 		{
 			setFloatValue(mVDSettings->IMOUSEY, mouseY);
 		}
@@ -532,31 +486,31 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			switch (m)
 			{
 			case 0:
-				ImGui::Image((void*)mVDSession->getMixetteTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getMixetteTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			case 1:
-				ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			case 2:
-				ImGui::Image((void*)mVDSession->getRenderTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getRenderTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			case 3:
-				ImGui::Image((void*)mVDSession->getHydraTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getHydraTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			case 4:
-				ImGui::Image((void*)mVDSession->getFboTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getFboTexture(0)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			case 5:
-				ImGui::Image((void*)mVDSession->getFboTexture(1)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getFboTexture(1)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			case 6:
-				ImGui::Image((void*)mVDSession->getFboTexture(2)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getFboTexture(2)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			case 7:
-				ImGui::Image((void*)mVDSession->getFboTexture(3)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getFboTexture(3)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			default:
-				ImGui::Image((void*)mVDSession->getMixetteTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)mVDSession->getMixetteTexture()->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 				break;
 			}
 		}*/
@@ -614,11 +568,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			//ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
 			float iWeight = mVDSession->getUniformValue(ctrl);
 			ImGui::PushID(m);
-			/*ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));*/
-			ImGui::Image((void*)mVDSession->buildFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, (ImVec4)ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, (ImVec4)ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrab, (ImVec4)ImColor::HSV(m / 16.0f, 0.9f, 0.9f));
+			ImGui::Image((void*)mVDSession->buildFboRenderedTexture(m)->getId(), ivec2(mVDParams->getPreviewFboWidth(), mVDParams->getPreviewFboHeight()));
 			//string tooltip = mVDSession->getFboName(m) + " - " + mVDSession->getFboInputTextureName(m);
 			//sprintf(buf, "%s", tooltip.c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
@@ -631,7 +586,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			};
 			if (ImGui::IsItemActive() || ImGui::IsItemHovered())
 				ImGui::SetTooltip("%.3f", iWeight);
-			//ImGui::PopStyleColor(4);
+			ImGui::PopStyleColor(4);
 			ImGui::PopID();
 			//ImGui::SameLine();
 			//ImGui::TextColored(ImColor(255, 150, 0), "%d - %s", mVDSession->getMode(), mVDSession->getModeName(m).c_str());
@@ -639,20 +594,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::PopID();
 		ImGui::PopStyleVar();
 
-		ImGui::Indent();
+		//ImGui::Indent();
 
-		/*
-				ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
-				ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
-				ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
-				ImGui::TextWrapped("WS Msg: %s", mVDSettings->mSocketIOMsg.c_str());
-				ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
-				hue++;
-
-				ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
-				ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();
-				ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
-				ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
 
 		ImGui::PopItemWidth();
 	}

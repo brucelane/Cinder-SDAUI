@@ -4,7 +4,7 @@
 	<requires>com.sophiadigitalart.vd</requires>
 	<requires>com.sophiadigitalart.vdui</requires>
 	<requires>nl.cowlumbus.warping</requires>
-	<requires>ocornut.imgui</requires>
+	<requires>com.sophiadigitalart.socketio</requires>
 	<requires>org.libcinder.OSC</requires>
 	<platform os="msw">
 		<requires>fr.batchass.spout</requires>

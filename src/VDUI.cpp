@@ -45,16 +45,17 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	static int currentWindowRow1 = 1;
 	static int currentWindowRow2 = 0;
 
-	ImGuiStyle& style = ImGui::GetStyle();
+	//ImGuiStyle& style = ImGui::GetStyle();
 
 	if (mIsResizing) {
 		mIsResizing = false;
 
 		// set ui window and io events callbacks 
-		ImGui::connectWindow(getWindow());
-		ImGui::initialize();
+		//ImGui::connectWindow(getWindow());
+		ImGui::Initialize();
 
 #pragma region style
+		ImGuiStyle& style = ImGui::GetStyle();
 		// our theme variables
 		style.WindowRounding = 8;
 		style.WindowPadding = ImVec2(3, 3);
@@ -65,11 +66,10 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.WindowMinSize = ImVec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight);
 		style.Alpha = 0.65f;
 
-		ImGuiStyle& style = ImGui::GetStyle();
 		style.Colors[ImGuiCol_Text] = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);
 		style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.70f);
-		style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+		//style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 		style.Colors[ImGuiCol_PopupBg] = ImVec4(0.05f, 0.05f, 0.10f, 0.90f);
 		style.Colors[ImGuiCol_Border] = ImVec4(0.70f, 0.70f, 0.70f, 0.65f);
 		style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
@@ -84,7 +84,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.40f, 0.40f, 0.80f, 0.30f);
 		style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.40f, 0.40f, 0.80f, 0.40f);
 		style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.80f, 0.50f, 0.50f, 0.40f);
-		style.Colors[ImGuiCol_ComboBg] = ImVec4(0.20f, 0.20f, 0.20f, 0.99f);
+		//style.Colors[ImGuiCol_ComboBg] = ImVec4(0.20f, 0.20f, 0.20f, 0.99f);
 		style.Colors[ImGuiCol_CheckMark] = ImVec4(0.90f, 0.90f, 0.90f, 0.50f);
 		style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.00f, 1.00f, 1.00f, 0.30f);
 		style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.80f, 0.50f, 0.50f, 1.00f);
@@ -94,15 +94,15 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.Colors[ImGuiCol_Header] = ImVec4(0.40f, 0.40f, 0.90f, 0.45f);
 		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.45f, 0.45f, 0.90f, 0.80f);
 		style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.53f, 0.53f, 0.87f, 0.80f);
-		style.Colors[ImGuiCol_Column] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
+		/*style.Colors[ImGuiCol_Column] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
 		style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.70f, 0.60f, 0.60f, 1.00f);
-		style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.90f, 0.70f, 0.70f, 1.00f);
+		style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.90f, 0.70f, 0.70f, 1.00f);*/
 		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 1.00f, 1.00f, 0.30f);
 		style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.00f, 1.00f, 1.00f, 0.60f);
 		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(1.00f, 1.00f, 1.00f, 0.90f);
-		style.Colors[ImGuiCol_CloseButton] = ImVec4(0.50f, 0.50f, 0.90f, 0.50f);
+		/*style.Colors[ImGuiCol_CloseButton] = ImVec4(0.50f, 0.50f, 0.90f, 0.50f);
 		style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.70f, 0.70f, 0.90f, 0.60f);
-		style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.70f, 0.70f, 0.70f, 1.00f);
+		style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.70f, 0.70f, 0.70f, 1.00f);*/
 		style.Colors[ImGuiCol_PlotLines] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
 		style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
@@ -158,7 +158,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 #pragma endregion style
 	}
 #pragma region menu
-	if (ImGui::BeginMainMenuBar()) {
+	/*if (ImGui::BeginMainMenuBar()) {
 
 		if (ImGui::BeginMenu("Options"))
 		{
@@ -166,7 +166,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
-	}
+	}*/
 
 #pragma endregion menu
 	if (ImGui::Button("Clear")) {
@@ -187,8 +187,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	ImGui::TextWrapped("OSC Msg: %s", mVDSession->getOSCMsg().c_str());
 	//ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 	ImGui::TextColored(ImColor(255, 0, 0), "Last error: %s", mVDSettings->mErrorMsg.c_str());
-	ImGui::SetNextWindowSize(ImVec2(800, mVDSettings->uiLargeH), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(800, mVDSettings->uiLargeH), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiCond_Once);
 	//sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mVDSession->getTargetFps());
 	sprintf(buf, "Fps %c %d ###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps);
 	ImGui::Begin(buf);
@@ -614,10 +614,10 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			//ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
 			float iWeight = mVDSession->getUniformValue(ctrl);
 			ImGui::PushID(m);
-			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
+			/*ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
-			ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));*/
 			ImGui::Image((void*)mVDSession->buildFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			//string tooltip = mVDSession->getFboName(m) + " - " + mVDSession->getFboInputTextureName(m);
 			//sprintf(buf, "%s", tooltip.c_str());
@@ -631,7 +631,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			};
 			if (ImGui::IsItemActive() || ImGui::IsItemHovered())
 				ImGui::SetTooltip("%.3f", iWeight);
-			ImGui::PopStyleColor(4);
+			//ImGui::PopStyleColor(4);
 			ImGui::PopID();
 			//ImGui::SameLine();
 			//ImGui::TextColored(ImColor(255, 150, 0), "%d - %s", mVDSession->getMode(), mVDSession->getModeName(m).c_str());

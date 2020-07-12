@@ -17,13 +17,13 @@ void VDUIWarps::Run(const char* title) {
 
 		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (w));//+1
 		yPos = mVDSettings->uiYPosRow2;
-		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
-		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiCond_Once);
+		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiCond_Once);
 
 
 		sprintf(buf, "%s##sh%d", mVDSession->getWarpName(w).c_str(), w);
 		//sprintf(buf, "warp##sh%d", w);
-		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
+		ImGui::Begin(buf, NULL, ImGuiWindowFlags_NoSavedSettings);
 		{
 
 			int hue = 0;
@@ -70,17 +70,17 @@ void VDUIWarps::Run(const char* title) {
 						ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
 						float iWeight = mVDSession->getUniformValue(ctrl);
 						ImGui::PushID(m);
-						ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
+						/*ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
 						ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
 						ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
-						ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));
+						ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));*/
 						if (ImGui::VSliderFloat("##v", ImVec2(18, 60), &iWeight, 0.0f, 1.0f, ""))
 						{
 							setValue(ctrl, iWeight);
 						};
 						if (ImGui::IsItemActive() || ImGui::IsItemHovered())
 							ImGui::SetTooltip("%.3f", iWeight);
-						ImGui::PopStyleColor(4);
+						//ImGui::PopStyleColor(4);
 						ImGui::PopID();
 					}
 					ImGui::PopID();

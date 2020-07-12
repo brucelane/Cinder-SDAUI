@@ -3,7 +3,7 @@
 #include "cinder/app/App.h"
 
 // UserInterface
-#include "CinderImGui.h"
+#include "Cinder/CinderImGui.h"
 // Settings
 #include "VDSettings.h"
 // Session
@@ -37,7 +37,7 @@ namespace videodromm
 		void resize() {
 			mIsResizing = true;
 			// disconnect ui window and io events callbacks
-			ImGui::disconnectWindow(getWindow());
+			//ImGui::disconnectWindow(getWindow());
 		}
 		bool	isReady() { return !mIsResizing; };
 	private:

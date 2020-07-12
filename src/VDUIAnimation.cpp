@@ -26,13 +26,13 @@ VDUIAnimation::~VDUIAnimation() {
 }
 
 void VDUIAnimation::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 3.4), ImGuiSetCond_Once);
-	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 3.4), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiCond_Once);
 	int hue = 0;
-	ImGui::Begin("Animation", NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
+	ImGui::Begin("Animation", NULL, ImGuiWindowFlags_NoSavedSettings);
 	{
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-		if (ImGui::CollapsingHeader("Color", NULL, true, true))
+		if (ImGui::CollapsingHeader("Color", true))
 		{
 			ImGui::PushItemWidth(200.0f);
 			// foreground color
@@ -65,7 +65,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::PopItemWidth();
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 		}
-		if (ImGui::CollapsingHeader("Animation", NULL, true, true))
+		if (ImGui::CollapsingHeader("Animation", true))
 		{
 			for (size_t iUniform = 5; iUniform < 29; iUniform++)
 			{
@@ -204,7 +204,7 @@ void VDUIAnimation::Run(const char* title) {
 			}
 			ImGui::PopItemWidth();
 		}*/
-		if (ImGui::CollapsingHeader("Tempo", NULL, true, false))
+		if (ImGui::CollapsingHeader("Tempo", true))
 		{
 			if (ImGui::Button("x##startx")) { mVDSettings->iStart = 0.0f; }
 			ImGui::SameLine();
@@ -269,7 +269,7 @@ void VDUIAnimation::Run(const char* title) {
 
 		}
 
-		if (ImGui::CollapsingHeader("OSC", NULL, true, true))
+		if (ImGui::CollapsingHeader("OSC", true))
 		{
 			static char host[128] = "127.0.0.1"; // #define IP_LOCALHOST 127.0.0.1
 			// validate in loading, not here 
@@ -304,7 +304,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::Text(" on port %d", mVDSettings->mOSCDestinationPort2);*/
 		}
-		if (ImGui::CollapsingHeader("Render", NULL, true, false))
+		if (ImGui::CollapsingHeader("Render", false))
 		{
 
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
